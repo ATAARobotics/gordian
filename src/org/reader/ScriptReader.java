@@ -20,12 +20,7 @@ public class ScriptReader {
             return;
         }
         String s = TextFiles.getStringFromFile(new File(args[0]));
-        Keywords.add(new Method("Do Something") {
-            @Override
-            public void run(Value[] args) {
-                System.out.println("Success");
-            }
-        });
+        System.out.println("Running script in file: "+new File(args[0]).getPath());
         ScriptReader.runScript(s);
     }
 
