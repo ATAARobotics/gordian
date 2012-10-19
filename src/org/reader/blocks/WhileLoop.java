@@ -61,13 +61,14 @@ public class WhileLoop extends Instruction {
     @Override
     public void run() {
         this.linesToSkip = linesUntilBreak(fullScript, line);
-        String[] instructions = fullScript.split(System.getProperty("line.separator"));
+        String[] instructions = fullScript.split(ScriptReader.LINE_SEPARATOR);
         String whileLoop = "";
         int currentLine = line;
         for (int x = 0; x < linesUntilBreak(fullScript, line); x++) {
             whileLoop += instructions[++currentLine] + System.getProperty("line.separator");
         }
-        while (Condition.getConditionFrom(new Value(evaluation)).isTrue()) {
+        Condition condition = Condition.getConditionFrom(evaluation);
+        while (condition.isTrue()) {
             ScriptReader.runScript(whileLoop);
         }
     }
