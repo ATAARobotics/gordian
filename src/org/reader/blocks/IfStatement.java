@@ -40,7 +40,8 @@ public class IfStatement extends Instruction {
      * @throws org.reader.Statement.InvalidStatementException
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
-        return new IfStatement(Condition.getConditionFrom(new Value(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")")))));
+        return new IfStatement(Condition.getConditionFrom(
+                statement.substring(statement.indexOf("(") + 1, statement.indexOf(")"))));
     }
     /**
      * The condition of the IF statement.
@@ -64,6 +65,5 @@ public class IfStatement extends Instruction {
         } else {
             this.linesToSkip = linesUntilBreak(fullScript, line);
         }
-
     }
 }
