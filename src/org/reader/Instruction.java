@@ -41,19 +41,19 @@ public abstract class Instruction extends Statement {
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         if (Method.isValid(statement)) {
             return Method.getStatementFrom(statement);
-        } else if (Declaration.isValid(statement)) {
-            return Declaration.getStatementFrom(statement);
         } else if (IfStatement.isValid(statement)) {
             return IfStatement.getStatementFrom(statement);
         } else if (ForLoop.isValid(statement)) {
             return ForLoop.getStatementFrom(statement);
         } else if (WhileLoop.isValid(statement)) {
             return WhileLoop.getStatementFrom(statement);
+        } else if (Declaration.isValid(statement)) {
+            return Declaration.getStatementFrom(statement);
         } else if (statement.equals("}")) {
             // Does nothing
             return new Statement();
         } else {
-            throw new InvalidStatementException(statement + " is not a statement type.");
+            throw new InvalidStatementException(Method.getMethodName(statement) + " is not a recognized method.");
         }
     }
     private final String instruction;
