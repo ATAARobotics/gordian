@@ -10,17 +10,17 @@ public class Statement {
     /**
      * How many lines will be skipped after statement is run.
      */
-    public int linesToSkip = 1;
+    protected int linesToSkip = 1;
     /**
      * Line of code. <p> Set by script reader. Is guaranteed to be the line of
      * code (By line number / split("\n")). </p>
      */
-    public int line;
+    protected int line;
     /**
      * Current script the statement is being run in. <p>Set by script
      * reader.</p>
      */
-    public String fullScript;
+    protected String fullScript;
 
     /**
      * Hide this method to use the class. <i><b>This method is meant to be
@@ -81,20 +81,5 @@ public class Statement {
             }
         }
         return -1;
-    }
-
-    /**
-     * Exception thrown when the statement does not fit the criterion.
-     */
-    public static class InvalidStatementException extends Exception {
-
-        /**
-         * Creates the exception with a message.
-         *
-         * @param message message for the user
-         */
-        public InvalidStatementException(String message) {
-            super(message);
-        }
     }
 }

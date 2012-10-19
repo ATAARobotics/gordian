@@ -30,7 +30,7 @@ public class Value {
     public Value(String value) {
         this.literalValue = value;
         if (Variables.contains(value)) {
-            this.value = Variables.get(value);
+            this.value = Variables.get(value).getValue();
         } else if (Returnables.isValid(value) && Returnables.contains(Method.getMethodName(value))) {
             this.value = Returnables.getFromMethod(value);
         } else if (isInteger(value)) {
@@ -72,7 +72,7 @@ public class Value {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Value) {
-            return ((Value) obj).value.toString().equals(this.value.toString());
+            return this.value.equals(((Value)obj).value);
         } else {
             return false;
         }

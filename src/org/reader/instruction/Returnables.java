@@ -2,6 +2,7 @@ package org.reader.instruction;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.HashMap;
 import java.util.Vector;
 import org.reader.Value;
 
@@ -12,8 +13,7 @@ import org.reader.Value;
  */
 public class Returnables {
 
-    private static final Vector names = new Vector();
-    private static final Vector returnables = new Vector();
+    private static final HashMap returnables = new HashMap();
 
     static {
         add(new MathMethod("SUM") {
@@ -48,18 +48,7 @@ public class Returnables {
      * @param returnable returnable to add
      */
     public static void add(Returnable returnable) {
-        names.add(returnable.getName());
-        returnables.add(returnable);
-    }
-
-    /**
-     * Removes a returnable object by it's name
-     *
-     * @param methodName method name
-     */
-    public static void remove(String methodName) {
-        names.remove(methodName);
-        returnables.remove(names.indexOf(methodName));
+        returnables.put(returnable.getName(), returnable);
     }
 
     /**
@@ -69,7 +58,7 @@ public class Returnables {
      * @return whether cache contains method
      */
     public static boolean contains(String methodName) {
-        return names.contains(methodName);
+        return returnables.containsKey(methodName);
     }
 
     /**
@@ -79,7 +68,7 @@ public class Returnables {
      * @return returnable
      */
     public static Returnable get(String methodName) {
-        return ((Returnable) returnables.get(names.indexOf(methodName)));
+        return (Returnable) returnables.get(methodName);
     }
 
     /**

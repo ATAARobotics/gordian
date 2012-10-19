@@ -1,6 +1,7 @@
 package org.reader.instruction;
 
 import org.reader.Instruction;
+import org.reader.InvalidStatementException;
 import org.reader.Statement;
 import org.reader.Value;
 import org.reader.instruction.methods.Keywords;
@@ -92,14 +93,25 @@ public abstract class Method extends Instruction {
             return "Invalid Method";
         }
     }
+
     /**
-     * Name of the method.
+     * Creates new method that performs the actions of the previous method, but
+     * with new arguments.
+     *
+     * @param previous previous method
+     * @param args arguments
+     * @return method with new args
      */
-    public final String name;
-    /**
-     * Arguments of the method.
-     */
-    public Value[] arguments;
+    public static Method newMethod(final Method previous, final Value[] args) {
+        return new Method(previous.getName(), args) {
+            @Override
+            public void run(Value[] args) {
+                previous.run(args);
+            }
+        };
+    }
+    private final String name;
+    private final Value[] arguments;
 
     /**
      * Creates the method with it's name and arguments defined.
@@ -127,6 +139,14 @@ public abstract class Method extends Instruction {
     @Override
     public void run() {
         run(arguments);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Value[] getArguments() {
+        return arguments;
     }
 
     /**

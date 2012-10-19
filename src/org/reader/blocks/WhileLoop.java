@@ -1,6 +1,7 @@
 package org.reader.blocks;
 
 import org.reader.Instruction;
+import org.reader.InvalidStatementException;
 import org.reader.ScriptReader;
 import org.reader.Statement;
 import org.reader.Value;
@@ -11,7 +12,7 @@ import org.reader.values.Condition;
  *
  * @author joel
  */
-public class WHILE extends Instruction {
+public class WhileLoop extends Instruction {
 
     /**
      * Hide this method to use the class. <i><b>This method is meant to be
@@ -39,8 +40,8 @@ public class WHILE extends Instruction {
      * @return a {@link Statement} object of the type
      * @throws org.reader.Statement.InvalidStatementException
      */
-    public static Statement getStatementFrom(String statement) throws Statement.InvalidStatementException {
-        return new WHILE(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")")));
+    public static Statement getStatementFrom(String statement) throws InvalidStatementException {
+        return new WhileLoop(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")")));
     }
     /**
      * Condition of the while loop. Is checked each loop.
@@ -52,7 +53,7 @@ public class WHILE extends Instruction {
      *
      * @param evaluation condition of the while loop
      */
-    public WHILE(String evaluation) {
+    public WhileLoop(String evaluation) {
         super("WHILE(" + evaluation + ")");
         this.evaluation = evaluation;
     }

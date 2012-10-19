@@ -1,8 +1,8 @@
 package org.reader;
 
-import org.reader.blocks.FOR;
-import org.reader.blocks.IF;
-import org.reader.blocks.WHILE;
+import org.reader.blocks.ForLoop;
+import org.reader.blocks.IfStatement;
+import org.reader.blocks.WhileLoop;
 import org.reader.instruction.Declaration;
 import org.reader.instruction.Method;
 
@@ -11,7 +11,7 @@ import org.reader.instruction.Method;
  *
  * @author joel
  */
-public abstract class Instruction extends Statement implements Runnable {
+public abstract class Instruction extends Statement {
 
     /**
      * Hide this method to use the class. <i><b>This method is meant to be
@@ -43,12 +43,12 @@ public abstract class Instruction extends Statement implements Runnable {
             return Method.getStatementFrom(statement);
         } else if (Declaration.isValid(statement)) {
             return Declaration.getStatementFrom(statement);
-        } else if (IF.isValid(statement)) {
-            return IF.getStatementFrom(statement);
-        } else if (FOR.isValid(statement)) {
-            return FOR.getStatementFrom(statement);
-        } else if (WHILE.isValid(statement)) {
-            return WHILE.getStatementFrom(statement);
+        } else if (IfStatement.isValid(statement)) {
+            return IfStatement.getStatementFrom(statement);
+        } else if (ForLoop.isValid(statement)) {
+            return ForLoop.getStatementFrom(statement);
+        } else if (WhileLoop.isValid(statement)) {
+            return WhileLoop.getStatementFrom(statement);
         } else if (statement.equals("}")) {
             // Does nothing
             return new Statement();
@@ -59,8 +59,7 @@ public abstract class Instruction extends Statement implements Runnable {
     private final String instruction;
 
     /**
-     * Creates instruction by a string. The instruction is held in
-     * {@code instruction}.
+     * Creates instruction by a string.
      *
      * @param instruction full code snippet
      */
@@ -69,11 +68,16 @@ public abstract class Instruction extends Statement implements Runnable {
     }
 
     /**
-     * Returns the actual instruction.
+     * The instruction in the text file.
      *
-     * @return the literal instruction
+     * @return instruction as a string
      */
     public String getInstruction() {
         return instruction;
     }
+
+    /**
+     * Method to run the instruction.
+     */
+    public abstract void run();
 }

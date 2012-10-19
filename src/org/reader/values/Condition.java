@@ -46,30 +46,15 @@ public final class Condition {
             return new Condition(value);
         }
     }
-    /**
-     * Value #1. First value of the condition.
-     */
-    public Value v1,
-            /**
-             * Value #2. Second value of the condition.
-             */
+    private final Value v1,
             v2;
-    /**
-     * Whether the condition uses an equal operation.
-     */
-    public boolean equals;
-    /**
-     * The test of the condition. ('>','=','!', etc.)
-     */
-    public char test;
-    private final boolean isTrue;
+    private final boolean equals;
+    private final char test;
 
     private Condition(Value value) {
-        if (value.getValue().toString().equalsIgnoreCase("true")) {
-            this.isTrue = true;
-        } else {
-            this.isTrue = false;
-        }
+        v1 = v2 = value;
+        equals = true;
+        test = 't';
     }
 
     private Condition(Value v1, Value v2, boolean equals) {
@@ -81,7 +66,11 @@ public final class Condition {
         this.v2 = v2;
         this.equals = equals;
         this.test = test;
-        this.isTrue = calcTrue();
+    }
+
+    @Override
+    public String toString() {
+        return v1.toString() + test + (equals ? "=" : "") + v2.toString();
     }
 
     /**
@@ -90,10 +79,9 @@ public final class Condition {
      * @return if true
      */
     public boolean isTrue() {
-        return isTrue;
-    }
-
-    private boolean calcTrue() {
+        if (v1.getValue().toString().equalsIgnoreCase("true")) {
+            return true;
+        }
         if (test == '=') {
             if ((equals && v1.equals(v2)) || (!equals && !v1.equals(v2))) {
                 return true;

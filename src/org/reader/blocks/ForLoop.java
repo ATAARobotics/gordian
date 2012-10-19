@@ -1,6 +1,7 @@
 package org.reader.blocks;
 
 import org.reader.Instruction;
+import org.reader.InvalidStatementException;
 import org.reader.ScriptReader;
 import org.reader.Statement;
 import org.reader.Value;
@@ -10,7 +11,7 @@ import org.reader.Value;
  *
  * @author joel
  */
-public class FOR extends Instruction {
+public class ForLoop extends Instruction {
 
     /**
      * Hide this method to use the class. <i><b>This method is meant to be
@@ -41,7 +42,7 @@ public class FOR extends Instruction {
      * @throws org.reader.Statement.InvalidStatementException
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
-        return new FOR(new Value(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")"))));
+        return new ForLoop(new Value(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")"))));
     }
     /**
      * The amount of times to repeat the loop.
@@ -53,7 +54,7 @@ public class FOR extends Instruction {
      *
      * @param value amount of times to loop
      */
-    public FOR(Value value) {
+    public ForLoop(Value value) {
         this(Integer.parseInt(value.getValue().toString()));
     }
 
@@ -62,7 +63,7 @@ public class FOR extends Instruction {
      *
      * @param times amount of times to loop
      */
-    public FOR(int times) {
+    public ForLoop(int times) {
         super("FOR(" + ")");
         this.repititions = times;
     }

@@ -1,6 +1,6 @@
 package org.reader.instruction.methods;
 
-import java.util.Vector;
+import java.util.HashMap;
 import org.reader.Value;
 import org.reader.instruction.Method;
 
@@ -12,7 +12,7 @@ import org.reader.instruction.Method;
  */
 public class Keywords {
 
-    private static final Vector methods = new Vector();
+    private static final HashMap methods = new HashMap();
 
     /**
      * Adds a user-defined method.
@@ -20,7 +20,7 @@ public class Keywords {
      * @param m method to add
      */
     public static void add(Method m) {
-        Keywords.methods.add(m);
+        Keywords.methods.put(m.getName(), m);
     }
 
     /**
@@ -30,12 +30,7 @@ public class Keywords {
      * @return if it exists in the cache
      */
     public static boolean contains(String name) {
-        for (int x = 0; x < methods.size(); x++) {
-            if (((Method) methods.get(x)).name.equals(name)) {
-                return true;
-            }
-        }
-        return false;
+        return methods.containsKey(name);
     }
 
     /**
@@ -49,13 +44,9 @@ public class Keywords {
      * {@link Keywords#contains(java.lang.String)} to check.
      */
     public static Method get(String name, Value[] args) throws NoSuchFieldException {
-        for (int x = 0; x < methods.size(); x++) {
-            if (((Method) methods.get(x)).name.equals(name)) {
-                Method value = ((Method) methods.get(x));
-                value.arguments = args;
-                return value;
-            }
+        if (!contains(name)) {
+            throw new NoSuchFieldException("The field " + name + " does not exist in Keywords.");
         }
-        throw new NoSuchFieldException("The field " + name + " does not exist in Keywords.");
+        return Method.newMethod((Method) methods.get(name), args);
     }
 }

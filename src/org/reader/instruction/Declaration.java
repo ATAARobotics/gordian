@@ -1,6 +1,7 @@
 package org.reader.instruction;
 
 import org.reader.Instruction;
+import org.reader.InvalidStatementException;
 import org.reader.Statement;
 import org.reader.Value;
 import org.reader.Variables;

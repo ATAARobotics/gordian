@@ -1,6 +1,7 @@
 package org.reader.blocks;
 
 import org.reader.Instruction;
+import org.reader.InvalidStatementException;
 import org.reader.Statement;
 import org.reader.Value;
 import org.reader.values.Condition;
@@ -10,7 +11,7 @@ import org.reader.values.Condition;
  *
  * @author joel
  */
-public class IF extends Instruction {
+public class IfStatement extends Instruction {
 
     /**
      * Hide this method to use the class. <i><b>This method is meant to be
@@ -39,7 +40,7 @@ public class IF extends Instruction {
      * @throws org.reader.Statement.InvalidStatementException
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
-        return new IF(Condition.getConditionFrom(new Value(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")")))));
+        return new IfStatement(Condition.getConditionFrom(new Value(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")")))));
     }
     /**
      * The condition of the IF statement.
@@ -51,8 +52,8 @@ public class IF extends Instruction {
      *
      * @param condition condition of the if statement
      */
-    public IF(Condition condition) {
-        super("IF(" + condition.v1 + "vs" + condition.v2 + ")");
+    public IfStatement(Condition condition) {
+        super("IF(" + condition + ")");
         this.condition = condition;
     }
 
