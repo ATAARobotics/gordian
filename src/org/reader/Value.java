@@ -2,6 +2,7 @@ package org.reader;
 
 import org.reader.instruction.Method;
 import org.reader.instruction.Returnables;
+import org.reader.values.Condition;
 
 /**
  * An implicitly casted value, used everywhere that requires a value.
@@ -22,7 +23,7 @@ public class Value {
      * <pre>    2.Returnable Method</pre>
      * <pre>    3.Integer</pre>
      * <pre>    4.Double</pre>
-     * <pre>    5.Boolean</pre>
+     * <pre>    5.Boolean (Literal and Condition)</pre>
      * <pre>    6.String</pre>
      *
      * @param value
@@ -39,6 +40,8 @@ public class Value {
             this.value = new Double(value);
         } else if (isBoolean(value)) {
             this.value = Boolean.valueOf(value);
+        } else if (Condition.isCondition(value)){
+            this.value = Condition.getConditionFrom(value).isTrue();
         } else {
             if (value.contains("\"")) {
                 this.value = value.replace("\"", "");
@@ -72,7 +75,7 @@ public class Value {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Value) {
-            return this.value.equals(((Value)obj).value);
+            return this.value.equals(((Value) obj).value);
         } else {
             return false;
         }
