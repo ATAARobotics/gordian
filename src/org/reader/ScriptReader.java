@@ -14,13 +14,12 @@ public class ScriptReader {
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static void main(String[] args) throws FileNotFoundException {
-//        if (args.length != 1) {
-//            System.out.println("Invalid arguments.");
-//            return;
-//        }
-//        String s = TextFiles.getStringFromFile(new File(args[0]));
-//        System.out.println("Running script in file: "+new File(args[0]).getPath());
-        String s = TextFilesUtils.getStringFromFile(new File("/home/joel/Documents/testscript.txt"));
+        if (args.length != 1) {
+            System.out.println("Invalid arguments.");
+            return;
+        }
+        String s = TextFilesUtils.getStringFromFile(args[0]);
+        System.out.println("Running script in file: "+new File(args[0]).getPath());
         ScriptReader.runScript(s);
     }
 
