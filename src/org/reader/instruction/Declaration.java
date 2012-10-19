@@ -5,6 +5,8 @@ import org.reader.InvalidStatementException;
 import org.reader.Statement;
 import org.reader.Value;
 import org.reader.Variables;
+import org.reader.blocks.IfStatement;
+import org.reader.blocks.WhileLoop;
 
 /**
  * The declaration of variables.
@@ -22,9 +24,10 @@ public class Declaration extends Instruction {
      * @return whether it is a valid instruction
      */
     public static boolean isValid(String statement) {
-        // Ensures one = sign
-        return statement.contains("=") && statement.indexOf("=", statement.indexOf("=") + 1) < 0
-                && statement.endsWith(";");
+        // Ensures first = sign is not == sign
+        return statement.contains("=") && statement.endsWith(";") && statement.charAt(statement.indexOf("=")+1) != '='
+                // Cannot be a conditional instruction
+                && !IfStatement.isValid(statement) && !WhileLoop.isValid(statement);
     }
 
     /**
