@@ -1,5 +1,6 @@
 package org.reader.instruction;
 
+import java.awt.List;
 import org.reader.Instruction;
 import org.reader.InvalidStatementException;
 import org.reader.Statement;
@@ -50,7 +51,7 @@ public abstract class Method extends Instruction {
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         final String s1 = statement.substring(0, statement.indexOf("("));
-        final String[] s2 = statement.substring(statement.indexOf("(") + 1, statement.lastIndexOf(")")).split(",");
+        final String[] s2 = getArguments(statement);
         final Value[] v = new Value[s2.length];
         for (int x = 0; x < v.length; x++) {
             if (!s2[x].trim().isEmpty()) {
@@ -91,6 +92,39 @@ public abstract class Method extends Instruction {
             return fullMethod.substring(0, fullMethod.indexOf("("));
         } catch (StringIndexOutOfBoundsException ex) {
             return "Invalid Method";
+        }
+    }
+
+    /**
+     * Returns the arguments of the method. Ensures inner methods are intact.
+     *
+     * @param fullMethod full method string
+     * @return arguments of the method
+     */
+    public static String[] getArguments(String fullMethod) {
+        String innerFirstBrackets = fullMethod.substring(fullMethod.indexOf("(") + 1, fullMethod.lastIndexOf(")"));
+        if (innerFirstBrackets.contains("(") && innerFirstBrackets.contains(")")) {
+            List list = new List();
+            int count = 0;
+            int lastComma = 0;
+            for (int x = 0; x < innerFirstBrackets.length(); x++) {
+                if (innerFirstBrackets.charAt(x) == '(') {
+                    count ++;
+                } else if (innerFirstBrackets.charAt(x) == ')') {
+                    count --;
+                }
+                if (innerFirstBrackets.charAt(x) == ',' || x == innerFirstBrackets.length() - 1) {
+                    if (count == 0) {
+                        list.add(innerFirstBrackets.substring((lastComma == 0 ? -1 : lastComma) + 1,
+                                (x == innerFirstBrackets.length() - 1 ? x + 1 : x)).trim());
+                        lastComma = x;
+                    }
+                }
+            }
+            return list.getItems();
+        } else {
+            // No inner methods
+            return innerFirstBrackets.split(",");
         }
     }
 
