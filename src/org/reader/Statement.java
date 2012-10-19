@@ -69,7 +69,7 @@ public class Statement {
      * statement ('}')
      */
     public static int linesUntilBreak(String script, int currentLine) {
-        String[] s = script.split(System.getProperty("line.separator"));
+        String[] s = script.split(ScriptReader.LINE_SEPARATOR);
         for (int x = currentLine; x < s.length; x++) {
             if (s[x].isEmpty() || s[x].startsWith("**")) {
                 // This eleminates errors / comments being processed
