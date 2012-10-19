@@ -19,25 +19,25 @@ public class Returnables {
         add(new MathMethod("SUM") {
             @Override
             public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.add(bigDecimal2, MathContext.DECIMAL128);
+                return bigDecimal1.add(bigDecimal2, MathContext.DECIMAL64);
             }
         });
         add(new MathMethod("SUBTRACT") {
             @Override
             public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.subtract(bigDecimal2, MathContext.DECIMAL128);
+                return bigDecimal1.subtract(bigDecimal2, MathContext.DECIMAL64);
             }
         });
         add(new MathMethod("MULTIPLY") {
             @Override
             public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.multiply(bigDecimal2, MathContext.DECIMAL128);
+                return bigDecimal1.multiply(bigDecimal2, MathContext.DECIMAL64);
             }
         });
         add(new MathMethod("DIVIDE") {
             @Override
             public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.divide(bigDecimal2, MathContext.DECIMAL128);
+                return bigDecimal1.divide(bigDecimal2, MathContext.DECIMAL64);
             }
         });
     }
@@ -79,7 +79,7 @@ public class Returnables {
      * @return value returned by the method
      */
     public static Object getFromMethod(String method) {
-        String[] args = method.substring(method.indexOf("(") + 1, method.lastIndexOf(")")).split(",");
+        String[] args = Method.getArguments(method);
         Value[] trueArgs = new Value[args.length];
         for (int x = 0; x < args.length; x++) {
             trueArgs[x] = new Value(args[x].trim());
