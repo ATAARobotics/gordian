@@ -9,6 +9,11 @@ import org.reader.Value;
  */
 public final class Condition {
 
+    public static boolean isCondition(String value) {
+        return value.contains("==") || value.contains("!=") || value.contains(">")
+                || value.contains("<") || Value.isBoolean(value);
+    }
+
     /**
      * Returns a condition based on it's pure value. Does not change values once
      * this method is called. Must recall this method to update value.
@@ -16,61 +21,18 @@ public final class Condition {
      * @param value value of the condition
      * @return the condition object representing the condition
      */
-    public static Condition getConditionFrom(Value value) {
-        String statement = value.toString();
-        if (statement.contains("!=")) {
-            String v1 = statement.substring(0, statement.indexOf("!=")).trim();
-            String v2 = statement.substring(statement.indexOf("!=") + 2).trim();
-            return new Condition(new Value(v1), new Value(v2), false);
-        } else if (statement.contains("==")) {
-            String v1 = statement.substring(0, statement.indexOf("==")).trim();
-            String v2 = statement.substring(statement.indexOf("==") + 2).trim();
-            return new Condition(new Value(v1), new Value(v2), true);
-        } else if (statement.contains(">=")) {
-            String v1 = statement.substring(0, statement.indexOf(">=")).trim();
-            String v2 = statement.substring(statement.indexOf(">=") + 2).trim();
-            return new Condition(new Value(v1), new Value(v2), '>', true);
-        } else if (statement.contains("<=")) {
-            String v1 = statement.substring(0, statement.indexOf("<=")).trim();
-            String v2 = statement.substring(statement.indexOf("<=") + 2).trim();
-            return new Condition(new Value(v1), new Value(v2), '<', true);
-        } else if (statement.contains("<") && !statement.contains("=")) {
-            String v1 = statement.substring(0, statement.indexOf("<")).trim();
-            String v2 = statement.substring(statement.indexOf("<") + 1).trim();
-            return new Condition(new Value(v1), new Value(v2), '<', false);
-        } else if (statement.contains(">") && !statement.contains("=")) {
-            String v1 = statement.substring(0, statement.indexOf(">")).trim();
-            String v2 = statement.substring(statement.indexOf(">") + 1).trim();
-            return new Condition(new Value(v1), new Value(v2), '>', false);
-        } else {
-            return new Condition(value);
-        }
+    public static Condition getConditionFrom(String value) {
+        return new Condition(value);
     }
-    private final Value v1,
-            v2;
-    private final boolean equals;
-    private final char test;
+    private final String statement;
 
-    private Condition(Value value) {
-        v1 = v2 = value;
-        equals = true;
-        test = 't';
-    }
-
-    private Condition(Value v1, Value v2, boolean equals) {
-        this(v1, v2, '=', equals);
-    }
-
-    private Condition(Value v1, Value v2, char test, boolean equals) {
-        this.v1 = v1;
-        this.v2 = v2;
-        this.equals = equals;
-        this.test = test;
+    private Condition(String condition) {
+        this.statement = condition;
     }
 
     @Override
     public String toString() {
-        return v1.toString() + test + (equals ? "=" : "") + v2.toString();
+        return statement;
     }
 
     /**
@@ -79,21 +41,72 @@ public final class Condition {
      * @return if true
      */
     public boolean isTrue() {
-        if (v1.getValue().toString().equalsIgnoreCase("true")) {
+        Value value1, value2;
+        char test;
+        boolean equals;
+        if (statement.contains("!=")) {
+            String v1 = statement.substring(0, statement.indexOf("!=")).trim();
+            String v2 = statement.substring(statement.indexOf("!=") + 2).trim();
+            value1 = new Value(v1);
+            value2 = new Value(v2);
+            test = '=';
+            equals = false;
+        } else if (statement.contains("==")) {
+            String v1 = statement.substring(0, statement.indexOf("==")).trim();
+            String v2 = statement.substring(statement.indexOf("==") + 2).trim();
+            value1 = new Value(v1);
+            value2 = new Value(v2);
+            test = '=';
+            equals = true;
+        } else if (statement.contains(">=")) {
+            String v1 = statement.substring(0, statement.indexOf(">=")).trim();
+            String v2 = statement.substring(statement.indexOf(">=") + 2).trim();
+            value1 = new Value(v1);
+            value2 = new Value(v2);
+            test = '>';
+            equals = true;
+        } else if (statement.contains("<=")) {
+            String v1 = statement.substring(0, statement.indexOf("<=")).trim();
+            String v2 = statement.substring(statement.indexOf("<=") + 2).trim();
+            value1 = new Value(v1);
+            value2 = new Value(v2);
+            test = '<';
+            equals = true;
+        } else if (statement.contains("<") && !statement.contains("=")) {
+            String v1 = statement.substring(0, statement.indexOf("<")).trim();
+            String v2 = statement.substring(statement.indexOf("<") + 1).trim();
+            value1 = new Value(v1);
+            value2 = new Value(v2);
+            test = '<';
+            equals = false;
+        } else if (statement.contains(">") && !statement.contains("=")) {
+            String v1 = statement.substring(0, statement.indexOf(">")).trim();
+            String v2 = statement.substring(statement.indexOf(">") + 1).trim();
+            value1 = new Value(v1);
+            value2 = new Value(v2);
+            test = '>';
+            equals = false;
+        } else if (statement.equalsIgnoreCase("true")
+                || new Value(statement).getValue().toString().equalsIgnoreCase("true")) {
             return true;
+        } else {
+            return false;
         }
         if (test == '=') {
-            if ((equals && v1.equals(v2)) || (!equals && !v1.equals(v2))) {
+            // == and equals
+            if ((equals && value1.equals(value2))
+                    // != and not equals
+                    || (!equals && !value1.equals(value2))) {
                 return true;
             } else {
                 return false;
             }
         } else if (test == '>') {
             // Needs to be a number value. Throws error if not.
-            double value1 = Double.parseDouble(v1.getValue().toString());
-            double value2 = Double.parseDouble(v2.getValue().toString());
+            double double1 = Double.parseDouble(value1.getValue().toString());
+            double double2 = Double.parseDouble(value2.getValue().toString());
             if (equals) {
-                if (v1.equals(v2) || value1 > value2) {
+                if (value1.equals(value2) || double1 > double2) {
                     // >= (== or >)
                     return true;
                 } else {
@@ -101,7 +114,7 @@ public final class Condition {
                     return false;
                 }
             } else {
-                if (value1 > value2) {
+                if (double1 > double2) {
                     // >
                     return true;
                 } else {
@@ -111,16 +124,16 @@ public final class Condition {
             }
         } else if (test == '<') {
             // Boilerplate
-            double value1 = Double.parseDouble(v1.getValue().toString());
-            double value2 = Double.parseDouble(v2.getValue().toString());
+            double double1 = Double.parseDouble(value1.getValue().toString());
+            double double2 = Double.parseDouble(value2.getValue().toString());
             if (equals) {
-                if (v1.equals(v2) || value1 < value2) {
+                if (value1.equals(value2) || double1 < double2) {
                     return true;
                 } else {
                     return false;
                 }
             } else {
-                if (value1 < value2) {
+                if (double1 < double2) {
                     return true;
                 } else {
                     return false;
