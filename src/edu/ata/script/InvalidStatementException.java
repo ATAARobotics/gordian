@@ -1,4 +1,4 @@
-package edu.ata.script.base;
+package edu.ata.script;
 
 /**
  * Exception thrown when the statement does not fit the criterion.

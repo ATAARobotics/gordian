@@ -1,10 +1,11 @@
 package edu.ata.script.blocks;
 
-import edu.ata.script.base.Instruction;
-import edu.ata.script.base.InvalidStatementException;
-import edu.ata.script.base.ScriptReader;
-import edu.ata.script.base.Statement;
-import edu.ata.script.base.Value;
+import edu.ata.script.Instruction;
+import edu.ata.script.InvalidStatementException;
+import edu.ata.script.ScriptReader;
+import edu.ata.script.Statement;
+import edu.ata.script.StringUtils;
+import edu.ata.script.Value;
 
 /**
  * FOR loop class. Pretty self-explanatory.
@@ -22,7 +23,7 @@ public class ForLoop extends Instruction {
      * @return whether it is a valid instruction
      */
     public static boolean isValid(String statement) {
-        if (!(statement.contains("(") && statement.contains(")"))) {
+        if (!(StringUtils.contains(statement, "(") && StringUtils.contains(statement, ")"))) {
             return false;
         }
         return statement.startsWith("FOR(") && (statement.endsWith(")") || statement.endsWith("{"));
@@ -39,7 +40,7 @@ public class ForLoop extends Instruction {
      *
      * @param statement the statement to analyze
      * @return a {@link Statement} object of the type
-     * @throws org.reader.Statement.InvalidStatementException
+     * @throws InvalidStatementException thrown when statement is unrecognizable
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         return new ForLoop(new Value(statement.substring(statement.indexOf("(") + 1, statement.indexOf(")"))));
@@ -68,17 +69,16 @@ public class ForLoop extends Instruction {
         this.repititions = times;
     }
 
-    @Override
     public void run() {
         this.linesToSkip = linesUntilBreak(fullScript, line);
-        String[] instructions = fullScript.split(ScriptReader.LINE_SEPARATOR);
+        String[] instructions = StringUtils.split(fullScript, ScriptReader.LINE_SEPARATOR);
         String forLoop = "";
         int currentLine = line;
         for (int x = 0; x < linesUntilBreak(fullScript, line); x++) {
             forLoop += instructions[++currentLine] + ScriptReader.LINE_SEPARATOR;
         }
         for (int x = 0; x < repititions; x++) {
-            new ScriptReader(forLoop).runScript();
+            new ScriptReader(forLoop).runFullScript();
         }
     }
 }

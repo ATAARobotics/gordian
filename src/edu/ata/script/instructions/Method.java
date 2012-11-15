@@ -1,10 +1,11 @@
 package edu.ata.script.instructions;
 
-import java.awt.List;
-import edu.ata.script.base.Instruction;
-import edu.ata.script.base.InvalidStatementException;
-import edu.ata.script.base.Statement;
-import edu.ata.script.base.Value;
+import java.util.Vector;
+import edu.ata.script.Instruction;
+import edu.ata.script.InvalidStatementException;
+import edu.ata.script.Statement;
+import edu.ata.script.StringUtils;
+import edu.ata.script.Value;
 import edu.ata.script.instructions.methods.Keywords;
 import edu.ata.script.instructions.methods.NativeMethods;
 
@@ -47,20 +48,20 @@ public abstract class Method extends Instruction {
      *
      * @param statement the statement to analyze
      * @return a {@link Statement} object of the type
-     * @throws org.reader.Statement.InvalidStatementException
+     * @throws InvalidStatementException thrown when statement is unrecognizable
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         final String s1 = statement.substring(0, statement.indexOf("("));
         final String[] s2 = getArguments(statement);
         final Value[] v = new Value[s2.length];
         for (int x = 0; x < v.length; x++) {
-            if (!s2[x].trim().isEmpty()) {
+            if (!StringUtils.isEmpty(s2[x].trim())) {
                 v[x] = new Value(s2[x].trim());
             }
         }
         try {
             return getMethod(s1, v);
-        } catch (NoSuchFieldException ex) {
+        } catch (Exception ex) {
             throw new InvalidStatementException(ex.getMessage());
         }
     }
@@ -71,9 +72,9 @@ public abstract class Method extends Instruction {
      * @param name name of the method
      * @param args arguments of the method
      * @return method from the name and argument
-     * @throws NoSuchFieldException thrown when no method exists
+     * @throws Exception thrown when method does not exist
      */
-    public static Method getMethod(String name, Value[] args) throws NoSuchFieldException {
+    public static Method getMethod(String name, Value[] args) throws Exception {
         if (Keywords.contains(name)) {
             return Keywords.get(name, args);
         } else {
@@ -102,16 +103,16 @@ public abstract class Method extends Instruction {
      * @return arguments of the method
      */
     public static String[] getArguments(String fullMethod) {
-        String innerFirstBrackets = fullMethod.substring(fullMethod.indexOf("(") + 1, fullMethod.lastIndexOf(")"));
-        if (innerFirstBrackets.contains("(") && innerFirstBrackets.contains(")")) {
-            List list = new List();
+        String innerFirstBrackets = fullMethod.substring(fullMethod.indexOf("(") + 1, fullMethod.lastIndexOf(')'));
+        if (StringUtils.contains(innerFirstBrackets, "(") && StringUtils.contains(innerFirstBrackets, ")")) {
+            Vector list = new Vector();
             int count = 0;
             int lastComma = 0;
             for (int x = 0; x < innerFirstBrackets.length(); x++) {
                 if (innerFirstBrackets.charAt(x) == '(') {
-                    count ++;
+                    count++;
                 } else if (innerFirstBrackets.charAt(x) == ')') {
-                    count --;
+                    count--;
                 }
                 if (innerFirstBrackets.charAt(x) == ',' || x == innerFirstBrackets.length() - 1) {
                     if (count == 0) {
@@ -121,10 +122,14 @@ public abstract class Method extends Instruction {
                     }
                 }
             }
-            return list.getItems();
+            String[] items = new String[list.size()];
+            for (int x = 0; x < items.length; x++) {
+                items[x] = (String) list.get(x);
+            }
+            return items;
         } else {
             // No inner methods
-            return innerFirstBrackets.split(",");
+            return StringUtils.split(innerFirstBrackets, ',');
         }
     }
 
@@ -138,7 +143,6 @@ public abstract class Method extends Instruction {
      */
     public static Method newMethod(final Method previous, final Value[] args) {
         return new Method(previous.getName(), args) {
-            @Override
             public void run(Value[] args) {
                 previous.run(args);
             }
@@ -170,15 +174,24 @@ public abstract class Method extends Instruction {
         this.arguments = null;
     }
 
-    @Override
     public void run() {
         run(arguments);
     }
 
+    /**
+     * Returns the name of the method.
+     *
+     * @return method name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the arguments of the method in {@link Value} form.
+     *
+     * @return arguments of method
+     */
     public Value[] getArguments() {
         return arguments;
     }

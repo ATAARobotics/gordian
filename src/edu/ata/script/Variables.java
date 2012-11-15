@@ -1,7 +1,6 @@
-package edu.ata.script.base;
+package edu.ata.script;
 
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.Hashtable;
 
 /**
  * Static storage of variables. Stores declared variables.
@@ -10,8 +9,8 @@ import java.util.Vector;
  */
 public class Variables {
 
-    private static final HashMap variables = new HashMap();
-
+    private static final Hashtable variables = new Hashtable();
+    
     /**
      * Adds a variable to the ram.
      *

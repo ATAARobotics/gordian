@@ -1,4 +1,4 @@
-package edu.ata.script.base;
+package edu.ata.script;
 
 import edu.ata.script.blocks.ForLoop;
 import edu.ata.script.blocks.IfStatement;
@@ -36,7 +36,7 @@ public abstract class Instruction extends Statement {
      *
      * @param statement the statement to analyze
      * @return a {@link Statement} object of the type
-     * @throws org.reader.Statement.InvalidStatementException
+     * @throws InvalidStatementException thrown when statement is unrecognizable
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         if (Method.isValid(statement)) {
@@ -53,7 +53,7 @@ public abstract class Instruction extends Statement {
             // Does nothing
             return new Statement();
         } else {
-            throw new InvalidStatementException(Method.getMethodName(statement) + " is not a recognized method.");
+            throw new InvalidStatementException(statement + " is not a recognized instruction.");
         }
     }
     private final String instruction;

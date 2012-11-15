@@ -1,10 +1,7 @@
 package edu.ata.script.instructions;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.util.HashMap;
-import java.util.Vector;
-import edu.ata.script.base.Value;
+import java.util.Hashtable;
+import edu.ata.script.Value;
 
 /**
  * Static class that stores all returnable methods including native methods.
@@ -13,31 +10,27 @@ import edu.ata.script.base.Value;
  */
 public class Returnables {
 
-    private static final HashMap returnables = new HashMap();
+    private static final Hashtable returnables = new Hashtable();
 
     static {
         add(new MathMethod("SUM") {
-            @Override
-            public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.add(bigDecimal2, MathContext.DECIMAL64);
+            public double doCalc(double num1, double num2) {
+                return num1 + num2;
             }
         });
         add(new MathMethod("SUBTRACT") {
-            @Override
-            public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.subtract(bigDecimal2, MathContext.DECIMAL64);
+            public double doCalc(double num1, double num2) {
+                return num1 - num2;
             }
         });
         add(new MathMethod("MULTIPLY") {
-            @Override
-            public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.multiply(bigDecimal2, MathContext.DECIMAL64);
+            public double doCalc(double num1, double num2) {
+                return num1 * num2;
             }
         });
         add(new MathMethod("DIVIDE") {
-            @Override
-            public BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2) {
-                return bigDecimal1.divide(bigDecimal2, MathContext.DECIMAL64);
+            public double doCalc(double num1, double num2) {
+                return num1 / num2;
             }
         });
     }
@@ -126,29 +119,27 @@ public class Returnables {
             this.name = name;
         }
 
-        @Override
         public String getName() {
             return name;
         }
 
-        @Override
         public Object getValue(Value[] args) {
-            BigDecimal value;
+            double value;
             int start = 0;
             try {
-                value = new BigDecimal(Double.parseDouble(args[0].toString()));
+                value = Double.parseDouble(args[0].toString());
                 start = 1;
             } catch (Exception ex) {
-                value = new BigDecimal(0);
+                value = 0;
             }
             for (int x = start; x < args.length; x++) {
                 if (Value.isDouble(args[x].toString())) {
-                    value = doCalc(value, new BigDecimal(Double.parseDouble(args[x].toString())));
+                    value = doCalc(value, Double.parseDouble(args[x].toString()));
                 }
             }
-            return value;
+            return new Double(value);
         }
 
-        public abstract BigDecimal doCalc(BigDecimal bigDecimal1, BigDecimal bigDecimal2);
+        public abstract double doCalc(double num1, double num2);
     }
 }

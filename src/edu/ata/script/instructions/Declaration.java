@@ -1,10 +1,11 @@
 package edu.ata.script.instructions;
 
-import edu.ata.script.base.Instruction;
-import edu.ata.script.base.InvalidStatementException;
-import edu.ata.script.base.Statement;
-import edu.ata.script.base.Value;
-import edu.ata.script.base.Variables;
+import edu.ata.script.Instruction;
+import edu.ata.script.InvalidStatementException;
+import edu.ata.script.Statement;
+import edu.ata.script.StringUtils;
+import edu.ata.script.Value;
+import edu.ata.script.Variables;
 import edu.ata.script.blocks.IfStatement;
 import edu.ata.script.blocks.WhileLoop;
 
@@ -25,7 +26,7 @@ public class Declaration extends Instruction {
      */
     public static boolean isValid(String statement) {
         // Ensures first = sign is not == sign
-        return statement.contains("=") && statement.endsWith(";") && statement.charAt(statement.indexOf("=")+1) != '='
+        return StringUtils.contains(statement, "=") && statement.endsWith(";") && statement.charAt(statement.indexOf("=") + 1) != '='
                 // Cannot be a conditional instruction
                 && !IfStatement.isValid(statement) && !WhileLoop.isValid(statement);
     }
@@ -41,11 +42,11 @@ public class Declaration extends Instruction {
      *
      * @param statement the statement to analyze
      * @return a {@link Statement} object of the type
-     * @throws org.reader.Statement.InvalidStatementException
+     * @throws InvalidStatementException thrown when statement is unrecognizable
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         return new Declaration(statement.substring(0, statement.indexOf("=")).trim(),
-                new Value(statement.substring(statement.indexOf("=") + 1).replace(";", "").trim()));
+                new Value(StringUtils.replace(statement.substring(statement.indexOf("=") + 1), ';', "").trim()));
     }
     private final String varName;
     private final Value value;
@@ -62,7 +63,6 @@ public class Declaration extends Instruction {
         this.value = value;
     }
 
-    @Override
     public void run() {
         if (Variables.contains(varName)) {
             Variables.set(varName, value);

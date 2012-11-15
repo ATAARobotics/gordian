@@ -1,4 +1,4 @@
-package edu.ata.script.base;
+package edu.ata.script;
 
 /**
  * Basic statement. Every line of code is a statement of some kind.
@@ -10,17 +10,17 @@ public class Statement {
     /**
      * How many lines will be skipped after statement is run.
      */
-    protected int linesToSkip = 1;
+    public int linesToSkip = 1;
     /**
      * Line of code. <p> Set by script reader. Is guaranteed to be the line of
      * code (By line number / split("\n")). </p>
      */
-    protected int line;
+    public int line;
     /**
      * Current script the statement is being run in. <p>Set by script
      * reader.</p>
      */
-    protected String fullScript;
+    public String fullScript;
 
     /**
      * Hide this method to use the class. <i><b>This method is meant to be
@@ -45,7 +45,7 @@ public class Statement {
      *
      * @param statement the statement to analyze
      * @return a {@link Statement} object of the type
-     * @throws org.reader.Statement.InvalidStatementException
+     * @throws InvalidStatementException thrown when statement is unrecognizable
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         // Get rid of errors when tabbing / 4 spacing
@@ -69,9 +69,9 @@ public class Statement {
      * statement ('}')
      */
     public static int linesUntilBreak(String script, int currentLine) {
-        String[] s = script.split(ScriptReader.LINE_SEPARATOR);
+        String[] s = StringUtils.split(script, ScriptReader.LINE_SEPARATOR);
         for (int x = currentLine; x < s.length; x++) {
-            if (s[x].isEmpty() || s[x].startsWith("**")) {
+            if (StringUtils.isEmpty(s[x]) || s[x].startsWith("**")) {
                 // This eleminates errors / comments being processed
                 continue;
             }

@@ -1,6 +1,7 @@
 package edu.ata.script.values;
 
-import edu.ata.script.base.Value;
+import edu.ata.script.StringUtils;
+import edu.ata.script.Value;
 
 /**
  * Condition object used for comparisons. Results in boolean value.
@@ -9,9 +10,16 @@ import edu.ata.script.base.Value;
  */
 public final class Condition {
 
+    /**
+     * Determines whether the statement is a condition.
+     *
+     * @param value the statement to test
+     * @return whether the statement is a condition
+     */
     public static boolean isCondition(String value) {
-        return value.contains("==") || value.contains("!=") || value.contains(">")
-                || value.contains("<") || Value.isBoolean(value);
+        return StringUtils.contains(value, "==") || StringUtils.contains(value, "!=")
+                || StringUtils.contains(value, ">") || StringUtils.contains(value, "<")
+                || Value.isBoolean(value);
     }
 
     /**
@@ -30,7 +38,11 @@ public final class Condition {
         this.statement = condition;
     }
 
-    @Override
+    /**
+     * Transfers the condition to a string.
+     *
+     * @return statement (condition)
+     */
     public String toString() {
         return statement;
     }
@@ -44,42 +56,42 @@ public final class Condition {
         Value value1, value2;
         char test;
         boolean equals;
-        if (statement.contains("!=")) {
+        if (StringUtils.contains(statement, "!=")) {
             String v1 = statement.substring(0, statement.indexOf("!=")).trim();
             String v2 = statement.substring(statement.indexOf("!=") + 2).trim();
             value1 = new Value(v1);
             value2 = new Value(v2);
             test = '=';
             equals = false;
-        } else if (statement.contains("==")) {
+        } else if (StringUtils.contains(statement, "==")) {
             String v1 = statement.substring(0, statement.indexOf("==")).trim();
             String v2 = statement.substring(statement.indexOf("==") + 2).trim();
             value1 = new Value(v1);
             value2 = new Value(v2);
             test = '=';
             equals = true;
-        } else if (statement.contains(">=")) {
+        } else if (StringUtils.contains(statement, ">=")) {
             String v1 = statement.substring(0, statement.indexOf(">=")).trim();
             String v2 = statement.substring(statement.indexOf(">=") + 2).trim();
             value1 = new Value(v1);
             value2 = new Value(v2);
             test = '>';
             equals = true;
-        } else if (statement.contains("<=")) {
+        } else if (StringUtils.contains(statement, "<=")) {
             String v1 = statement.substring(0, statement.indexOf("<=")).trim();
             String v2 = statement.substring(statement.indexOf("<=") + 2).trim();
             value1 = new Value(v1);
             value2 = new Value(v2);
             test = '<';
             equals = true;
-        } else if (statement.contains("<") && !statement.contains("=")) {
+        } else if (StringUtils.contains(statement, "<") && !StringUtils.contains(statement, "=")) {
             String v1 = statement.substring(0, statement.indexOf("<")).trim();
             String v2 = statement.substring(statement.indexOf("<") + 1).trim();
             value1 = new Value(v1);
             value2 = new Value(v2);
             test = '<';
             equals = false;
-        } else if (statement.contains(">") && !statement.contains("=")) {
+        } else if (StringUtils.contains(statement, ">") && !StringUtils.contains(statement, "=")) {
             String v1 = statement.substring(0, statement.indexOf(">")).trim();
             String v2 = statement.substring(statement.indexOf(">") + 1).trim();
             value1 = new Value(v1);

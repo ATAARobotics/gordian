@@ -1,9 +1,9 @@
 package edu.ata.script.blocks;
 
-import edu.ata.script.base.Instruction;
-import edu.ata.script.base.InvalidStatementException;
-import edu.ata.script.base.Statement;
-import edu.ata.script.base.Value;
+import edu.ata.script.Instruction;
+import edu.ata.script.InvalidStatementException;
+import edu.ata.script.Statement;
+import edu.ata.script.StringUtils;
 import edu.ata.script.values.Condition;
 
 /**
@@ -22,7 +22,7 @@ public class IfStatement extends Instruction {
      * @return whether it is a valid instruction
      */
     public static boolean isValid(String statement) {
-        statement = statement.replace("{", "").trim();
+        statement = StringUtils.replace(statement, '{', "").trim();
         return statement.startsWith("IF(") && statement.endsWith(")");
     }
 
@@ -37,7 +37,7 @@ public class IfStatement extends Instruction {
      *
      * @param statement the statement to analyze
      * @return a {@link Statement} object of the type
-     * @throws org.reader.Statement.InvalidStatementException
+     * @throws InvalidStatementException   thrown when statement is malformed
      */
     public static Statement getStatementFrom(String statement) throws InvalidStatementException {
         return new IfStatement(Condition.getConditionFrom(
@@ -58,7 +58,6 @@ public class IfStatement extends Instruction {
         this.condition = condition;
     }
 
-    @Override
     public void run() {
         if (condition.isTrue()) {
             this.linesToSkip = 1;

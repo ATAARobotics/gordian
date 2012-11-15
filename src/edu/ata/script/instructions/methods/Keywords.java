@@ -1,7 +1,7 @@
 package edu.ata.script.instructions.methods;
 
-import java.util.HashMap;
-import edu.ata.script.base.Value;
+import java.util.Hashtable;
+import edu.ata.script.Value;
 import edu.ata.script.instructions.Method;
 
 /**
@@ -12,7 +12,7 @@ import edu.ata.script.instructions.Method;
  */
 public class Keywords {
 
-    private static final HashMap methods = new HashMap();
+    private static final Hashtable methods = new Hashtable();
 
     /**
      * Adds a user-defined method.
@@ -40,12 +40,11 @@ public class Keywords {
      * @param name name of the method
      * @param args arguments to set the method
      * @return method based on name
-     * @throws NoSuchFieldException thrown when method does not exist. Use
-     * {@link Keywords#contains(java.lang.String)} to check.
+     * @throws Exception thrown when keyword does not exist
      */
-    public static Method get(String name, Value[] args) throws NoSuchFieldException {
+    public static Method get(String name, Value[] args) throws Exception {
         if (!contains(name)) {
-            throw new NoSuchFieldException("The field " + name + " does not exist in Keywords.");
+            throw new Exception("The field " + name + " does not exist in Keywords.");
         }
         return Method.newMethod((Method) methods.get(name), args);
     }

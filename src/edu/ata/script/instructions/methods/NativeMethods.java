@@ -1,6 +1,6 @@
 package edu.ata.script.instructions.methods;
 
-import edu.ata.script.base.Value;
+import edu.ata.script.Value;
 import edu.ata.script.instructions.Method;
 
 /**
@@ -16,9 +16,9 @@ public class NativeMethods {
      * @param method method name
      * @param args arguments
      * @return method based on method name
-     * @throws NoSuchFieldException thrown when method does not exist
+     * @throws Exception thrown when method does not exist
      */
-    public static Method getMethod(String method, Value[] args) throws NoSuchFieldException {
+    public static Method getMethod(String method, Value[] args) throws Exception {
         if (method.equals("PRINT")) {
             return new PRINT(args);
         } else if (method.equals("PRINTLITERAL")) {
@@ -26,7 +26,7 @@ public class NativeMethods {
         } else if (method.equals("WAIT")) {
             return new WAIT(args);
         } else {
-            throw new NoSuchFieldException("No native method " + method);
+            throw new Exception("No native method " + method);
         }
     }
 
@@ -45,7 +45,6 @@ public class NativeMethods {
             super("PRINT", args);
         }
 
-        @Override
         public void run(Value[] args) {
             for (int x = 0; x < args.length; x++) {
                 System.out.print(args[x]);
@@ -69,7 +68,6 @@ public class NativeMethods {
             super("PRINTLITERAL", values);
         }
 
-        @Override
         public void run(Value[] args) {
             String full = "";
             for (int x = 0; x < args.length; x++) {
@@ -93,7 +91,6 @@ public class NativeMethods {
             super("WAIT", args);
         }
 
-        @Override
         public void run(Value[] args) {
             try {
                 Thread.sleep(Long.parseLong(args[0].getValue().toString()));
