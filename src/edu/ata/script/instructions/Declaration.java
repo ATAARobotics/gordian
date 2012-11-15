@@ -1,12 +1,12 @@
-package org.reader.instruction;
+package edu.ata.script.instructions;
 
-import org.reader.Instruction;
-import org.reader.InvalidStatementException;
-import org.reader.Statement;
-import org.reader.Value;
-import org.reader.Variables;
-import org.reader.blocks.IfStatement;
-import org.reader.blocks.WhileLoop;
+import edu.ata.script.base.Instruction;
+import edu.ata.script.base.InvalidStatementException;
+import edu.ata.script.base.Statement;
+import edu.ata.script.base.Value;
+import edu.ata.script.base.Variables;
+import edu.ata.script.blocks.IfStatement;
+import edu.ata.script.blocks.WhileLoop;
 
 /**
  * The declaration of variables.

@@ -1,10 +1,10 @@
-package org.reader.instruction;
+package edu.ata.script.instructions;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Vector;
-import org.reader.Value;
+import edu.ata.script.base.Value;
 
 /**
  * Static class that stores all returnable methods including native methods.

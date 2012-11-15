@@ -1,8 +1,8 @@
-package org.reader;
+package edu.ata.script.base;
 
-import org.reader.instruction.Method;
-import org.reader.instruction.Returnables;
-import org.reader.values.Condition;
+import edu.ata.script.instructions.Method;
+import edu.ata.script.instructions.Returnables;
+import edu.ata.script.values.Condition;
 
 /**
  * An implicitly casted value, used everywhere that requires a value.

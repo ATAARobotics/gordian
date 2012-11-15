@@ -1,12 +1,12 @@
-package org.reader.instruction;
+package edu.ata.script.instructions;
 
 import java.awt.List;
-import org.reader.Instruction;
-import org.reader.InvalidStatementException;
-import org.reader.Statement;
-import org.reader.Value;
-import org.reader.instruction.methods.Keywords;
-import org.reader.instruction.methods.NativeMethods;
+import edu.ata.script.base.Instruction;
+import edu.ata.script.base.InvalidStatementException;
+import edu.ata.script.base.Statement;
+import edu.ata.script.base.Value;
+import edu.ata.script.instructions.methods.Keywords;
+import edu.ata.script.instructions.methods.NativeMethods;
 
 /**
  * Encompassing class of all methods.

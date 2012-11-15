@@ -1,8 +1,8 @@
-package org.reader.instruction.methods;
+package edu.ata.script.instructions.methods;
 
 import java.util.HashMap;
-import org.reader.Value;
-import org.reader.instruction.Method;
+import edu.ata.script.base.Value;
+import edu.ata.script.instructions.Method;
 
 /**
  * Cache that stores all user-defined method. Native methods are stored in

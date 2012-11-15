@@ -1,4 +1,4 @@
-package org.reader;
+package edu.ata.script.base;
 
 /**
  * Exception thrown when the statement does not fit the criterion.

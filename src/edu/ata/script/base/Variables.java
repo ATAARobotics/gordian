@@ -1,4 +1,4 @@
-package org.reader;
+package edu.ata.script.base;
 
 import java.util.HashMap;
 import java.util.Vector;

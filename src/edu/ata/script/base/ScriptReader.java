@@ -1,4 +1,4 @@
-package org.reader;
+package edu.ata.script.base;
 
 import java.io.File;
 import java.io.FileNotFoundException;

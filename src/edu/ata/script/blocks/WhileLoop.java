@@ -1,11 +1,11 @@
-package org.reader.blocks;
+package edu.ata.script.blocks;
 
-import org.reader.Instruction;
-import org.reader.InvalidStatementException;
-import org.reader.ScriptReader;
-import org.reader.Statement;
-import org.reader.Value;
-import org.reader.values.Condition;
+import edu.ata.script.base.Instruction;
+import edu.ata.script.base.InvalidStatementException;
+import edu.ata.script.base.ScriptReader;
+import edu.ata.script.base.Statement;
+import edu.ata.script.base.Value;
+import edu.ata.script.values.Condition;
 
 /**
  * WHILE loop. Self-explanatory.

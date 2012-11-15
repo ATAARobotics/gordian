@@ -1,10 +1,10 @@
-package org.reader;
+package edu.ata.script.base;
 
-import org.reader.blocks.ForLoop;
-import org.reader.blocks.IfStatement;
-import org.reader.blocks.WhileLoop;
-import org.reader.instruction.Declaration;
-import org.reader.instruction.Method;
+import edu.ata.script.blocks.ForLoop;
+import edu.ata.script.blocks.IfStatement;
+import edu.ata.script.blocks.WhileLoop;
+import edu.ata.script.instructions.Declaration;
+import edu.ata.script.instructions.Method;
 
 /**
  * Basic statement that does something when used.

@@ -1,4 +1,4 @@
-package org.reader;
+package edu.ata.script.base;
 
 /**
  * Basic statement. Every line of code is a statement of some kind.

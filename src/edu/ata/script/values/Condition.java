@@ -1,6 +1,6 @@
-package org.reader.values;
+package edu.ata.script.values;
 
-import org.reader.Value;
+import edu.ata.script.base.Value;
 
 /**
  * Condition object used for comparisons. Results in boolean value.
