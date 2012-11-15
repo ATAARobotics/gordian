@@ -1,9 +1,6 @@
 package edu.ata.script;
 
-import com.sun.squawk.microedition.io.FileConnection;
-import edu.ata.user.Logger;
 import java.io.IOException;
-import javax.microedition.io.Connector;
 
 /**
  * Main reader of the script. Uses {@code runScript} as a class method to run a
@@ -25,9 +22,10 @@ public class ScriptReader {
      * @param path path of the file
      * @throws IOException thrown when file has errors when being accessed
      */
-    public static void runScript(String path) throws IOException {
-        new ScriptReader(Logger.getTextFromFile((FileConnection) Connector.open(path))).runFullScript();
-    }
+//    Only useable on CRIO / with squawk
+//    public static void runScript(String path) throws IOException {
+//        new ScriptReader(Logger.getTextFromFile((FileConnection) Connector.open(path))).runFullScript();
+//    }
     private final String fullScript;
 
     public ScriptReader(String fullScript) {
