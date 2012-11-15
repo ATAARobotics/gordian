@@ -3,14 +3,15 @@ package edu.ata.script;
 import java.util.Hashtable;
 
 /**
- * Static storage of variables. Stores declared variables.
+ * Static storage of variables. Stores declared variables. Is reset by script
+ * reader.
  *
  * @author joel
  */
 public class Variables {
 
     private static final Hashtable variables = new Hashtable();
-    
+
     /**
      * Adds a variable to the ram.
      *
@@ -49,5 +50,12 @@ public class Variables {
      */
     public static boolean contains(String name) {
         return variables.containsKey(name);
+    }
+    
+    /**
+     * Removes all variables.
+     */
+    public static void reset() {
+        variables.clear();
     }
 }

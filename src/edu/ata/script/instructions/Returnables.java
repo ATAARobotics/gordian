@@ -33,6 +33,21 @@ public class Returnables {
                 return num1 / num2;
             }
         });
+        add(new Returnable() {
+
+            public String getName() {
+                return "exists";
+            }
+
+            public Object getValue(Value[] args) {
+                for(int x = 0; x < args.length; x++) {
+                    if(!args[x].getLiteralValue().equals(args[x].getValue())) {
+                        return Boolean.TRUE;
+                    }
+                }
+                return Boolean.FALSE;
+            }
+        });
     }
 
     /**

@@ -1,8 +1,10 @@
 Plan for the future:
+> Means done
 
-- Add the 'exists(var)' method
+> Add the 'exists(var)' method
 - Change all caps expressions to lower case
 - Add concatenation to strings
 - Make primitive math operations (+, -, *, /, ++, --)
 - Add the 'skip#num' expression to skip lines
+- Fix visibility of variables
 - Bug fixes, performance upgrades

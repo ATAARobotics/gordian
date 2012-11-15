@@ -15,7 +15,6 @@ public class ScriptReader {
      * dependant.
      */
     public static final char LINE_SEPARATOR = '\n';
-
     /**
      * Runs a script from a file.
      *
@@ -33,11 +32,14 @@ public class ScriptReader {
     }
 
     /**
-     * Runs a script. Instructions are split by line separators.
+     * Runs a script. Instructions are split by line separators. It is dangerous
+     * to run two scripts simultaneously, due to variables being visible to all
+     * scripts.
      *
      * @param fullScript string of the full script
      */
     public void runFullScript() {
+        Variables.reset();
         int line = 0;
         String[] s = StringUtils.split(fullScript, LINE_SEPARATOR);
         while (line < s.length) {
