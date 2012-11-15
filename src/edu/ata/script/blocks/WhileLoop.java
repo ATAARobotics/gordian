@@ -4,7 +4,6 @@ import edu.ata.script.base.Instruction;
 import edu.ata.script.base.InvalidStatementException;
 import edu.ata.script.base.ScriptReader;
 import edu.ata.script.base.Statement;
-import edu.ata.script.base.Value;
 import edu.ata.script.values.Condition;
 
 /**
@@ -69,7 +68,7 @@ public class WhileLoop extends Instruction {
         }
         Condition condition = Condition.getConditionFrom(evaluation);
         while (condition.isTrue()) {
-            ScriptReader.runScript(whileLoop);
+            new ScriptReader(whileLoop).runScript();
         }
     }
 }

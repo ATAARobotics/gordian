@@ -1,8 +1,5 @@
 package edu.ata.script.base;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 /**
  * Main reader of the script. Uses {@code runScript} as a class method to run a
  * string.
@@ -12,15 +9,10 @@ import java.io.FileNotFoundException;
 public class ScriptReader {
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private final String fullScript;
 
-    public static void main(String[] args) throws FileNotFoundException {
-        if (args.length != 1) {
-            System.out.println("Invalid arguments.");
-            return;
-        }
-        String s = TextFilesUtils.getStringFromFile(args[0]);
-        System.out.println("Running script in file: " + new File(args[0]).getPath());
-        ScriptReader.runScript(s);
+    public ScriptReader(String fullScript) {
+        this.fullScript = fullScript;
     }
 
     /**
@@ -28,7 +20,7 @@ public class ScriptReader {
      *
      * @param fullScript string of the full script
      */
-    public static void runScript(String fullScript) {
+    public void runScript() {
         int line = 0;
         String[] s = fullScript.split(LINE_SEPARATOR);
         while (line < s.length) {

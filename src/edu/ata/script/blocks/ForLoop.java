@@ -78,7 +78,7 @@ public class ForLoop extends Instruction {
             forLoop += instructions[++currentLine] + ScriptReader.LINE_SEPARATOR;
         }
         for (int x = 0; x < repititions; x++) {
-            ScriptReader.runScript(forLoop);
+            new ScriptReader(forLoop).runScript();
         }
     }
 }
