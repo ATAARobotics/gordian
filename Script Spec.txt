@@ -1,0 +1,190 @@
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** ------------------------------------Native Methods------------------------------------------ **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+
+** Basic Native Method - PRINT(Arg / Args)
+** Prints whatever is inside of it, and automatically detects variable names,
+** number formats (int, double), booleans (true, false) and literals (Hello World)
+
+** Can take multiple arguments separated by commas. Prints the values beside each other.
+** Ignores all " signs (Use "String" to indicate spaces before and after value.)
+
+** Ex. PRINT(Current line is , x); -> Prints 'Current Line is1'
+** PRINT("Current line is ", x); -> Prints 'Current Line in 1'
+PRINT(Hello World);
+
+** -------------------------------------------------------------------------------------------------- **
+
+** Basic Native Method - PRINTLITERAL(Arg / Args)
+** Prints exactly what it is given, with multiple arguments separated by a comma.
+** Blank spaces before and after arguments are ignored. ('  hello' is pragmatically equal to 'hello')
+
+** Ex. PRINTLITERAL(One, Two); -> Prints 'One,Two'
+PRINTLITERAL("Quotation marks are included.");
+
+** -------------------------------------------------------------------------------------------------- **
+
+** Basic Native Method - WAIT(TIME)
+** Pauses excecution for TIME milliseconds. Can only take one argument.
+** Internally uses Thread.sleep(time), and displays message if it is interrupted.
+
+** Waits one second.
+PRINT("Waiting one second.");
+WAIT(1000);
+
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** --------------------------------------Returning Methods----------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+
+** Basic Native Returning Method - SUM(ARGS)
+** Adds all arguments together using double addition. Is pragmatically the same as arg1 + arg2 + arg3 + ...
+** Acts the same as any other value. (Ex. 10, 2039.39, variableName)
+
+** Caution: Do not call methods with multiple arguments (such as sum) inside of other methods.
+** The compiler cannot tell the difference between inner methods and outer methods, and parses the
+** arguments wrong, giving errors. The correct usage is to assign a variable to value, and use the variable.
+
+** Note: All math instructions are accurate to 34 digits. Anything past 34 digits is rounded.
+
+X = SUM(1,3,5);
+PRINT("1 + 3 + 5 = ",X);
+
+** -------------------------------------------------------------------------------------------------- **
+
+** Basic Native Returning Method - SUBTRACT(ARGS)
+** Subtracts the numbers from each other. Is pragmatically the same as arg1 - arg2 - arg3 - ...
+** Acts the same as any other value. (Ex. 10, 2039.39, variableName)
+
+** Caution: Do not call methods with multiple arguments (such as sum) inside of other methods.
+** The compiler cannot tell the difference between inner methods and outer methods, and parses the
+** arguments wrong, giving errors. The correct usage is to assign a variable to value, and use the variable.
+
+** Note: All math instructions are accurate to 34 digits. Anything past 34 digits is rounded.
+
+** X = X - 1 - 2;
+X = SUBTRACT(X, 1, 2);
+PRINT("X - 1 - 2 = ",X);
+
+** -------------------------------------------------------------------------------------------------- **
+
+** Basic Native Returning Method - MULTIPLY(ARGS)
+** Multiplies the numbers with each other. Is pragmatically the same as arg1 * arg2 * arg3 * ...
+** Acts the same as any other value. (Ex. 10, 2039.39, variableName)
+
+** Caution: Do not call methods with multiple arguments (such as sum) inside of other methods.
+** The compiler cannot tell the difference between inner methods and outer methods, and parses the
+** arguments wrong, giving errors. The correct usage is to assign a variable to value, and use the variable.
+
+** Note: All math instructions are accurate to 34 digits. Anything past 34 digits is rounded.
+
+X = MULTIPLY(X, 1, 2);
+PRINT("X * 1 * 2 = ",X);
+
+** -------------------------------------------------------------------------------------------------------------------------- **
+
+** Basic Native Returning Method - DIVIDE(ARGS)
+** Divides the numbers by each other. Is pragmatically the same as arg1 / arg2 / ag3 / ...
+** Acts the same as any other value. (Ex. 10, 2039.39, variableName)
+
+** Caution: Do not call methods with multiple arguments (such as sum) inside of other methods.
+** The compiler cannot tell the difference between inner methods and outer methods, and parses the
+** arguments wrong, giving errors. The correct usage is to assign a variable to value, and use the variable.
+
+** Note: All math instructions are accurate to 34 digits. Anything past 34 digits is rounded.
+
+X = DIVIDE(X, 2, 0.25);
+PRINT("X / 2 / 0.25 = ",X);
+
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------Variables------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+
+** Variables do not need to be type casted, inferred or written anywhere. 
+** Value types are automatically detected when constructing value objects.
+** Variables can be named anything that does not include '(', ')','}' or '{'. 
+** Variables are reference just like primitive values, and are automatically detected in the correct context.
+** Variables are assigned with the syntax :
+var = value;
+** Variables can be assigned with returning methods like what was done before.
+var = DIVIDE(10/3);
+** Variables can be assigned to different variables.
+var = X;
+
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** ----------------------------------------IF Statements--------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+
+** If statements use one of the following comparators :
+** '==', '!=', '>=', '>', '<=', '<'
+** To use a boolean variable in an if statement, just use IF(variable)
+var = true;
+IF(var) {
+	PRINT(var," is ",var,.);
+}
+
+** For numerical values, just insert the values on each side of the comparator
+IF(10 > 9) {
+	PRINT(10 is still bigger than 9);
+}
+
+** Always include { and }. They tell the compiler where to start and finish instructions.
+
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** ---------------------------------------FOR Statements------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+
+** FOR statements use the following syntax :
+** FOR(REPITIONS) {
+** 	Instructions
+** }
+
+** It is impossible to change the amount of repitions midway through the loop.
+** Consider REPITIONS to be a final variable.
+
+** Ex :
+X = 13;
+count = 1;
+FOR(X) {
+	PRINT(count,"th repitition in for loop.");
+	count = SUM(count, 1);
+}
+
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** ---------------------------------------WHILE Statements---------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+
+** WHILE statements use the following syntax :
+** WHILE(condition) {
+** 	Instructions
+** }
+
+** Unlike FOR statements, the condition is evaluated each time the while loop restarts.
+
+X = 0;
+WHILE(X < 20) {
+	X = SUM(X,1);
+	PRINT(X,"th repitition in while loop.");
+}
+
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -----------------------------------------Extensibility----------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+** -------------------------------------------------------------------------------------------------- **
+
+** To add your own custom methods, use Keywords.add();
+** To add your own custom returning methods, use Returnables.add();
+
+** The interfaces to implement should be self-explanatory.
