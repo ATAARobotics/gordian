@@ -1,0 +1,8 @@
+Plan for the future:
+
+- Add the 'exists(var)' method
+- Change all caps expressions to lower case
+- Add concatenation to strings
+- Make primitive math operations (+, -, *, /, ++, --)
+- Add the 'skip#num' expression to skip lines
+- Bug fixes, performance upgrades
