@@ -41,10 +41,13 @@ public abstract class Data {
                     };
                 } else if (Conditional.isCondional(literal)) {
                     d = new Conditional(literal);
+                } else if (VariableQueue.containsKey(literal)) {
+                    d = VariableQueue.get(literal);
                 } else {
                     d = new Data(literal) {
                         public Object getValue() {
-                            return literal;
+                            // Removes all quotation marks from strings
+                            return StringUtils.replace(literal, '\"', "");
                         }
 
                         public boolean isNumber() {

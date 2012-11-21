@@ -16,11 +16,11 @@ public abstract class Instruction {
     public static Instruction getInstruction(String instruction) throws NullPointerException {
         if (Expression.isExpression(instruction)) {
             return new Expression(instruction);
-        } else if (instruction.equals("};")) {
-            return new BlankInstruction(instruction);
         } else {
             instruction = instruction.substring(0, instruction.indexOf(";"));
-            if (Assignment.isAssignment(instruction)) {
+            if (instruction.equals("}")) {
+                return new BlankInstruction(instruction);
+            } else if (Assignment.isAssignment(instruction)) {
                 return new Assignment(instruction);
             }
         }

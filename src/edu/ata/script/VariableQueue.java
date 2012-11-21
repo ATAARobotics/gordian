@@ -6,14 +6,18 @@ public class VariableQueue {
 
     private static final Hashtable HASHTABLE = new Hashtable();
 
-    public static void put(String key, Object value) {
+    public static void put(String key, Data value) {
         HASHTABLE.put(key, value);
     }
 
-    public static Object get(String key) {
-        return HASHTABLE.get(key);
+    public static Data get(String key) {
+        return (Data) HASHTABLE.get(key);
     }
 
+    public static boolean containsKey(String key) {
+        return HASHTABLE.containsKey(key);
+    }
+    
     public static Hashtable getHASHTABLE() {
         return HASHTABLE;
     }

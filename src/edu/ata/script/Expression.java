@@ -12,9 +12,9 @@ public class Expression extends Instruction {
     }
     private final Vector instructions = new Vector();
 
-    public Expression(String full) {
-        super(full.substring(full.indexOf("{") + 1, full.indexOf("};")));
-        full = StringUtils.replace(full, '\n', ";");
+    public Expression(String f) {
+        super(f.substring(f.indexOf("{") + 1, f.indexOf("};")));
+        String full = StringUtils.replace(getLiteral(), '\n', ";");
         InstructionIterator iterator = new InstructionIterator(full);
         while (iterator.hasNext()) {
             try {
@@ -27,7 +27,7 @@ public class Expression extends Instruction {
         }
     }
 
-    public String getLiteral() {
+    public final String getLiteral() {
         // Add three spaces to account for '};'
         return super.getLiteral() + "  ";
     }
