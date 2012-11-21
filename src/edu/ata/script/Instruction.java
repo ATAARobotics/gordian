@@ -1,83 +1,53 @@
 package edu.ata.script;
 
-import edu.ata.script.blocks.ForLoop;
-import edu.ata.script.blocks.IfStatement;
-import edu.ata.script.blocks.WhileLoop;
-import edu.ata.script.instructions.Declaration;
-import edu.ata.script.instructions.Method;
+public abstract class Instruction {
 
-/**
- * Basic statement that does something when used.
- *
- * @author joel
- */
-public abstract class Instruction extends Statement {
-
-    /**
-     * Hide this method to use the class. <i><b>This method is meant to be
-     * hidden by it's subclasses. It is called in a tree-like structure down the
-     * children of {@link Statement}.</i></b>
-     *
-     * @param statement the statement to analyze
-     * @return whether it is a valid instruction
-     */
-    public static boolean isValid(String statement) {
-        return statement.endsWith(";") || statement.endsWith("{") || statement.equals("}");
+    public static boolean isInstruction(String instruction) {
+        if (instruction.equals("};")) {
+            return true;
+        } else if (instruction.length() <= 0 || !StringUtils.contains(instruction, ";")) {
+            return false;
+        } else if (Assignment.isAssignment(instruction)) {
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * Hide this method to use the class. <i><b>This method is meant to be
-     * hidden by it's subclasses. It is called in a tree-like structure down the
-     * children of {@link Statement}.</i></b>
-     *
-     * <p> It is very important to verify that the statement is valid before
-     * using this method. If it is not valid, it will throw
-     * {@link InvalidStatementException}. </p>
-     *
-     * @param statement the statement to analyze
-     * @return a {@link Statement} object of the type
-     * @throws InvalidStatementException thrown when statement is unrecognizable
-     */
-    public static Statement getStatementFrom(String statement) throws InvalidStatementException {
-        if (Method.isValid(statement)) {
-            return Method.getStatementFrom(statement);
-        } else if (IfStatement.isValid(statement)) {
-            return IfStatement.getStatementFrom(statement);
-        } else if (ForLoop.isValid(statement)) {
-            return ForLoop.getStatementFrom(statement);
-        } else if (WhileLoop.isValid(statement)) {
-            return WhileLoop.getStatementFrom(statement);
-        } else if (Declaration.isValid(statement)) {
-            return Declaration.getStatementFrom(statement);
-        } else if (statement.equals("}")) {
-            // Does nothing
-            return new Statement();
+    public static Instruction getInstruction(String instruction) throws NullPointerException {
+        if (Expression.isExpression(instruction)) {
+            return new Expression(instruction);
+        } else if (instruction.equals("};")) {
+            return new BlankInstruction(instruction);
         } else {
-            throw new InvalidStatementException(statement + " is not a recognized instruction.");
+            instruction = instruction.substring(0, instruction.indexOf(";"));
+            if (Assignment.isAssignment(instruction)) {
+                return new Assignment(instruction);
+            }
         }
+        throw new NullPointerException("Invalid instruction - " + instruction);
+    }
+
+    public static Instruction getNextInstruction(String full) throws NullPointerException {
+        if (!isInstruction(full)) {
+            throw new NullPointerException("Tried to create instruction where "
+                    + "none exists - \"" + full.substring(0,
+                    full.indexOf(";") > -1 ? full.indexOf(";") : 0) + "\"");
+        }
+        return getInstruction(full);
     }
     private final String instruction;
 
-    /**
-     * Creates instruction by a string.
-     *
-     * @param instruction full code snippet
-     */
     public Instruction(String instruction) {
         this.instruction = instruction;
     }
 
-    /**
-     * The instruction in the text file.
-     *
-     * @return instruction as a string
-     */
-    public String getInstruction() {
+    public String getLiteral() {
         return instruction;
     }
 
-    /**
-     * Method to run the instruction.
-     */
+    public String toString() {
+        return getLiteral();
+    }
+
     public abstract void run();
 }

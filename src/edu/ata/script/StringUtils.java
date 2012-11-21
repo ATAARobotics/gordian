@@ -66,14 +66,17 @@ public class StringUtils {
      */
     public static String replace(String string, char replace, String replacement) {
         String[] s = split(string, replace);
+        if (s.length == 0) {
+            return string;
+        }
 
         String tmp = "";
-        for (int x = 0; x < s.length; x++) {
-            if (contains(s[x], replace + "")) {
-                tmp += s[x].substring(1);
-            } else {
-                tmp += s[x];
-            }
+        for (int x = 1; x < s.length; x++) {
+            tmp += replacement + s[x];
+        }
+        tmp = s[0] + tmp;
+        if (string.lastIndexOf(replace) == string.length() - 1) {
+            tmp += replacement;
         }
         return tmp;
     }
