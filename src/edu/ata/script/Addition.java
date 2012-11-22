@@ -1,6 +1,6 @@
 package edu.ata.script;
 
-public class Addition extends Manipulation {
+public class Addition extends Calculation {
 
     public static boolean isAddition(String data) {
         if (!StringUtils.contains(data, "+")) {
@@ -16,18 +16,10 @@ public class Addition extends Manipulation {
     }
 
     public Addition(String literal) {
-        super(literal);
+        super(literal, "+");
     }
 
-    public Object getValue() {
-        String data = getLiteral();
-        double value = ((Number) Data.getData(data.substring(0, data.indexOf("+"))).getValue()).doubleValue();
-        data = data.substring(data.indexOf("+") + 1);
-        while (StringUtils.contains(data, "+")) {
-            value += ((Number) Data.getData(data.substring(0, data.indexOf("+"))).getValue()).doubleValue();
-            data = data.substring(data.indexOf("+") + 1);
-        }
-        value += ((Number) Data.getData(data).getValue()).doubleValue();
-        return Double.valueOf(value);
+    public double doCalc(double val1, double val2) {
+        return val1 + val2;
     }
 }
