@@ -14,11 +14,7 @@ public class Conditional extends Data {
     public Object getValue() {
         return Boolean.valueOf(isTrue());
     }
-
-    public boolean isNumber() {
-        return false;
-    }
-
+    
     private boolean isTrue() {
         Data data1, data2;
         char test;
