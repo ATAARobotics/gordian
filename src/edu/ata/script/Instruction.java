@@ -15,7 +15,7 @@ public abstract class Instruction {
 
     public static Instruction getInstruction(String instruction) throws NullPointerException {
         if (Expression.isExpression(instruction)) {
-            return new Expression(instruction);
+            return Expression.getExpression(instruction);
         } else {
             instruction = instruction.substring(0, instruction.indexOf(";"));
             if (instruction.equals("}")) {

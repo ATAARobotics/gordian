@@ -18,7 +18,7 @@ public class Concatenation extends Manipulation {
         super(literal);
     }
 
-    public Object getValue() {
+    Object retrieveValue() {
         String data = getLiteral();
         String value = "";
         while (StringUtils.contains(data, "+")) {

@@ -28,7 +28,7 @@ public abstract class ReturningMethod extends Data {
         return name;
     }
 
-    public Object getValue() {
+    Object retrieveValue() {
         return getValue(args);
     }
 

@@ -11,10 +11,10 @@ public class Conditional extends Data {
         super(literal);
     }
 
-    public Object getValue() {
+    Object retrieveValue() {
         return Boolean.valueOf(isTrue());
     }
-    
+
     private boolean isTrue() {
         Data data1, data2;
         char test;

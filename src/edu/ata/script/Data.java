@@ -8,7 +8,7 @@ public abstract class Data {
         try {
             final Integer i = new Integer(literal);
             d = new Data(literal) {
-                public Object getValue() {
+                Object retrieveValue() {
                     return i;
                 }
             };
@@ -16,14 +16,14 @@ public abstract class Data {
             try {
                 final Double d1 = new Double(literal);
                 d = new Data(literal) {
-                    public Object getValue() {
+                    Object retrieveValue() {
                         return d1;
                     }
                 };
             } catch (NumberFormatException ex2) {
                 if (literal.equalsIgnoreCase("true") || literal.equalsIgnoreCase("false")) {
                     d = new Data(literal) {
-                        public Object getValue() {
+                        Object retrieveValue() {
                             return Boolean.valueOf(literal);
                         }
                     };
@@ -37,7 +37,7 @@ public abstract class Data {
                     d = ReturningMethods.get(literal);
                 } else {
                     d = new Data(literal) {
-                        public Object getValue() {
+                        Object retrieveValue() {
                             // Removes all quotation marks from strings
                             return StringUtils.replace(literal.trim(), '\"', "");
                         }
@@ -47,6 +47,7 @@ public abstract class Data {
         }
         return d;
     }
+    private StaticData data;
     private final String literal;
 
     public Data(String literal) {
@@ -60,6 +61,14 @@ public abstract class Data {
     public String toString() {
         return getLiteral();
     }
+    
+    public Object getValue() {
+        if(data == null) {
+            data = new StaticData(retrieveValue());
+        }
+        return data.getValue();
+    }
 
-    public abstract Object getValue();
+    // Should give static value, not dynamic
+    abstract Object retrieveValue();
 }
