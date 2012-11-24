@@ -8,9 +8,19 @@ import edu.ata.script.Data;
 public abstract class Manipulation extends edu.ata.script.data.Integer {
 
     public static boolean isType(java.lang.String data) {
+        return Incrementation.isType(data)
+                || Decrementation.isType(data);
     }
 
     public static Data get(java.lang.String data) {
+        if (Incrementation.isType(data)) {
+            return Incrementation.get(data);
+        } else if (Decrementation.isType(data)) {
+            return Decrementation.get(data);
+        } else {
+            throw new RuntimeException("Tried to get manipulation that was not "
+                    + "a manipulation - " + data);
+        }
     }
     private final String manipulation;
 

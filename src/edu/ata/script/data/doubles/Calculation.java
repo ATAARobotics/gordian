@@ -15,6 +15,9 @@ public abstract class Calculation extends edu.ata.script.data.Double {
     }
 
     public static Data get(java.lang.String data) {
+        // Addition and subtraction are first to make sure it goes in order
+        // - Division - Multiplication - Subtraction - Addition -
+        // This is to give it as close of a resemblance to PEDMAS (DMAS)
         if (Addition.isType(data)) {
             return Addition.get(data);
         } else if (Subtraction.isType(data)) {

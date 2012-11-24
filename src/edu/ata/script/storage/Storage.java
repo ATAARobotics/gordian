@@ -22,4 +22,8 @@ public abstract class Storage {
     public boolean contains(String key) {
         return storage.containsKey(key);
     }
+    
+    public void clear() {
+        storage.clear();
+    }
 }
