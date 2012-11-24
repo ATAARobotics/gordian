@@ -1,74 +1,39 @@
 package edu.ata.script;
 
+/**
+ * @author Joel Gallant
+ */
 public abstract class Data {
 
-    public static Data getData(final String literal) {
-        Data d;
-        // Primitives
-        try {
-            final Integer i = new Integer(literal);
-            d = new Data(literal) {
-                Object retrieveValue() {
-                    return i;
-                }
-            };
-        } catch (NumberFormatException ex1) {
-            try {
-                final Double d1 = new Double(literal);
-                d = new Data(literal) {
-                    Object retrieveValue() {
-                        return d1;
-                    }
-                };
-            } catch (NumberFormatException ex2) {
-                if (literal.equalsIgnoreCase("true") || literal.equalsIgnoreCase("false")) {
-                    d = new Data(literal) {
-                        Object retrieveValue() {
-                            return Boolean.valueOf(literal);
-                        }
-                    };
-                } else if (Conditional.isCondional(literal)) {
-                    d = new Conditional(literal);
-                } else if (Manipulation.isManipulation(literal)) {
-                    d = Manipulation.getValue(literal);
-                } else if (VariableQueue.containsKey(literal)) {
-                    d = VariableQueue.get(literal);
-                } else if (ReturningMethod.isReturningMethod(literal)) {
-                    d = ReturningMethods.get(literal);
-                } else {
-                    d = new Data(literal) {
-                        Object retrieveValue() {
-                            // Removes all quotation marks from strings
-                            return StringUtils.replace(literal.trim(), '\"', "");
-                        }
-                    };
-                }
-            }
+    public static boolean isType(String data) {
+        return edu.ata.script.data.Boolean.isType(data)
+                || edu.ata.script.data.Integer.isType(data)
+                || edu.ata.script.data.Double.isType(data)
+                || edu.ata.script.data.String.isType(data);
+    }
+
+    public static Data get(String data) {
+        /*:)*/ if (edu.ata.script.data.Boolean.isType(data)) {
+            return edu.ata.script.data.Boolean.get(data);
+        } else if (edu.ata.script.data.Integer.isType(data)) {
+            return edu.ata.script.data.Integer.get(data);
+        } else if (edu.ata.script.data.Double.isType(data)) {
+            return edu.ata.script.data.Double.get(data);
+        } else if (edu.ata.script.data.String.isType(data)) {
+            return edu.ata.script.data.String.get(data);
+        } else {
+            throw new RuntimeException("Could not parse data - " + data);
         }
-        return d;
     }
-    private StaticData data;
-    private final String literal;
+    private final String literalString;
 
-    public Data(String literal) {
-        this.literal = literal;
+    protected Data(String literalString) {
+        this.literalString = literalString;
     }
 
-    public String getLiteral() {
-        return literal;
+    public String getLiteralString() {
+        return literalString;
     }
 
-    public String toString() {
-        return getLiteral();
-    }
-    
-    public Object getValue() {
-        if(data == null) {
-            data = new StaticData(retrieveValue());
-        }
-        return data.getValue();
-    }
-
-    // Should give static value, not dynamic
-    abstract Object retrieveValue();
+    protected abstract Object getValue();
 }
