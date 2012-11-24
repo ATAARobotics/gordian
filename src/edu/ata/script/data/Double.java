@@ -34,7 +34,7 @@ public class Double extends Data {
         super(literalString);
     }
 
-    protected Object getValue() {
+    public Object getValue() {
         return java.lang.Double.valueOf(getLiteralString());
     }
 }

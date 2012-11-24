@@ -38,7 +38,7 @@ public abstract class Calculation extends edu.ata.script.data.Double {
         this.sign = sign;
     }
 
-    protected Object getValue() {
+    public Object getValue() {
         return doCalc((edu.ata.script.data.Double) edu.ata.script.data.Double.get(
                 getLiteralString().substring(0, getLiteralString().indexOf(sign))),
                 (edu.ata.script.data.Double) edu.ata.script.data.Double.get(

@@ -27,7 +27,7 @@ public class Boolean extends Data {
         super(literalString);
     }
 
-    protected Object getValue() {
+    public Object getValue() {
         return java.lang.Boolean.valueOf(getLiteralString());
     }
 }

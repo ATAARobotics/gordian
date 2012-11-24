@@ -1,4 +1,4 @@
-package edu.ata.script.data.integer;
+package edu.ata.script.data.integers;
 
 import edu.ata.script.Data;
 import edu.ata.script.StringUtils;

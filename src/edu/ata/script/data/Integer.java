@@ -1,7 +1,7 @@
 package edu.ata.script.data;
 
 import edu.ata.script.Data;
-import edu.ata.script.data.integer.Manipulation;
+import edu.ata.script.data.integers.Manipulation;
 
 /**
  * @author Joel Gallant
@@ -29,7 +29,7 @@ public class Integer extends Data {
         super(literalString);
     }
 
-    protected Object getValue() {
+    public Object getValue() {
         return java.lang.Integer.valueOf(getLiteralString());
     }
 }

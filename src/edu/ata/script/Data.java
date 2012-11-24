@@ -42,5 +42,5 @@ public abstract class Data {
         return literalString;
     }
 
-    protected abstract Object getValue();
+    public abstract Object getValue();
 }

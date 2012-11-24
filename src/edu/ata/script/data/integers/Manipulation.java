@@ -1,4 +1,4 @@
-package edu.ata.script.data.integer;
+package edu.ata.script.data.integers;
 
 import edu.ata.script.Data;
 
@@ -29,7 +29,7 @@ public abstract class Manipulation extends edu.ata.script.data.Integer {
         this.manipulation = manipulation;
     }
 
-    protected Object getValue() {
+    public Object getValue() {
         return manipulate(Integer.valueOf(getLiteralString().substring(0,
                 getLiteralString().indexOf(manipulation))));
     }

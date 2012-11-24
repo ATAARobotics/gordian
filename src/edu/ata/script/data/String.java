@@ -17,7 +17,7 @@ public class String extends Data {
         super(literalString);
     }
 
-    protected Object getValue() {
+    public Object getValue() {
         return getLiteralString();
     }
 }
