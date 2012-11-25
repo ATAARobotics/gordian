@@ -13,20 +13,28 @@ public class Division extends Calculation {
         if(!StringUtils.contains(data, "/")) {
             return false;
         }
-        // Cannot ensure that it is a number
-        return Data.isType(data.substring(0, data.indexOf('/')))
-                && Data.isType(data.substring(data.indexOf('/') + 1));
+        if (Data.isType(data.substring(0, data.indexOf('/')))
+                && Data.isType(data.substring(data.indexOf('/') + 1))) {
+            Data d1 = Data.get(data.substring(0, data.indexOf('/'))),
+                    d2 = Data.get(data.substring(data.indexOf('/') + 1));
+            return (d1 instanceof edu.ata.script.data.Double || 
+                    d1 instanceof edu.ata.script.data.Integer) &&
+                    (d2 instanceof edu.ata.script.data.Double ||
+                    d2 instanceof edu.ata.script.data.Integer);
+        } else {
+            return false;
+        }
     }
 
     public static Data get(java.lang.String data) {
         return new Division(data);
     }
-    
+
     public Division(String literalString) {
         super(literalString, '/');
     }
 
     protected java.lang.Double doCalc(Double num1, Double num2) {
-        return java.lang.Double.valueOf(num1.get() - num2.get());
+        return java.lang.Double.valueOf(num1.get() / num2.get());
     }
 }

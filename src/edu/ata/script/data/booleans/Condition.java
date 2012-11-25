@@ -8,6 +8,21 @@ import edu.ata.script.StringUtils;
  */
 public class Condition extends edu.ata.script.data.Boolean {
 
+    public static boolean isType(java.lang.String data) {
+        return StringUtils.contains(data, ">")
+                || StringUtils.contains(data, "<")
+                || StringUtils.contains(data, "!=")
+                || StringUtils.contains(data, "==");
+    }
+
+    public static Data get(java.lang.String data) {
+        if (isType(data)) {
+            return new Condition(data);
+        } else {
+            throw new RuntimeException("Could not create condition - " + data);
+        }
+    }
+
     public Condition(String literalString) {
         super(literalString);
     }
@@ -17,47 +32,48 @@ public class Condition extends edu.ata.script.data.Boolean {
     }
 
     private boolean isTrue() {
+        String literal = getLiteralString();
         Data data1, data2;
         char test;
         boolean equals;
-        if (StringUtils.contains(getLiteralString(), "!=")) {
-            String v1 = getLiteralString().substring(0, getLiteralString().indexOf("!=")).trim();
-            String v2 = getLiteralString().substring(getLiteralString().indexOf("!=") + 2).trim();
+        if (StringUtils.contains(literal, "!=")) {
+            String v1 = literal.substring(0, literal.indexOf("!="));
+            String v2 = literal.substring(literal.indexOf("!=") + 2);
             data1 = Data.get(v1);
             data2 = Data.get(v2);
             test = '=';
             equals = false;
-        } else if (StringUtils.contains(getLiteralString(), "==")) {
-            String v1 = getLiteralString().substring(0, getLiteralString().indexOf("==")).trim();
-            String v2 = getLiteralString().substring(getLiteralString().indexOf("==") + 2).trim();
+        } else if (StringUtils.contains(literal, "==")) {
+            String v1 = literal.substring(0, literal.indexOf("=="));
+            String v2 = literal.substring(literal.indexOf("==") + 2);
             data1 = Data.get(v1);
             data2 = Data.get(v2);
             test = '=';
             equals = true;
-        } else if (StringUtils.contains(getLiteralString(), ">=")) {
-            String v1 = getLiteralString().substring(0, getLiteralString().indexOf(">=")).trim();
-            String v2 = getLiteralString().substring(getLiteralString().indexOf(">=") + 2).trim();
+        } else if (StringUtils.contains(literal, ">=")) {
+            String v1 = literal.substring(0, literal.indexOf(">="));
+            String v2 = literal.substring(literal.indexOf(">=") + 2);
             data1 = Data.get(v1);
             data2 = Data.get(v2);
             test = '>';
             equals = true;
-        } else if (StringUtils.contains(getLiteralString(), "<=")) {
-            String v1 = getLiteralString().substring(0, getLiteralString().indexOf("<=")).trim();
-            String v2 = getLiteralString().substring(getLiteralString().indexOf("<=") + 2).trim();
+        } else if (StringUtils.contains(literal, "<=")) {
+            String v1 = literal.substring(0, literal.indexOf("<="));
+            String v2 = literal.substring(literal.indexOf("<=") + 2);
             data1 = Data.get(v1);
             data2 = Data.get(v2);
             test = '<';
             equals = true;
-        } else if (StringUtils.contains(getLiteralString(), "<") && !StringUtils.contains(getLiteralString(), "=")) {
-            String v1 = getLiteralString().substring(0, getLiteralString().indexOf("<")).trim();
-            String v2 = getLiteralString().substring(getLiteralString().indexOf("<") + 1).trim();
+        } else if (StringUtils.contains(literal, "<") && !StringUtils.contains(literal, "=")) {
+            String v1 = literal.substring(0, literal.indexOf("<"));
+            String v2 = literal.substring(literal.indexOf("<") + 1);
             data1 = Data.get(v1);
             data2 = Data.get(v2);
             test = '<';
             equals = false;
-        } else if (StringUtils.contains(getLiteralString(), ">") && !StringUtils.contains(getLiteralString(), "=")) {
-            String v1 = getLiteralString().substring(0, getLiteralString().indexOf(">")).trim();
-            String v2 = getLiteralString().substring(getLiteralString().indexOf(">") + 1).trim();
+        } else if (StringUtils.contains(literal, ">") && !StringUtils.contains(literal, "=")) {
+            String v1 = literal.substring(0, literal.indexOf(">"));
+            String v2 = literal.substring(literal.indexOf(">") + 1);
             data1 = Data.get(v1);
             data2 = Data.get(v2);
             test = '>';
@@ -76,8 +92,8 @@ public class Condition extends edu.ata.script.data.Boolean {
             }
         } else if (test == '>') {
             // Needs to be a number data. Throws error if not.
-            double double1 = Double.parseDouble(data1.getLiteralString());
-            double double2 = Double.parseDouble(data2.getLiteralString());
+            double double1 = Double.parseDouble(data1.getValue().toString());
+            double double2 = Double.parseDouble(data2.getValue().toString());
             if (equals) {
                 if (data1.getValue().equals(data2.getValue()) || double1 > double2) {
                     // >= (== or >)
@@ -97,8 +113,8 @@ public class Condition extends edu.ata.script.data.Boolean {
             }
         } else if (test == '<') {
             // Boilerplate
-            double double1 = Double.parseDouble(data1.getLiteralString());
-            double double2 = Double.parseDouble(data2.getLiteralString());
+            double double1 = Double.parseDouble(data1.getValue().toString());
+            double double2 = Double.parseDouble(data2.getValue().toString());
             if (equals) {
                 if (data1.getValue().equals(data2.getValue()) || double1 < double2) {
                     return true;

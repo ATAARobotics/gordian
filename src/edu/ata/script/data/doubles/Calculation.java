@@ -1,6 +1,8 @@
 package edu.ata.script.data.doubles;
 
 import edu.ata.script.Data;
+import edu.ata.script.data.Double;
+import edu.ata.script.data.Integer;
 
 /**
  * @author Joel Gallant
@@ -31,18 +33,34 @@ public abstract class Calculation extends edu.ata.script.data.Double {
                     + " - " + data);
         }
     }
-    private final char sign;
+    private final Double num1, num2;
 
     protected Calculation(String literalString, char sign) {
         super(literalString);
-        this.sign = sign;
+        // This may look confusing, but it ensures that in -x - n = y, y is actually equal to 0 - x - n
+        // Otherwise, subtraction uses the first '-' as its sign and concludes as non-subtraction
+        boolean fNeg = false;
+        if (literalString.startsWith("-")) {
+            literalString = literalString.substring(1);
+            fNeg = true;
+        }
+        Data d1 = Data.get(literalString.substring(0, literalString.indexOf(sign))),
+                d2 = Data.get(literalString.substring(literalString.indexOf(sign) + 1));
+        if (d1 instanceof Integer) {
+            d1 = ((Integer) d1).convert();
+        }
+        if (d2 instanceof Integer) {
+            d2 = ((Integer) d2).convert();
+        }
+        if (fNeg) {
+            d1 = Double.get("-" + d1.getValue());
+        }
+        this.num1 = (Double) d1;
+        this.num2 = (Double) d2;
     }
 
-    public Object getValue() {
-        return doCalc((edu.ata.script.data.Double) edu.ata.script.data.Double.get(
-                getLiteralString().substring(0, getLiteralString().indexOf(sign))),
-                (edu.ata.script.data.Double) edu.ata.script.data.Double.get(
-                getLiteralString().substring(getLiteralString().indexOf(sign) + 1)));
+    public final Object getValue() {
+        return doCalc(num1, num2);
     }
 
     protected abstract java.lang.Double doCalc(edu.ata.script.data.Double num1,

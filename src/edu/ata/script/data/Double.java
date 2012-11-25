@@ -22,12 +22,16 @@ public class Double extends Data {
             java.lang.Double.valueOf(data);
             return new Double(data);
         } catch (NumberFormatException ex) {
-            return Calculation.get(data);
+            if (Calculation.isType(data)) {
+                return Calculation.get(data);
+            } else {
+                throw new RuntimeException("Could not create double with - " + data);
+            }
         }
     }
 
     public double get() {
-        return ((java.lang.Double)getValue()).doubleValue();
+        return ((java.lang.Double) getValue()).doubleValue();
     }
 
     public Double(java.lang.String literalString) {

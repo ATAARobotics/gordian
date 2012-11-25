@@ -9,11 +9,16 @@ import edu.ata.script.StringUtils;
 public class Incrementation extends Manipulation {
 
     public static boolean isType(java.lang.String data) {
-        if(!StringUtils.contains(data, "++")) {
+        if (!StringUtils.contains(data, "++")) {
             return false;
         }
-        // Cannot ensure that it is a number
-        return Data.isType(data.substring(0, data.indexOf("++")));
+        if (Data.isType(data.substring(0, data.indexOf("++")))) {
+            Data d = Data.get(data.substring(0, data.indexOf("++")));
+            return (d instanceof edu.ata.script.data.Double
+                    || d instanceof edu.ata.script.data.Integer);
+        } else {
+            return false;
+        }
     }
 
     public static Data get(java.lang.String data) {

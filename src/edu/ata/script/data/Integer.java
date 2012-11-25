@@ -22,11 +22,24 @@ public class Integer extends Data {
             java.lang.Integer.valueOf(data);
             return new Integer(data);
         } catch (NumberFormatException ex) {
-            return Manipulation.get(data);
+            if (Manipulation.isType(data)) {
+                return Manipulation.get(data);
+            } else {
+                throw new RuntimeException("Could not create integer with - " + data);
+            }
         }
     }
+
     public Integer(java.lang.String literalString) {
         super(literalString);
+    }
+
+    public Double convert() {
+        return (Double) Double.get(get() + "");
+    }
+
+    public int get() {
+        return ((java.lang.Integer) getValue()).intValue();
     }
 
     public Object getValue() {
