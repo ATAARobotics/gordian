@@ -28,6 +28,7 @@ public class Condition extends edu.ata.script.data.Boolean {
     }
 
     public Object getValue() {
+        // Checks every time (in case of updating values?)
         return Boolean.valueOf(isTrue());
     }
 

@@ -7,6 +7,9 @@ package edu.ata.script;
  */
 public class StringUtils {
 
+    private StringUtils() {
+    }
+
     /**
      * Determines if the string does not contain anything.
      *
