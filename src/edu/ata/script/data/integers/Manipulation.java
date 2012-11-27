@@ -30,9 +30,9 @@ public abstract class Manipulation extends edu.ata.script.data.Integer {
     }
 
     public Object getValue() {
-        return manipulate(Integer.valueOf(getLiteralString().substring(0,
-                getLiteralString().indexOf(manipulation))));
+        return manipulate(((edu.ata.script.data.Integer)Data.get(getLiteralString().substring(0,
+                getLiteralString().indexOf(manipulation)))).get());
     }
 
-    protected abstract Integer manipulate(Integer original);
+    protected abstract Integer manipulate(int original);
 }

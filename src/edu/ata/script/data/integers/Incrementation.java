@@ -14,8 +14,8 @@ public class Incrementation extends Manipulation {
         }
         if (Data.isType(data.substring(0, data.indexOf("++")))) {
             Data d = Data.get(data.substring(0, data.indexOf("++")));
-            return (d instanceof edu.ata.script.data.Double
-                    || d instanceof edu.ata.script.data.Integer);
+            return (d instanceof edu.ata.script.data.Integer)
+                    || (d instanceof edu.ata.script.data.Double);
         } else {
             return false;
         }
@@ -29,7 +29,11 @@ public class Incrementation extends Manipulation {
         super(literalString, "++");
     }
 
-    protected Integer manipulate(Integer original) {
-        return Integer.valueOf(original.intValue() + 1);
+    protected Integer manipulate(int original) {
+        if (Data.DATA_STORAGE.contains(getLiteralString().substring(0, getLiteralString().indexOf("++")))) {
+            Data.DATA_STORAGE.addData(getLiteralString().substring(0, getLiteralString().indexOf("++")),
+                    edu.ata.script.data.Integer.get((original + 1) + ""));
+        }
+        return Integer.valueOf(original + 1);
     }
 }

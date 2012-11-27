@@ -20,14 +20,25 @@ public abstract class Calculation extends edu.ata.script.data.Double {
         // Addition and subtraction are first to make sure it goes in order
         // - Division - Multiplication - Subtraction - Addition -
         // This is to give it as close of a resemblance to PEDMAS (DMAS)
-        if (Addition.isType(data)) {
-            return Addition.get(data);
-        } else if (Subtraction.isType(data)) {
-            return Subtraction.get(data);
-        } else if (Multiplication.isType(data)) {
-            return Multiplication.get(data);
-        } else if (Division.isType(data)) {
-            return Division.get(data);
+        if (data.startsWith("-")) {
+            data = "0 " + data;
+        }
+        if (Addition.isType(data) || Subtraction.isType(data)) {
+            if (data.indexOf('-') < data.indexOf('+') && Subtraction.isType(data)) {
+                return Subtraction.get(data);
+            } else if (Addition.isType(data)) {
+                return Addition.get(data);
+            } else {
+                return Subtraction.get(data);
+            }
+        } else if (Multiplication.isType(data) || Division.isType(data)) {
+            if (data.indexOf('*') < data.indexOf('/') && Multiplication.isType(data)) {
+                return Multiplication.get(data);
+            } else if(Division.isType(data)) {
+                return Division.get(data);
+            }else {
+                return Multiplication.get(data);
+            }
         } else {
             throw new RuntimeException("Tried to do calculation on non-calculation"
                     + " - " + data);
@@ -39,11 +50,6 @@ public abstract class Calculation extends edu.ata.script.data.Double {
         super(literalString);
         // This may look confusing, but it ensures that in -x - n = y, y is actually equal to 0 - x - n
         // Otherwise, subtraction uses the first '-' as its sign and concludes as non-subtraction
-        boolean fNeg = false;
-        if (literalString.startsWith("-")) {
-            literalString = literalString.substring(1);
-            fNeg = true;
-        }
         Data d1 = Data.get(literalString.substring(0, literalString.indexOf(sign))),
                 d2 = Data.get(literalString.substring(literalString.indexOf(sign) + 1));
         if (d1 instanceof Integer) {
@@ -52,11 +58,9 @@ public abstract class Calculation extends edu.ata.script.data.Double {
         if (d2 instanceof Integer) {
             d2 = ((Integer) d2).convert();
         }
-        if (fNeg) {
-            d1 = Double.get("-" + d1.getValue());
-        }
         this.num1 = (Double) d1;
         this.num2 = (Double) d2;
+        System.out.println("Calc - "+this.getClass().getSimpleName()+" - "+num1.get()+" of "+num2.get());
     }
 
     public final Object getValue() {
