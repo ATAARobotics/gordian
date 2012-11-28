@@ -2,6 +2,7 @@ package edu.ata.script;
 
 import edu.ata.script.instructions.Declaration;
 import edu.ata.script.instructions.FlowControl;
+import edu.ata.script.instructions.Manipulation;
 import edu.ata.script.instructions.Method;
 
 /**
@@ -13,7 +14,8 @@ public abstract class Instruction {
         instruction = instruction.trim();
         return FlowControl.isType(instruction)
                 || Method.isType(instruction)
-                || Declaration.isType(instruction);
+                || Declaration.isType(instruction)
+                || Manipulation.isType(instruction);
     }
 
     public static Instruction get(String instruction) {
@@ -24,6 +26,8 @@ public abstract class Instruction {
             return Method.get(instruction);
         } else if (Declaration.isType(instruction)) {
             return Declaration.get(instruction);
+        } else if (Manipulation.isType(instruction)) {
+            return Manipulation.get(instruction);
         } else {
             throw new RuntimeException("Invalid instruction - " + instruction);
         }

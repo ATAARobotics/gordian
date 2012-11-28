@@ -1,8 +1,9 @@
 package edu.ata.script.instructions.flow;
 
-import edu.ata.script.Block;
 import edu.ata.script.Data;
 import edu.ata.script.Instruction;
+import edu.ata.script.Script;
+import edu.ata.script.data.BooleanData;
 import edu.ata.script.instructions.FlowControl;
 
 /**
@@ -11,10 +12,10 @@ import edu.ata.script.instructions.FlowControl;
 public abstract class ConditionedFlow extends FlowControl {
 
     public static boolean isType(String instruction) {
-        String flowStatement = instruction.substring(1, instruction.indexOf(';'));
+        String flowStatement = instruction.substring(0, instruction.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
                 flowStatement.lastIndexOf(")"));
-        return (Data.get(condition) instanceof edu.ata.script.data.Boolean)
+        return (Data.get(condition) instanceof BooleanData)
                 && (IfStatement.isType(instruction)
                 || WhileStatement.isType(instruction));
     }
@@ -37,11 +38,11 @@ public abstract class ConditionedFlow extends FlowControl {
     protected abstract boolean runAgain(String args);
 
     public void run() {
-        String flowStatement = full.substring(1, full.indexOf(';'));
+        String flowStatement = full.substring(0, full.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
                 flowStatement.lastIndexOf(")"));
         while (runAgain(condition)) {
-            new Block(full.substring(full.indexOf(';') + 1, full.lastIndexOf('$'))).run();
+            new Script(full.substring(full.indexOf('{') + 1, full.lastIndexOf('}'))).run();
         }
     }
 }

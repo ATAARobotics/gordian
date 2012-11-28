@@ -2,6 +2,7 @@ package edu.ata.script.instructions.flow;
 
 import edu.ata.script.Data;
 import edu.ata.script.Instruction;
+import edu.ata.script.data.BooleanData;
 
 /**
  * @author Joel Gallant
@@ -9,7 +10,7 @@ import edu.ata.script.Instruction;
 public class WhileStatement extends ConditionedFlow {
 
     public static boolean isType(String instruction) {
-        return instruction.substring(1).trim().startsWith("while(");
+        return instruction.trim().startsWith("while(");
     }
 
     public static Instruction get(String instruction) {
@@ -22,8 +23,8 @@ public class WhileStatement extends ConditionedFlow {
 
     protected boolean runAgain(String args) {
         Data arg = Data.get(args);
-        if (arg instanceof edu.ata.script.data.Boolean) {
-            if (((edu.ata.script.data.Boolean) arg).getValue().equals(Boolean.TRUE)) {
+        if (arg instanceof BooleanData) {
+            if (((BooleanData) arg).getValue().equals(Boolean.TRUE)) {
                 return true;
             }
         }

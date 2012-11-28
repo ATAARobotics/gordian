@@ -2,30 +2,29 @@ package edu.ata.script.data.doubles;
 
 import edu.ata.script.Data;
 import edu.ata.script.StringUtils;
+import edu.ata.script.data.NumberData;
 
 /**
  * @author Joel Gallant
  */
 public class Addition extends Calculation {
 
-    public static boolean isType(java.lang.String data) {
-        if(!StringUtils.contains(data, "+")) {
+    public static boolean isType(String data) {
+        if (!StringUtils.contains(data, "+")) {
             return false;
         }
         if (Data.isType(data.substring(0, data.indexOf('+')))
                 && Data.isType(data.substring(data.indexOf('+') + 1))) {
             Data d1 = Data.get(data.substring(0, data.indexOf('+'))),
                     d2 = Data.get(data.substring(data.indexOf('+') + 1));
-            return (d1 instanceof edu.ata.script.data.Double || 
-                    d1 instanceof edu.ata.script.data.Integer) &&
-                    (d2 instanceof edu.ata.script.data.Double ||
-                    d2 instanceof edu.ata.script.data.Integer);
+            return (d1 instanceof NumberData)
+                    && (d2 instanceof NumberData);
         } else {
             return false;
         }
     }
 
-    public static Data get(java.lang.String data) {
+    public static Data get(String data) {
         return new Addition(data);
     }
 
@@ -33,8 +32,7 @@ public class Addition extends Calculation {
         super(literalString, '+');
     }
 
-    protected java.lang.Double doCalc(edu.ata.script.data.Double num1, 
-            edu.ata.script.data.Double num2) {
-        return java.lang.Double.valueOf(num1.get() + num2.get());
+    protected Double doCalc(double num1, double num2) {
+        return Double.valueOf(num1 + num2);
     }
 }

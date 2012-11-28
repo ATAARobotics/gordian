@@ -6,9 +6,9 @@ import edu.ata.script.data.doubles.Calculation;
 /**
  * @author Joel Gallant
  */
-public class Double extends Data {
+public class DoubleData extends NumberData {
 
-    public static boolean isType(java.lang.String data) {
+    public static boolean isType(String data) {
         try {
             java.lang.Double.valueOf(data);
             return true;
@@ -17,10 +17,10 @@ public class Double extends Data {
         }
     }
 
-    public static Data get(java.lang.String data) {
+    public static Data get(String data) {
         try {
             java.lang.Double.valueOf(data);
-            return new Double(data);
+            return new DoubleData(data);
         } catch (NumberFormatException ex) {
             if (Calculation.isType(data)) {
                 return Calculation.get(data);
@@ -30,11 +30,11 @@ public class Double extends Data {
         }
     }
 
-    public double get() {
+    public double doubleValue() {
         return ((java.lang.Double) getValue()).doubleValue();
     }
 
-    public Double(java.lang.String literalString) {
+    public DoubleData(String literalString) {
         super(literalString);
     }
 

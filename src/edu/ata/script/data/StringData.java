@@ -7,24 +7,24 @@ import edu.ata.script.data.strings.Concatenation;
 /**
  * @author Joel Gallant
  */
-public class String extends Data {
+public class StringData extends Data {
 
-    public static boolean isType(java.lang.String data) {
+    public static boolean isType(String data) {
         // Should be last resort (test all before this)
         return true;
     }
 
-    public static Data get(java.lang.String data) {
+    public static Data get(String data) {
         if(Concatenation.isType(data)) {
             return Concatenation.get(data);
         } else {
-            return new String(data);
+            return new StringData(data);
         }
     }
     
-    private final java.lang.String interpretedString;
+    private final String interpretedString;
     
-    public String(java.lang.String literalString) {
+    public StringData(String literalString) {
         super(literalString);
         this.interpretedString = StringUtils.replace(literalString.trim(), '\"', "");
     }

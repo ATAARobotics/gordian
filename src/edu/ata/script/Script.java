@@ -1,5 +1,6 @@
 package edu.ata.script;
 
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 /**
@@ -7,36 +8,41 @@ import java.util.Vector;
  */
 public class Script {
 
+    public static void run(String full) {
+        Data.DATA_STORAGE.clear();
+        new Script(full).run();
+    }
+    
     private final String[] parts;
+    private String block = "";
 
     public Script(String full) {
-        full = StringUtils.replace(full, '\n', ";");
-        String[] parts1 = StringUtils.split(full, ';');
-        Vector parts2 = new Vector();
-        for (int x = 0; x < parts1.length; x++) {
-            if (!parts1[x].startsWith("#") && !parts1[x].trim().isEmpty()) {
-                parts2.add(parts1[x]);
+        StringTokenizer tokenizer = new StringTokenizer(full, ";\n\r");
+        Vector parts = new Vector();
+        int bracesCount = 0;
+        while (tokenizer.hasMoreTokens()) {
+            String next = tokenizer.nextToken().trim();
+            if (next.startsWith("#")) {
+                continue;
             }
-        }
-        Vector parts3 = new Vector(parts2.size());
-        String tmp = "";
-        for (int x = 0; x < parts2.size(); x++) {
-            if (((String) parts2.get(x)).startsWith("$")) {
-                if (tmp.isEmpty()) {
-                    tmp += ((String) parts2.get(x)) + ";";
+            if (StringUtils.contains(next, "{")) {
+                bracesCount++;
+                addToBlock(next);
+            } else if (StringUtils.contains(next, "}")) {
+                if (--bracesCount == 0) {
+                    parts.add(block + next + ";");
                 } else {
-                    parts3.add(tmp + "$");
-                    tmp = "";
+                    addToBlock(next);
                 }
-            } else if (!tmp.isEmpty()) {
-                tmp += ((String) parts2.get(x)) + ";";
+            } else if (block.length() > 0) {
+                addToBlock(next);
             } else {
-                parts3.add(parts2.get(x));
+                parts.add(next);
             }
         }
-        this.parts = new String[parts3.size()];
-        for (int x = 0; x < parts3.size(); x++) {
-            this.parts[x] = ((String) parts3.get(x)).trim();
+        this.parts = new String[parts.size()];
+        for (int x = 0; x < parts.size(); x++) {
+            this.parts[x] = ((String) parts.get(x)).trim();
         }
     }
 
@@ -45,7 +51,6 @@ public class Script {
     }
 
     public void run() {
-        Data.DATA_STORAGE.clear();
         for (int x = 0; x < parts.length; x++) {
             try {
                 if (Instruction.isType(parts[x])) {
@@ -60,5 +65,9 @@ public class Script {
                 ex.printStackTrace(System.err);
             }
         }
+    }
+
+    private void addToBlock(String instruction) {
+        block += (instruction + ";");
     }
 }

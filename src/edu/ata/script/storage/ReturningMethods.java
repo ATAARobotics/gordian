@@ -9,7 +9,7 @@ import edu.ata.script.data.ReturningMethod;
  */
 public class ReturningMethods extends Storage {
 
-    public static Data getMethodValue(java.lang.String data) {
+    public static Data getMethodValue(String data) {
         return ((ReturningMethod) Data.RETURNING_METHODS.get(
                 data.substring(0, data.indexOf("(")))).getValue(
                 StringUtils.split(data.substring(data.indexOf("(") + 1,

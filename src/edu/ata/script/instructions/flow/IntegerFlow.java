@@ -1,8 +1,10 @@
 package edu.ata.script.instructions.flow;
 
-import edu.ata.script.Block;
 import edu.ata.script.Data;
 import edu.ata.script.Instruction;
+import edu.ata.script.Script;
+import edu.ata.script.data.IntegerData;
+import edu.ata.script.data.NumberData;
 import edu.ata.script.instructions.FlowControl;
 
 /**
@@ -11,10 +13,10 @@ import edu.ata.script.instructions.FlowControl;
 public abstract class IntegerFlow extends FlowControl {
 
     public static boolean isType(String instruction) {
-        String flowStatement = instruction.substring(1, instruction.indexOf(';'));
+        String flowStatement = instruction.substring(0, instruction.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
                 flowStatement.lastIndexOf(")"));
-        return (Data.get(condition) instanceof edu.ata.script.data.Integer)
+        return (Data.get(condition) instanceof IntegerData)
                 && (ForStatement.isType(instruction));
     }
 
@@ -32,11 +34,11 @@ public abstract class IntegerFlow extends FlowControl {
     }
 
     public void run() {
-        String flowStatement = full.substring(1, full.indexOf(';'));
+        String flowStatement = full.substring(0, full.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
                 flowStatement.lastIndexOf(")"));
-        while(runAgain(((edu.ata.script.data.Integer)Data.get(condition)).get())) {
-            new Block(full.substring(full.indexOf(';') + 1, full.lastIndexOf('$'))).run();
+        while(runAgain(NumberData.intValue(condition))) {
+            new Script(full.substring(full.indexOf('{') + 1, full.lastIndexOf('}'))).run();
         }
     }
 

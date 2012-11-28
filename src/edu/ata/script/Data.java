@@ -1,6 +1,10 @@
 package edu.ata.script;
 
+import edu.ata.script.data.BooleanData;
+import edu.ata.script.data.DoubleData;
+import edu.ata.script.data.IntegerData;
 import edu.ata.script.data.ReturningMethod;
+import edu.ata.script.data.StringData;
 import edu.ata.script.storage.DataStorage;
 import edu.ata.script.storage.ReturningMethods;
 
@@ -14,29 +18,29 @@ public abstract class Data {
 
     public static boolean isType(String data) {
         data = data.trim();
-        return edu.ata.script.data.Boolean.isType(data)
-                || edu.ata.script.data.Integer.isType(data)
-                || edu.ata.script.data.Double.isType(data)
+        return BooleanData.isType(data)
+                || IntegerData.isType(data)
+                || DoubleData.isType(data)
                 || DATA_STORAGE.contains(data)
                 || ReturningMethod.isType(data)
-                || edu.ata.script.data.String.isType(data);
+                || StringData.isType(data);
     }
 
     public static Data get(String data) {
         data = data.trim();
-        /*:)*/ if (edu.ata.script.data.Boolean.isType(data)) {
-            return edu.ata.script.data.Boolean.get(data);
-        } else if (edu.ata.script.data.Integer.isType(data)) {
-            return edu.ata.script.data.Integer.get(data);
-        } else if (edu.ata.script.data.Double.isType(data)) {
-            return edu.ata.script.data.Double.get(data);
+        /*:)*/ if (BooleanData.isType(data)) {
+            return BooleanData.get(data);
+        } else if (IntegerData.isType(data)) {
+            return IntegerData.get(data);
+        } else if (DoubleData.isType(data)) {
+            return DoubleData.get(data);
         } else if (DATA_STORAGE.contains(data)) {
             return (Data) DATA_STORAGE.get(data);
         } else if (ReturningMethod.isType(data)) {
             return ReturningMethods.getMethodValue(data);
-        } else if (edu.ata.script.data.String.isType(data)) {
+        } else if (StringData.isType(data)) {
             // Last option because everything is accepted.
-            return edu.ata.script.data.String.get(data);
+            return StringData.get(data);
         } else {
             throw new RuntimeException("Could not parse data - " + data);
         }

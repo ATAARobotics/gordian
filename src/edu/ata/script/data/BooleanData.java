@@ -6,9 +6,9 @@ import edu.ata.script.data.booleans.Condition;
 /**
  * @author Joel Gallant
  */
-public class Boolean extends Data {
+public class BooleanData extends Data {
 
-    public static boolean isType(java.lang.String data) {
+    public static boolean isType(String data) {
         if (data.equalsIgnoreCase("true") || data.equalsIgnoreCase("false")) {
             return true;
         } else {
@@ -16,9 +16,9 @@ public class Boolean extends Data {
         }
     }
 
-    public static Data get(java.lang.String data) {
+    public static Data get(String data) {
         if (data.equalsIgnoreCase("true") || data.equalsIgnoreCase("false")) {
-            return new Boolean(data);
+            return new BooleanData(data);
         } else if (Condition.isType(data)) {
             return Condition.get(data);
         } else {
@@ -26,7 +26,7 @@ public class Boolean extends Data {
         }
     }
 
-    public Boolean(java.lang.String literalString) {
+    public BooleanData(String literalString) {
         super(literalString);
     }
 

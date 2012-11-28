@@ -8,7 +8,7 @@ import edu.ata.script.Instruction;
 public class ForStatement extends IntegerFlow {
 
     public static boolean isType(String instruction) {
-        return instruction.substring(1).trim().startsWith("for(");
+        return instruction.trim().startsWith("for(");
     }
 
     public static Instruction get(String instruction) {

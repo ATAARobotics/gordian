@@ -10,7 +10,7 @@ import edu.ata.script.instructions.flow.IntegerFlow;
 public abstract class FlowControl extends Instruction {
 
     public static boolean isType(String instruction) {
-        if (!instruction.startsWith("$") || !instruction.endsWith("$")) {
+        if (instruction.indexOf("{") < 0 || !instruction.endsWith("};")) {
             return false;
         }
         return ConditionedFlow.isType(instruction)

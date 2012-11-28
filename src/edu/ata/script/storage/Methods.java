@@ -1,6 +1,7 @@
 package edu.ata.script.storage;
 
 import edu.ata.script.Data;
+import edu.ata.script.data.NumberData;
 import edu.ata.script.instructions.MethodBody;
 
 /**
@@ -23,11 +24,9 @@ public class Methods extends Storage {
         METHODS_STORAGE.addMethod("wait", new MethodBody() {
             public void run(Data[] args) {
                 double t = 0;
-                if (args[0] instanceof edu.ata.script.data.Double) {
-                    t = ((edu.ata.script.data.Double) args[0]).get();
-                } else if (args[0] instanceof edu.ata.script.data.Integer) {
-                    t = ((edu.ata.script.data.Integer) args[0]).get();
-                }
+                if (args[0] instanceof NumberData) {
+                    t = ((NumberData) args[0]).doubleValue();
+                } 
                 if (t != 0) {
                     try {
                         Thread.sleep((long) (t * 1e3));
