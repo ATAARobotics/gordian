@@ -37,8 +37,9 @@ public abstract class IntegerFlow extends FlowControl {
         String flowStatement = full.substring(0, full.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
                 flowStatement.lastIndexOf(")"));
+        String instructions = full.substring(full.indexOf('{') + 1, full.lastIndexOf('}'));
         while(runAgain(NumberData.intValue(condition))) {
-            new Script(full.substring(full.indexOf('{') + 1, full.lastIndexOf('}'))).run();
+            new Script(instructions).run();
         }
     }
 

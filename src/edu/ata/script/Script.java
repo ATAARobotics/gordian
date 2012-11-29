@@ -31,6 +31,7 @@ public class Script {
             } else if (StringUtils.contains(next, "}")) {
                 if (--bracesCount == 0) {
                     parts.add(block + next + ";");
+                    block = "";
                 } else {
                     addToBlock(next);
                 }
