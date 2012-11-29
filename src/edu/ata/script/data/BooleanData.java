@@ -31,6 +31,6 @@ public class BooleanData extends Data {
     }
 
     public Object getValue() {
-        return java.lang.Boolean.valueOf(getLiteralString());
+        return java.lang.Boolean.valueOf(getLiteralString().equalsIgnoreCase("true"));
     }
 }

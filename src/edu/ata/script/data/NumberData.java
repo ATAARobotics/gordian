@@ -22,6 +22,6 @@ public abstract class NumberData extends Data {
     public abstract double doubleValue();
 
     public int intValue() {
-        return Math.round((float) doubleValue());
+        return (int) doubleValue();
     }
 }

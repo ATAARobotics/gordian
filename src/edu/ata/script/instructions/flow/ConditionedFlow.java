@@ -14,7 +14,7 @@ public abstract class ConditionedFlow extends FlowControl {
     public static boolean isType(String instruction) {
         String flowStatement = instruction.substring(0, instruction.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
-                flowStatement.lastIndexOf(")"));
+                flowStatement.lastIndexOf(')'));
         return (Data.get(condition) instanceof BooleanData)
                 && (IfStatement.isType(instruction)
                 || WhileStatement.isType(instruction));
@@ -40,7 +40,7 @@ public abstract class ConditionedFlow extends FlowControl {
     public void run() {
         String flowStatement = full.substring(0, full.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
-                flowStatement.lastIndexOf(")"));
+                flowStatement.lastIndexOf(')'));
         while (runAgain(condition)) {
             new Script(full.substring(full.indexOf('{') + 1, full.lastIndexOf('}'))).run();
         }

@@ -13,7 +13,7 @@ public class ReturningMethods extends Storage {
         return ((ReturningMethod) Data.RETURNING_METHODS.get(
                 data.substring(0, data.indexOf("(")))).getValue(
                 StringUtils.split(data.substring(data.indexOf("(") + 1,
-                data.lastIndexOf(")")), ','));
+                data.lastIndexOf(')')), ','));
     }
 
     protected void add(String key, Object value) {

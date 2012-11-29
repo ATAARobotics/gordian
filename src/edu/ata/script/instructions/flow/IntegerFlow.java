@@ -15,7 +15,7 @@ public abstract class IntegerFlow extends FlowControl {
     public static boolean isType(String instruction) {
         String flowStatement = instruction.substring(0, instruction.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
-                flowStatement.lastIndexOf(")"));
+                flowStatement.lastIndexOf(')'));
         return (Data.get(condition) instanceof IntegerData)
                 && (ForStatement.isType(instruction));
     }
@@ -36,7 +36,7 @@ public abstract class IntegerFlow extends FlowControl {
     public void run() {
         String flowStatement = full.substring(0, full.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
-                flowStatement.lastIndexOf(")"));
+                flowStatement.lastIndexOf(')'));
         String instructions = full.substring(full.indexOf('{') + 1, full.lastIndexOf('}'));
         while(runAgain(NumberData.intValue(condition))) {
             new Script(instructions).run();

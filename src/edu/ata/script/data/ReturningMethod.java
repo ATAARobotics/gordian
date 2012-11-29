@@ -2,7 +2,6 @@ package edu.ata.script.data;
 
 import edu.ata.script.Data;
 import edu.ata.script.StringUtils;
-import edu.ata.script.storage.ReturningMethods;
 
 /**
  * @author Joel Gallant

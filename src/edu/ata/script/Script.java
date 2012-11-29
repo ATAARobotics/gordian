@@ -30,7 +30,7 @@ public class Script {
                 addToBlock(next);
             } else if (StringUtils.contains(next, "}")) {
                 if (--bracesCount == 0) {
-                    parts.add(block + next + ";");
+                    parts.addElement(block + next + ";");
                     block = "";
                 } else {
                     addToBlock(next);
@@ -38,12 +38,12 @@ public class Script {
             } else if (block.length() > 0) {
                 addToBlock(next);
             } else {
-                parts.add(next);
+                parts.addElement(next);
             }
         }
         this.parts = new String[parts.size()];
         for (int x = 0; x < parts.size(); x++) {
-            this.parts[x] = ((String) parts.get(x)).trim();
+            this.parts[x] = ((String) parts.elementAt(x)).trim();
         }
     }
 
@@ -63,7 +63,7 @@ public class Script {
             } catch (Throwable ex) {
                 System.err.println("Error occured in part " + (x + 1) + " - "
                         + parts[x] + "\n\t" + ex.getMessage());
-                ex.printStackTrace(System.err);
+                ex.printStackTrace();
             }
         }
     }
