@@ -4,18 +4,36 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 /**
+ * Main class that converts a string (usually taken from a file) into a runnable
+ * script.
+ *
+ * Details on how to write code are available on github.
+ *
  * @author Joel Gallant
  */
 public class Script {
 
+    /**
+     * Should be used every time you want to run a script that is separate from
+     * all other scripts. Removes all elements of data storage before running
+     * (does not remove methods / returning methods).
+     *
+     * @param full full script
+     */
     public static void run(String full) {
         Data.DATA_STORAGE.clear();
         new Script(full).run();
     }
-    
     private final String[] parts;
     private String block = "";
 
+    /**
+     * Creates a script object that is ready to run. <i> Does not </i> compile
+     * the program. Compiling is done dynamically (while running). The
+     * constructor is used to separate parts of the script.
+     *
+     * @param full full script
+     */
     public Script(String full) {
         StringTokenizer tokenizer = new StringTokenizer(full, ";\n\r");
         Vector parts = new Vector();
@@ -47,10 +65,21 @@ public class Script {
         }
     }
 
+    /**
+     * Returns all of the separate parts of the script. Parts are either methods
+     * or blocks.
+     *
+     * @return array of parts
+     */
     public String[] getParts() {
         return parts;
     }
 
+    /**
+     * Runs the script.
+     * 
+     * @see Script#run(java.lang.String)
+     */
     public void run() {
         for (int x = 0; x < parts.length; x++) {
             try {

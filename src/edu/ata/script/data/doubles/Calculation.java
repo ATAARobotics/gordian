@@ -9,6 +9,11 @@ import edu.ata.script.data.NumberData;
  */
 public abstract class Calculation extends DoubleData {
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static boolean isType(String data) {
         return Addition.isType(data)
                 || Subtraction.isType(data)
@@ -16,6 +21,11 @@ public abstract class Calculation extends DoubleData {
                 || Division.isType(data);
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static Data get(String data) {
         // Addition and subtraction are first to make sure it goes in order
         // - Division - Multiplication - Subtraction - Addition -
@@ -43,6 +53,11 @@ public abstract class Calculation extends DoubleData {
     }
     private final double num1, num2;
 
+    /**
+     *
+     * @param literalString
+     * @param sign
+     */
     protected Calculation(String literalString, char sign) {
         super(literalString);
         if (literalString.indexOf(sign) == 0) {
@@ -58,9 +73,19 @@ public abstract class Calculation extends DoubleData {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public final Object getValue() {
         return doCalc(num1, num2);
     }
 
+    /**
+     *
+     * @param num1
+     * @param num2
+     * @return
+     */
     protected abstract Double doCalc(double num1, double num2);
 }

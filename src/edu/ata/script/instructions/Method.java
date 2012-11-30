@@ -10,6 +10,11 @@ import edu.ata.script.storage.Methods;
  */
 public class Method extends Instruction {
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static boolean isType(String instruction) {
         if(!StringUtils.contains(instruction, "(") || !StringUtils.contains(instruction, ")")) {
             return false;
@@ -17,18 +22,30 @@ public class Method extends Instruction {
         return Methods.METHODS_STORAGE.contains(instruction.substring(0, instruction.indexOf('(')));
     }
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static Instruction get(String instruction) {
         return new Method(instruction);
     }
     private final String method;
     private final String[] args;
 
+    /**
+     *
+     * @param method
+     */
     public Method(String method) {
         this.method = method.substring(0, method.indexOf('('));
         this.args = StringUtils.split(method.substring(method.indexOf('(') + 1,
                 method.lastIndexOf(')')), ',');
     }
 
+    /**
+     *
+     */
     public void run() {
         Data[] arguments = new Data[this.args.length];
         for(int x = 0; x < arguments.length; x++) {

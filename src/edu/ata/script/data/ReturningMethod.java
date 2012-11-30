@@ -8,6 +8,11 @@ import edu.ata.script.StringUtils;
  */
 public abstract class ReturningMethod {
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static boolean isType(String data) {
         if(!StringUtils.contains(data, "(") || !StringUtils.contains(data, ")")) {
             return false;
@@ -15,5 +20,10 @@ public abstract class ReturningMethod {
         return Data.RETURNING_METHODS.contains(data.substring(0, data.indexOf("(")));
     }
 
+    /**
+     *
+     * @param args
+     * @return
+     */
     public abstract Data getValue(String[] args);
 }

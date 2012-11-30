@@ -9,18 +9,37 @@ import edu.ata.script.data.BooleanData;
  */
 public class WhileStatement extends ConditionedFlow {
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static boolean isType(String instruction) {
         return instruction.trim().startsWith("while(");
     }
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static Instruction get(String instruction) {
         return new WhileStatement(instruction);
     }
 
+    /**
+     *
+     * @param full
+     */
     public WhileStatement(String full) {
         super(full);
     }
 
+    /**
+     *
+     * @param args
+     * @return
+     */
     protected boolean runAgain(String args) {
         Data arg = Data.get(args);
         if (arg instanceof BooleanData) {

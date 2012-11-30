@@ -9,6 +9,12 @@ public class DataStorage extends Storage {
 
     // Important - do not add classes to this package unless you are okay with
     // them accessing this method.
+    /**
+     *
+     * @param key
+     * @param data
+     * @throws IllegalArgumentException
+     */
     public void add(String key, Object data) throws IllegalArgumentException {
         if (!(data instanceof Data)) {
             throw new IllegalArgumentException("Added data to the storage that "
@@ -18,6 +24,11 @@ public class DataStorage extends Storage {
         }
     }
 
+    /**
+     *
+     * @param key
+     * @param data
+     */
     public void addData(String key, Data data) {
         // Stores the data statically
         add(key, Data.get(data.getValue().toString()));

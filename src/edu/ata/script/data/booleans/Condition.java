@@ -9,6 +9,11 @@ import edu.ata.script.data.BooleanData;
  */
 public class Condition extends BooleanData {
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static boolean isType(String data) {
         return StringUtils.contains(data, ">")
                 || StringUtils.contains(data, "<")
@@ -16,6 +21,11 @@ public class Condition extends BooleanData {
                 || StringUtils.contains(data, "==");
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static Data get(String data) {
         if (isType(data)) {
             return new Condition(data);
@@ -24,10 +34,18 @@ public class Condition extends BooleanData {
         }
     }
 
+    /**
+     *
+     * @param literalString
+     */
     public Condition(String literalString) {
         super(literalString);
     }
 
+    /**
+     *
+     * @return
+     */
     public Object getValue() {
         // Checks every time (in case of updating values?)
         return Boolean.valueOf(isTrue());

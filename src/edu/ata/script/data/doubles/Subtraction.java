@@ -8,6 +8,11 @@ import edu.ata.script.data.NumberData;
  */
 public class Subtraction extends Calculation {
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static boolean isType(String data) {
         if (data.indexOf('-') == 0) {
             data = data.substring(1);
@@ -26,14 +31,29 @@ public class Subtraction extends Calculation {
         }
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static Data get(String data) {
         return new Subtraction(data);
     }
 
+    /**
+     *
+     * @param literalString
+     */
     public Subtraction(String literalString) {
         super(literalString, '-');
     }
 
+    /**
+     *
+     * @param num1
+     * @param num2
+     * @return
+     */
     protected Double doCalc(double num1, double num2) {
         return Double.valueOf(num1 - num2);
     }

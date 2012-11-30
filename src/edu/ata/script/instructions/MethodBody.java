@@ -7,5 +7,9 @@ import edu.ata.script.Data;
  */
 public interface MethodBody {
 
+    /**
+     *
+     * @param args
+     */
     void run(Data[] args);
 }

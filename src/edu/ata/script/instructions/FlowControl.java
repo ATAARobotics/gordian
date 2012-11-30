@@ -9,6 +9,11 @@ import edu.ata.script.instructions.flow.IntegerFlow;
  */
 public abstract class FlowControl extends Instruction {
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static boolean isType(String instruction) {
         if (instruction.indexOf("{") < 0 || !instruction.endsWith("};")) {
             return false;
@@ -17,6 +22,11 @@ public abstract class FlowControl extends Instruction {
                 || IntegerFlow.isType(instruction);
     }
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static Instruction get(String instruction) {
         if (ConditionedFlow.isType(instruction)) {
             return ConditionedFlow.get(instruction);

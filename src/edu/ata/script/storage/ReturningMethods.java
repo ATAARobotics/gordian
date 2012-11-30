@@ -9,6 +9,11 @@ import edu.ata.script.data.ReturningMethod;
  */
 public class ReturningMethods extends Storage {
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static Data getMethodValue(String data) {
         return ((ReturningMethod) Data.RETURNING_METHODS.get(
                 data.substring(0, data.indexOf("(")))).getValue(
@@ -16,6 +21,11 @@ public class ReturningMethods extends Storage {
                 data.lastIndexOf(')')), ','));
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     protected void add(String key, Object value) {
         if (!(value instanceof ReturningMethod)) {
             throw new RuntimeException("Added new returning method to "
@@ -25,6 +35,11 @@ public class ReturningMethods extends Storage {
         }
     }
 
+    /**
+     *
+     * @param methodName
+     * @param method
+     */
     public void addMethod(String methodName, ReturningMethod method) {
         add(methodName, method);
     }

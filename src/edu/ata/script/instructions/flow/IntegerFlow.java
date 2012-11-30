@@ -12,6 +12,11 @@ import edu.ata.script.instructions.FlowControl;
  */
 public abstract class IntegerFlow extends FlowControl {
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static boolean isType(String instruction) {
         String flowStatement = instruction.substring(0, instruction.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
@@ -20,6 +25,11 @@ public abstract class IntegerFlow extends FlowControl {
                 && (ForStatement.isType(instruction));
     }
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static Instruction get(String instruction) {
         if (ForStatement.isType(instruction)) {
             return ForStatement.get(instruction);
@@ -29,10 +39,17 @@ public abstract class IntegerFlow extends FlowControl {
     }
     private final String full;
 
+    /**
+     *
+     * @param full
+     */
     public IntegerFlow(String full) {
         this.full = full;
     }
 
+    /**
+     *
+     */
     public void run() {
         String flowStatement = full.substring(0, full.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
@@ -43,5 +60,10 @@ public abstract class IntegerFlow extends FlowControl {
         }
     }
 
+    /**
+     *
+     * @param argument
+     * @return
+     */
     protected abstract boolean runAgain(int argument);
 }

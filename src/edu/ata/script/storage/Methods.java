@@ -9,6 +9,9 @@ import edu.ata.script.instructions.MethodBody;
  */
 public class Methods extends Storage {
 
+    /**
+     *
+     */
     public static final Methods METHODS_STORAGE = new Methods();
 
     static {
@@ -37,6 +40,11 @@ public class Methods extends Storage {
         });
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     protected void add(String key, Object value) {
         if (!(value instanceof MethodBody)) {
             throw new RuntimeException("Added a method that WAS NOT A METHOD - " + key);
@@ -45,6 +53,11 @@ public class Methods extends Storage {
         }
     }
 
+    /**
+     *
+     * @param name
+     * @param method
+     */
     public void addMethod(String name, MethodBody method) {
         add(name, method);
     }

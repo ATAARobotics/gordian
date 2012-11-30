@@ -11,6 +11,11 @@ import edu.ata.script.instructions.FlowControl;
  */
 public abstract class ConditionedFlow extends FlowControl {
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static boolean isType(String instruction) {
         String flowStatement = instruction.substring(0, instruction.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,
@@ -20,6 +25,11 @@ public abstract class ConditionedFlow extends FlowControl {
                 || WhileStatement.isType(instruction));
     }
 
+    /**
+     *
+     * @param instruction
+     * @return
+     */
     public static Instruction get(String instruction) {
         if (IfStatement.isType(instruction)) {
             return IfStatement.get(instruction);
@@ -31,12 +41,24 @@ public abstract class ConditionedFlow extends FlowControl {
     }
     private final String full;
 
+    /**
+     *
+     * @param full
+     */
     public ConditionedFlow(String full) {
         this.full = full;
     }
 
+    /**
+     *
+     * @param args
+     * @return
+     */
     protected abstract boolean runAgain(String args);
 
+    /**
+     *
+     */
     public void run() {
         String flowStatement = full.substring(0, full.indexOf('{'));
         String condition = flowStatement.substring(flowStatement.indexOf("(") + 1,

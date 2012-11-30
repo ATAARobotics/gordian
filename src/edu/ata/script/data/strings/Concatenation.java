@@ -9,19 +9,37 @@ import edu.ata.script.data.StringData;
  */
 public class Concatenation extends StringData {
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static boolean isType(String data) {
         // Always check Calculation (specifically addition) before checking this.
         return StringUtils.contains(data, "+");
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public static Data get(String data) {
         return new Concatenation(data);
     }
     
+    /**
+     *
+     * @param literalString
+     */
     public Concatenation(String literalString) {
         super(literalString);
     }
 
+    /**
+     *
+     * @return
+     */
     public Object getValue() {
         String value = "";
         String[] parts = StringUtils.split(getLiteralString(), '+');
