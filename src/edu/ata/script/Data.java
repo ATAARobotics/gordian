@@ -96,6 +96,7 @@ public abstract class Data {
             throw new RuntimeException("Could not parse data - " + data);
         }
     }
+
     private final String literalString;
 
     /**

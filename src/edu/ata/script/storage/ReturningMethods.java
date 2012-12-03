@@ -15,10 +15,13 @@ public class ReturningMethods extends Storage {
      * @return
      */
     public static Data getMethodValue(String data) {
-        return ((ReturningMethod) Data.RETURNING_METHODS.get(
-                data.substring(0, data.indexOf("(")))).getValue(
-                StringUtils.split(data.substring(data.indexOf("(") + 1,
-                data.lastIndexOf(')')), ','));
+        String[] argsLiteral = StringUtils.split(data.substring(data.indexOf("(") + 1,
+                data.lastIndexOf(')')), ',');
+        Data[] args = new Data[argsLiteral.length];
+        for (int x = 0; x < args.length; x++) {
+            args[x] = Data.get(argsLiteral[x]);
+        }
+        return ((ReturningMethod) Data.RETURNING_METHODS.get(data.substring(0, data.indexOf("(")))).getValue(args);
     }
 
     /**

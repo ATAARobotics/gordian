@@ -4,14 +4,17 @@ import edu.ata.script.Data;
 import edu.ata.script.data.NumberData;
 
 /**
+ * Subset of {@link Calculation}, which subtracts one value from the other.
+ *
  * @author Joel Gallant
  */
 public class Subtraction extends Calculation {
 
     /**
+     * Checks to see if the string is transferable to the data type.
      *
-     * @param data
-     * @return
+     * @param data string to convert
+     * @return if string is a boolean
      */
     public static boolean isType(String data) {
         if (data.indexOf('-') == 0) {
@@ -32,27 +35,33 @@ public class Subtraction extends Calculation {
     }
 
     /**
+     * Converts the string into a {@link Data} object that is guaranteed to be
+     * an instance of this class.
      *
-     * @param data
-     * @return
+     * <p> Remember to always check {@code isType()} before using this method.
+     *
+     * @param data string to convert
+     * @return {@link Data} object representing string
      */
     public static Data get(String data) {
         return new Subtraction(data);
     }
 
     /**
+     * Creates subtraction based on its literal value found in the code.
      *
-     * @param literalString
+     * @param literalString string in code
      */
     public Subtraction(String literalString) {
         super(literalString, '-');
     }
 
     /**
+     * Does the subtraction of num2 from num1.
      *
-     * @param num1
-     * @param num2
-     * @return
+     * @param num1 first term
+     * @param num2 second term
+     * @return {@link Double} value of num1 - num2
      */
     protected Double doCalc(double num1, double num2) {
         return Double.valueOf(num1 - num2);

@@ -5,14 +5,25 @@ import edu.ata.script.StringUtils;
 import edu.ata.script.data.BooleanData;
 
 /**
+ * BooleanData class that represents comparisons and conditions. The only
+ * working conditions are {@code > , < , >=, <=, ==, !=}. Things like !
+ * operators do not work. (Use opposite sign instead)
+ *
+ *
+ *
+ *
+ *
+
+ *
  * @author Joel Gallant
  */
 public class Condition extends BooleanData {
 
     /**
+     * Checks to see if the string is transferable to the data type.
      *
-     * @param data
-     * @return
+     * @param data string to convert
+     * @return if string is a boolean
      */
     public static boolean isType(String data) {
         return StringUtils.contains(data, ">")
@@ -22,9 +33,13 @@ public class Condition extends BooleanData {
     }
 
     /**
+     * Converts the string into a {@link Data} object that is guaranteed to be
+     * an instance of this class.
      *
-     * @param data
-     * @return
+     * <p> Remember to always check {@code isType()} before using this method.
+     *
+     * @param data string to convert
+     * @return {@link Data} object representing string
      */
     public static Data get(String data) {
         if (isType(data)) {
@@ -35,16 +50,21 @@ public class Condition extends BooleanData {
     }
 
     /**
+     * Creates the condition with the literal string in the code. Does not
+     * compute value, it is computed dynamically (every time {@code getValue()}
+     * is called).
      *
-     * @param literalString
+     * @param literalString string in code
      */
     public Condition(String literalString) {
         super(literalString);
     }
 
     /**
+     * Returns a {@link Boolean} object representation of the condition. Is
+     * calculated every time it is called.
      *
-     * @return
+     * @return the value of the condition (true or false)
      */
     public Object getValue() {
         // Checks every time (in case of updating values?)
