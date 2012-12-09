@@ -5,12 +5,15 @@ import edu.ata.script.data.NumberData;
 import edu.ata.script.instructions.MethodBody;
 
 /**
+ * Method storage that stores all methods. print() and wait(double) are added
+ * statically.
+ *
  * @author Joel Gallant
  */
 public class Methods extends Storage {
 
     /**
-     *
+     * Static storage of methods. Please be careful with using this field.
      */
     public static final Methods METHODS_STORAGE = new Methods();
 
@@ -29,7 +32,7 @@ public class Methods extends Storage {
                 double t = 0;
                 if (args[0] instanceof NumberData) {
                     t = ((NumberData) args[0]).doubleValue();
-                } 
+                }
                 if (t != 0) {
                     try {
                         Thread.sleep((long) (t * 1e3));
@@ -41,9 +44,11 @@ public class Methods extends Storage {
     }
 
     /**
+     * Adds an object to the storage. Throws a runtime exception is it is not a
+     * {@link MethodBody}.
      *
-     * @param key
-     * @param value
+     * @param key key to save under
+     * @param value value to save
      */
     protected void add(String key, Object value) {
         if (!(value instanceof MethodBody)) {
@@ -54,9 +59,11 @@ public class Methods extends Storage {
     }
 
     /**
+     * Type-safe way of adding methods. Is equivalent to
+     * {@code add(name, method)}.
      *
-     * @param name
-     * @param method
+     * @param name key to save under
+     * @param method method body
      */
     public void addMethod(String name, MethodBody method) {
         add(name, method);

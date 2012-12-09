@@ -14,7 +14,7 @@ import edu.ata.script.instructions.Method;
 public abstract class Instruction {
 
     /**
-     * Checks to see if a string is convertible into an instruction.
+     * Checks to see if a string is convertible into the instruction type.
      *
      * @param instruction string to convert
      * @return whether it is an instruction

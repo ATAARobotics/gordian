@@ -5,14 +5,18 @@ import edu.ata.script.StringUtils;
 import edu.ata.script.data.ReturningMethod;
 
 /**
+ * Storage for all returning methods.
+ *
  * @author Joel Gallant
  */
 public class ReturningMethods extends Storage {
 
     /**
+     * Returns the value of a method based on its string value. Deciphers
+     * arguments and looks at the storage, then returns the value.
      *
-     * @param data
-     * @return
+     * @param data literal value of the method in the code
+     * @return value based on arguments
      */
     public static Data getMethodValue(String data) {
         String[] argsLiteral = StringUtils.split(data.substring(data.indexOf("(") + 1,
@@ -25,9 +29,11 @@ public class ReturningMethods extends Storage {
     }
 
     /**
+     * Adds an object to the storage. If the object is not an instance of
+     * {@link ReturningMethod}, will throw a runtime exception.
      *
-     * @param key
-     * @param value
+     * @param key key to save under
+     * @param value value to save
      */
     protected void add(String key, Object value) {
         if (!(value instanceof ReturningMethod)) {
@@ -39,9 +45,11 @@ public class ReturningMethods extends Storage {
     }
 
     /**
+     * Type-safe way of adding methods to the storage. Is equivalent to calling
+     * {@code add(methodName, method)}.
      *
-     * @param methodName
-     * @param method
+     * @param methodName name of the method
+     * @param method method to save under the method name
      */
     public void addMethod(String methodName, ReturningMethod method) {
         add(methodName, method);

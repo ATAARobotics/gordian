@@ -7,14 +7,18 @@ import edu.ata.script.data.BooleanData;
 import edu.ata.script.instructions.FlowControl;
 
 /**
+ * Block that runs conditionally. Will run based on the condition between '('
+ * and ')'.
+ *
  * @author Joel Gallant
  */
 public abstract class ConditionedFlow extends FlowControl {
 
     /**
+     * Checks to see if a string is convertible into the instruction type.
      *
-     * @param instruction
-     * @return
+     * @param instruction string to convert
+     * @return whether it is an instruction
      */
     public static boolean isType(String instruction) {
         String flowStatement = instruction.substring(0, instruction.indexOf('{'));
@@ -26,9 +30,12 @@ public abstract class ConditionedFlow extends FlowControl {
     }
 
     /**
+     * Converts a string into the appropriate subclass of {@code Instruction}.
+     * Use {@link Instruction#isType(java.lang.String)} to ensure this method
+     * returns something.
      *
-     * @param instruction
-     * @return
+     * @param instruction string to convert
+     * @return instruction object representing the string
      */
     public static Instruction get(String instruction) {
         if (IfStatement.isType(instruction)) {
@@ -42,22 +49,26 @@ public abstract class ConditionedFlow extends FlowControl {
     private final String full;
 
     /**
+     * Creates instruction based on the string in the code.
      *
-     * @param full
+     * @param full instruction in code
      */
-    public ConditionedFlow(String full) {
+    protected ConditionedFlow(String full) {
         this.full = full;
     }
 
     /**
+     * Abstract method that checks whether or not to run the block again,
+     * depending on the argument.
      *
-     * @param args
-     * @return
+     * @param args literal argument between '(' and ')'.
+     * @return whether loop should continue
      */
     protected abstract boolean runAgain(String args);
 
     /**
-     *
+     * Runs the block conditionally depending on
+     * {@link ConditionedFlow#runAgain(java.lang.String)}.
      */
     public void run() {
         String flowStatement = full.substring(0, full.indexOf('{'));
