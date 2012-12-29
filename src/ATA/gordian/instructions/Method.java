@@ -1,9 +1,9 @@
-package edu.ata.gordian.instructions;
+package ATA.gordian.instructions;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.Instruction;
-import edu.ata.gordian.StringUtils;
-import edu.ata.gordian.storage.Methods;
+import ATA.gordian.Data;
+import ATA.gordian.Instruction;
+import ATA.gordian.StringUtils;
+import ATA.gordian.storage.Methods;
 
 /**
  * Instruction callable with a '(' and ')' with some or no arguments inside.

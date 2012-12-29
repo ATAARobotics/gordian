@@ -1,8 +1,8 @@
-package edu.ata.gordian.data.booleans;
+package ATA.gordian.data.booleans;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.StringUtils;
-import edu.ata.gordian.data.BooleanData;
+import ATA.gordian.Data;
+import ATA.gordian.StringUtils;
+import ATA.gordian.data.BooleanData;
 
 /**
  * BooleanData class that represents comparisons and conditions. The only

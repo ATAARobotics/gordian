@@ -1,6 +1,6 @@
-package edu.ata.gordian.data;
+package ATA.gordian.data;
 
-import edu.ata.gordian.Data;
+import ATA.gordian.Data;
 
 /**
  * Data class representing all numbers. The only requirement for number data is

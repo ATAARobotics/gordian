@@ -1,7 +1,7 @@
-package edu.ata.gordian.data;
+package ATA.gordian.data;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.data.doubles.Calculation;
+import ATA.gordian.Data;
+import ATA.gordian.data.doubles.Calculation;
 
 /**
  * Data class that represents integers in the code. It is usually rare for

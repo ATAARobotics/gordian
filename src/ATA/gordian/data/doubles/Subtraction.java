@@ -1,7 +1,7 @@
-package edu.ata.gordian.data.doubles;
+package ATA.gordian.data.doubles;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.data.NumberData;
+import ATA.gordian.Data;
+import ATA.gordian.data.NumberData;
 
 /**
  * Subset of {@link Calculation}, which subtracts one value from the other.

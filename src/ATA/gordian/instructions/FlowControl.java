@@ -1,8 +1,8 @@
-package edu.ata.gordian.instructions;
+package ATA.gordian.instructions;
 
-import edu.ata.gordian.Instruction;
-import edu.ata.gordian.instructions.flow.ConditionedFlow;
-import edu.ata.gordian.instructions.flow.IntegerFlow;
+import ATA.gordian.Instruction;
+import ATA.gordian.instructions.flow.ConditionedFlow;
+import ATA.gordian.instructions.flow.IntegerFlow;
 
 /**
  * Instruction that changes flow of the program. Is identified with '{' and '}'.

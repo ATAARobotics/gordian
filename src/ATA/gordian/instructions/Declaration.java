@@ -1,8 +1,8 @@
-package edu.ata.gordian.instructions;
+package ATA.gordian.instructions;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.Instruction;
-import edu.ata.gordian.StringUtils;
+import ATA.gordian.Data;
+import ATA.gordian.Instruction;
+import ATA.gordian.StringUtils;
 
 /**
  * Instruction that assigns a variable name to a specified value (in

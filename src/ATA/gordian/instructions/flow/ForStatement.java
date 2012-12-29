@@ -1,6 +1,6 @@
-package edu.ata.gordian.instructions.flow;
+package ATA.gordian.instructions.flow;
 
-import edu.ata.gordian.Instruction;
+import ATA.gordian.Instruction;
 
 /**
  * Instruction that runs a certain amount of times.

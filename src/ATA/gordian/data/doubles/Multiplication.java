@@ -1,8 +1,8 @@
-package edu.ata.gordian.data.doubles;
+package ATA.gordian.data.doubles;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.StringUtils;
-import edu.ata.gordian.data.NumberData;
+import ATA.gordian.Data;
+import ATA.gordian.StringUtils;
+import ATA.gordian.data.NumberData;
 
 /**
  * Subset of {@link Calculation} that multiplies two numbers.

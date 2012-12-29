@@ -1,8 +1,8 @@
-package edu.ata.gordian.data.strings;
+package ATA.gordian.data.strings;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.StringUtils;
-import edu.ata.gordian.data.StringData;
+import ATA.gordian.Data;
+import ATA.gordian.StringUtils;
+import ATA.gordian.data.StringData;
 
 /**
  * String data type that represents concatenated strings. This means a

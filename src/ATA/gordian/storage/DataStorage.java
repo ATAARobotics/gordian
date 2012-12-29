@@ -1,6 +1,6 @@
-package edu.ata.gordian.storage;
+package ATA.gordian.storage;
 
-import edu.ata.gordian.Data;
+import ATA.gordian.Data;
 
 /**
  * Basic class used to store {@link Data}.

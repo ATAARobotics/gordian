@@ -1,8 +1,8 @@
-package edu.ata.gordian.storage;
+package ATA.gordian.storage;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.data.NumberData;
-import edu.ata.gordian.instructions.MethodBody;
+import ATA.gordian.Data;
+import ATA.gordian.data.NumberData;
+import ATA.gordian.instructions.MethodBody;
 
 /**
  * Method storage that stores all methods. print() and wait(double) are added

@@ -1,9 +1,9 @@
-package edu.ata.gordian;
+package ATA.gordian;
 
-import edu.ata.gordian.instructions.Declaration;
-import edu.ata.gordian.instructions.FlowControl;
-import edu.ata.gordian.instructions.Manipulation;
-import edu.ata.gordian.instructions.Method;
+import ATA.gordian.instructions.Declaration;
+import ATA.gordian.instructions.FlowControl;
+import ATA.gordian.instructions.Manipulation;
+import ATA.gordian.instructions.Method;
 
 /**
  * Basic framework for code that "does something". No real qualifications apart

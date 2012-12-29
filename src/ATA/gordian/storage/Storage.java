@@ -1,4 +1,4 @@
-package edu.ata.gordian.storage;
+package ATA.gordian.storage;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

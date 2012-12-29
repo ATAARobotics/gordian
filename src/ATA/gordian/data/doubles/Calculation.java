@@ -1,8 +1,8 @@
-package edu.ata.gordian.data.doubles;
+package ATA.gordian.data.doubles;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.data.DoubleData;
-import edu.ata.gordian.data.NumberData;
+import ATA.gordian.Data;
+import ATA.gordian.data.DoubleData;
+import ATA.gordian.data.NumberData;
 
 /**
  * DoubleData subclass that represents all binary calculations. (+, -, *, /) Is

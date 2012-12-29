@@ -1,4 +1,4 @@
-package edu.ata.gordian;
+package ATA.gordian;
 
 /**
  * A basic utility library for manipulating strings.

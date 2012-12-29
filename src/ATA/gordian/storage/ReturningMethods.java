@@ -1,8 +1,8 @@
-package edu.ata.gordian.storage;
+package ATA.gordian.storage;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.StringUtils;
-import edu.ata.gordian.data.ReturningMethod;
+import ATA.gordian.Data;
+import ATA.gordian.StringUtils;
+import ATA.gordian.data.ReturningMethod;
 
 /**
  * Storage for all returning methods.

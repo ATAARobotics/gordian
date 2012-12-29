@@ -1,7 +1,7 @@
-package edu.ata.gordian.instructions;
+package ATA.gordian.instructions;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.storage.Methods;
+import ATA.gordian.Data;
+import ATA.gordian.storage.Methods;
 
 /**
  * Basic method body used to add new methods to {@link Methods#METHODS_STORAGE}.

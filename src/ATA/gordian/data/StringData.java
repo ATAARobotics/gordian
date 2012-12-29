@@ -1,8 +1,8 @@
-package edu.ata.gordian.data;
+package ATA.gordian.data;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.StringUtils;
-import edu.ata.gordian.data.strings.Concatenation;
+import ATA.gordian.Data;
+import ATA.gordian.StringUtils;
+import ATA.gordian.data.strings.Concatenation;
 
 /**
  * Data class representing string values. This class is dangerous due to

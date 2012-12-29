@@ -1,11 +1,11 @@
-package edu.ata.gordian.instructions.flow;
+package ATA.gordian.instructions.flow;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.Instruction;
-import edu.ata.gordian.Script;
-import edu.ata.gordian.data.IntegerData;
-import edu.ata.gordian.data.NumberData;
-import edu.ata.gordian.instructions.FlowControl;
+import ATA.gordian.Data;
+import ATA.gordian.Instruction;
+import ATA.gordian.Script;
+import ATA.gordian.data.IntegerData;
+import ATA.gordian.data.NumberData;
+import ATA.gordian.instructions.FlowControl;
 
 /**
  * Basic flow control that runs based on an integer value.

@@ -1,12 +1,12 @@
-package edu.ata.gordian;
+package ATA.gordian;
 
-import edu.ata.gordian.data.BooleanData;
-import edu.ata.gordian.data.DoubleData;
-import edu.ata.gordian.data.IntegerData;
-import edu.ata.gordian.data.ReturningMethod;
-import edu.ata.gordian.data.StringData;
-import edu.ata.gordian.storage.DataStorage;
-import edu.ata.gordian.storage.ReturningMethods;
+import ATA.gordian.data.BooleanData;
+import ATA.gordian.data.DoubleData;
+import ATA.gordian.data.IntegerData;
+import ATA.gordian.data.ReturningMethod;
+import ATA.gordian.data.StringData;
+import ATA.gordian.storage.DataStorage;
+import ATA.gordian.storage.ReturningMethods;
 
 /**
  * Basic framework for all data. In most programming languages (including Java),

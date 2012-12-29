@@ -1,6 +1,6 @@
-package edu.ata.gordian.instructions;
+package ATA.gordian.instructions;
 
-import edu.ata.gordian.Instruction;
+import ATA.gordian.Instruction;
 
 /**
  * Instruction that can change the value of a variable without using var = new

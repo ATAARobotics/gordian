@@ -1,8 +1,8 @@
-package edu.ata.gordian.instructions.flow;
+package ATA.gordian.instructions.flow;
 
-import edu.ata.gordian.Data;
-import edu.ata.gordian.Instruction;
-import edu.ata.gordian.data.BooleanData;
+import ATA.gordian.Data;
+import ATA.gordian.Instruction;
+import ATA.gordian.data.BooleanData;
 
 /**
  * Instruction that runs conditionally once depending on the argument.
