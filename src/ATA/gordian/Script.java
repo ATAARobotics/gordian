@@ -1,6 +1,5 @@
 package ATA.gordian;
 
-import ATA.gordian.Data;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
