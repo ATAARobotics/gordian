@@ -10,6 +10,7 @@ import edu.gordian.variable.BooleanInterface;
 import edu.gordian.variable.BooleanVariable;
 import edu.gordian.variable.NumberInterface;
 import edu.gordian.variable.NumberVariable;
+import edu.gordian.variable.StringInterface;
 import edu.gordian.variable.StringVariable;
 import edu.gordian.variable.field.BooleanField;
 import edu.gordian.variable.field.NumberField;
@@ -19,15 +20,18 @@ import java.util.ArrayList;
 public class Gordian {
 
     private final String script;
-    private final ArrayList methods = new ArrayList();
-    private final ArrayList fields = new ArrayList();
+    private final ArrayList methods;
+    private final ArrayList fields;
     private final ArrayList blockStack = new ArrayList();
+    private int count = 0;
     private If prevIf;
 
     public Gordian(String script, Method[] methods) {
         if (script == null) {
             throw new NullPointerException("Null script");
         }
+        this.methods = new ArrayList();
+        this.fields = new ArrayList();
         if (methods != null) {
             for (int x = 0; x < methods.length; x++) {
                 this.methods.add(methods[x]);
@@ -40,6 +44,15 @@ public class Gordian {
         this(script, null);
     }
 
+    public Gordian(Gordian gordian, String script) {
+        if (script == null) {
+            throw new NullPointerException("Null script");
+        }
+        this.methods = gordian.methods;
+        this.fields = gordian.fields;
+        this.script = StringUtils.replace(StringUtils.replace(script, '\n', ";"), ']', "];");
+    }
+
     public void addMethod(Method method) {
         methods.add(method);
     }
@@ -48,7 +61,7 @@ public class Gordian {
         String[] s = StringUtils.split(script, ';');
         for (int x = 0; x < s.length; x++) {
             s[x] = s[x].trim();
-            if (!(s[x].isEmpty() && s[x].startsWith("#"))) {
+            if (!(s[x].length() == 0 && s[x].startsWith("#"))) {
                 doLine(s[x]);
             }
         }
@@ -56,10 +69,19 @@ public class Gordian {
 
     private void doLine(String line) {
         if (StringUtils.contains(line, "[")) {
+            count++;
+        } else if (StringUtils.contains(line, "]")) {
+            count--;
+        }
+        if (blockStack.size() > 0 && !(StringUtils.contains(line, "]") && count == 0)) {
+            ((Special) blockStack.get(blockStack.size() - 1)).add(line);
+            return;
+        }
+        if (StringUtils.contains(line, "[")) {
             String start = line.substring(0, line.indexOf("["));
             String arg = null;
             if (StringUtils.contains(start, "(") && StringUtils.contains(start, ")")) {
-                arg = start.substring(start.indexOf("(") + 1, start.lastIndexOf(")"));
+                arg = start.substring(start.indexOf("(") + 1, start.lastIndexOf(')'));
             }
             Special newBlock;
             if (start.startsWith("while")) {
@@ -67,7 +89,7 @@ public class Gordian {
             } else if (start.startsWith("for")) {
                 Variable variable = convertVariable(arg);
                 if (variable instanceof NumberVariable) {
-                    newBlock = new For(((NumberVariable) variable).intValue());
+                    newBlock = new For(this, ((NumberVariable) variable).intValue());
                 } else {
                     System.err.println("Invalid for loop count - " + variable.getLiteralString());
                     newBlock = new If(this, "false");
@@ -84,24 +106,17 @@ public class Gordian {
         if (StringUtils.contains(line, "]")) {
             Special currentBlock = (Special) blockStack.get(blockStack.size() - 1);
             blockStack.remove(currentBlock);
-            currentBlock.add(convertInstruction(line.substring(0, line.indexOf("]"))));
+            currentBlock.add(line.substring(0, line.indexOf("]")));
             currentBlock.run();
         }
         if (!StringUtils.contains(line, "[") && !StringUtils.contains(line, "]")) {
-            if (blockStack.size() > 0) {
-                ((Special) blockStack.get(blockStack.size() - 1)).add(convertInstruction(line));
-            } else {
-                convertInstruction(line).run();
-            }
+            convertInstruction(line).run();
         }
     }
 
-    private Instruction convertInstruction(String original) {
-        if (original.isEmpty()) {
-            return new Instruction() {
-                public void run() {
-                }
-            };
+    public Instruction convertInstruction(String original) {
+        if (original.length() == 0 || original.startsWith("#")) {
+            return new BlankInstruction();
         }
         if (StringUtils.contains(original, "=") && (original.indexOf("=") != original.indexOf("=="))
                 && (original.indexOf("=") - 1 != original.indexOf("!="))
@@ -118,7 +133,7 @@ public class Gordian {
             if (methods.get(x) instanceof RunningMethod && original.startsWith(((Method) methods.get(x)).getMethodName())
                     && original.indexOf("(") == ((Method) methods.get(x)).getMethodName().length() && StringUtils.contains(original, ")")) {
                 final RunningMethod method = (RunningMethod) methods.get(x);
-                String[] args = StringUtils.split(original.substring(original.indexOf("(") + 1, original.lastIndexOf(")")), ',');
+                String[] args = StringUtils.split(original.substring(original.indexOf("(") + 1, original.lastIndexOf(')')), ',');
                 final Variable[] arguments = new Variable[args.length];
                 for (int i = 0; i < arguments.length; i++) {
                     arguments[i] = convertVariable(args[i]);
@@ -134,8 +149,8 @@ public class Gordian {
             throw new NullPointerException("Null variable");
         }
         original = original.trim();
-        if (original.indexOf("\"") != original.lastIndexOf("\"")) {
-            return new StringVariable(original.substring(original.indexOf("\"") + 1, original.lastIndexOf("\"")));
+        if (original.indexOf("\"") != original.lastIndexOf('\"')) {
+            return new StringVariable(original.substring(original.indexOf("\"") + 1, original.lastIndexOf('\"')));
         }
         // Boolean
         if (StringUtils.contains(original, "&&")) {
@@ -173,7 +188,7 @@ public class Gordian {
             NumberInterface v1 = (NumberInterface) convertVariable(original.substring(0, original.indexOf(">")));
             NumberInterface v2 = (NumberInterface) convertVariable(original.substring(original.indexOf(">") + 1));
             return new BooleanVariable(v1.doubleValue() > v2.doubleValue());
-        } else if (StringUtils.contains(original, ">")) {
+        } else if (StringUtils.contains(original, "<")) {
             NumberInterface v1 = (NumberInterface) convertVariable(original.substring(0, original.indexOf("<")));
             NumberInterface v2 = (NumberInterface) convertVariable(original.substring(original.indexOf("<") + 1));
             return new BooleanVariable(v1.doubleValue() < v2.doubleValue());
@@ -203,7 +218,7 @@ public class Gordian {
         }
         for (int x = 0; x < methods.size(); x++) {
             if (original.startsWith(((Method) methods.get(x)).getMethodName())) {
-                String[] args = StringUtils.split(original.substring(original.indexOf("(") + 1, original.lastIndexOf(")")), ',');
+                String[] args = StringUtils.split(original.substring(original.indexOf("(") + 1, original.lastIndexOf(')')), ',');
                 final Variable[] arguments = new Variable[args.length];
                 for (int i = 0; i < arguments.length; i++) {
                     arguments[i] = convertVariable(args[i]);
@@ -225,7 +240,7 @@ public class Gordian {
 
         public void run() {
             if (StringUtils.contains(original, "++")) {
-                String name = original.substring(0, original.indexOf("++"));
+                String name = original.substring(0, original.indexOf("++")).trim();
                 NumberVariable value = (NumberVariable) convertVariable(original.substring(0, original.indexOf("++")));
                 for (int x = 0; x < fields.size(); x++) {
                     if (((Field) fields.get(x)).fieldName().equals(name)) {
@@ -234,7 +249,7 @@ public class Gordian {
                     }
                 }
             } else if (StringUtils.contains(original, "--")) {
-                String name = original.substring(0, original.indexOf("--"));
+                String name = original.substring(0, original.indexOf("--")).trim();
                 NumberVariable value = (NumberVariable) convertVariable(original.substring(0, original.indexOf("--")));
                 for (int x = 0; x < fields.size(); x++) {
                     if (((Field) fields.get(x)).fieldName().equals(name)) {
@@ -243,7 +258,7 @@ public class Gordian {
                     }
                 }
             } else {
-                String name = original.substring(0, original.indexOf("="));
+                String name = original.substring(0, original.indexOf("=")).trim();
                 Variable value = convertVariable(original.substring(original.indexOf("=") + 1));
                 for (int x = 0; x < fields.size(); x++) {
                     if (((Field) fields.get(x)).fieldName().equals(name)) {
@@ -256,15 +271,21 @@ public class Gordian {
         }
 
         private Field convert(String name, Variable value) {
-            if (value instanceof BooleanVariable) {
-                return new BooleanField(name, (BooleanVariable) value);
-            } else if (value instanceof NumberVariable) {
-                return new NumberField(name, (NumberVariable) value);
-            } else if (value instanceof StringVariable) {
-                return new StringField(name, (StringVariable) value);
+            if (value instanceof BooleanInterface) {
+                return new BooleanField(name, (BooleanInterface) value);
+            } else if (value instanceof NumberInterface) {
+                return new NumberField(name, (NumberInterface) value);
+            } else if (value instanceof StringInterface) {
+                return new StringField(name, (StringInterface) value);
             } else {
                 return new StringField(name, value.getValue().toString());
             }
+        }
+    }
+
+    private static class BlankInstruction implements Instruction {
+
+        public void run() {
         }
     }
 }

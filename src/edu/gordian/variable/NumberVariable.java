@@ -11,7 +11,7 @@ public class NumberVariable implements Variable, NumberInterface {
     }
 
     public final int intValue() {
-        return (int) Math.round(value);
+        return (int) value;
     }
 
     public final double doubleValue() {

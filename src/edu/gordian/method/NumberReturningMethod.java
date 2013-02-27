@@ -9,7 +9,7 @@ public abstract class NumberReturningMethod extends Method implements NumberInte
     }
 
     public final int intValue() {
-        return (int) Math.round(doubleValue());
+        return (int) doubleValue();
     }
 
     public final double doubleValue() {
