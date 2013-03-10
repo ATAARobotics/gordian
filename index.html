@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gordian by Team4334</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Gordian</h1>
+        <p>Alberta Tech Alliance's Scripting Language</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/Team4334/gordian" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/Team4334/gordian/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/Team4334/gordian/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h2>Gordian</h2>
+
+<h1></h1>
+
+<p>Alberta Tech Alliance's Scripting Language</p>
+
+<p>Designed for quick, easy scripting of autonomous modes</p>
+
+<h2>Script Specification</h2>
+
+<h1></h1>
+
+<h1>Using Gordian</h1>
+
+<p>To run multiple methods / assignments in a row, separate the commands using semi-colons or newlines.</p>
+
+<pre><code>foo();bar;
+</code></pre>
+
+<p>or</p>
+
+<pre><code>foo()
+bar()
+</code></pre>
+
+<p>or</p>
+
+<pre><code>foo();
+bar();
+</code></pre>
+
+<h1>Comments</h1>
+
+<p>Comments are marked using pound signs</p>
+
+<pre><code>foo();
+#bar();
+</code></pre>
+
+<p>bar(); will never be run</p>
+
+<h2>If statements</h2>
+
+<p>If statements use the notation</p>
+
+<pre><code>if(statement) [
+    foo();
+] else [
+    bar();
+]
+</code></pre>
+
+<h1>While loops</h1>
+
+<p>While loops use the notation</p>
+
+<pre><code>while(statement) [
+    foo();
+]
+</code></pre>
+
+<h1>For loops</h1>
+
+<p>For loops use the notation</p>
+
+<pre><code>for(Integer) [
+    bar();
+]
+</code></pre>
+
+<p>For loops take the number of times to loop as an argument. They do not follow the typical notation.</p>
+
+<h1>Assignments</h1>
+
+<p>To assign a variable use the notation</p>
+
+<pre><code>string = "String"
+integer = 20
+double = 120.3443
+boolean = true
+</code></pre>
+
+<p>Type is inferred, so no type declaration is needed.</p>
+
+<h2>Values</h2>
+
+<h1>Strings</h1>
+
+<p>Strings are in the notation
+    "String"
+Which is equivalent to 
+    String
+Quotation marks are ignored and treated as boundaries of the string (only if 2 quotation marks exist)</p>
+
+<h1>Doubles / Integers</h1>
+
+<p>Double and Integer type is inferred (ie. 2 is an integer and 2.1 is a double), and cannot be declared.</p>
+
+<h1>Calculations</h1>
+
+<p>All calculations are double values. Calculations follow basic PEDMAS rules. Parenthesis are not available (use multi-step calculations if needed).
+Variables can be used in calculations.</p>
+
+<pre><code>x = 10.3 / 1
+y = 2039 * 9 + x / 2
+</code></pre>
+
+<p>In this case</p>
+
+<pre><code>x = (10.3 / 1.0)
+y = (2039 * 9.0) + ((10.3) / 2.0)
+</code></pre>
+
+<p>Integer division is treated as double division.</p>
+
+<h1>Operators</h1>
+
+<p>Integers and Doubles can be incremented or decremented using "++" and "--"</p>
+
+<pre><code>x = 10
+x--
+# x is 9
+x++
+# x is 10
+</code></pre>
+
+<h1>Booleans</h1>
+
+<p>Booleans can be literal values of "true" and "false".</p>
+
+<pre><code>x = true
+y = false
+</code></pre>
+
+<p>They can also contain &amp;&amp;, ||, &gt;, &lt;, &gt;=, &lt;=, == and !=</p>
+
+<pre><code>x = true &amp;&amp; true
+# x is true
+x = x || false
+# x is still true
+x = 10 &gt; 3
+# x is still true
+x = 12 &lt; 7
+# x is false
+x = 1 &gt;= 1
+# x is true
+x = 29 &lt;= 2
+# x is false
+x = 12 == 12
+# x is true
+x = 13 != 13
+# x is false
+</code></pre>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/Team4334">Team4334</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
