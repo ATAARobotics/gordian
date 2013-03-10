@@ -7,9 +7,11 @@ To run multiple methods / assignments in a row, separate the commands using semi
 
     foo();bar;
 or
+
     foo()
     bar()
 or
+
     foo();
     bar();
 
