@@ -26,10 +26,7 @@ If statements use the notation
 
     if(statement) [
         foo();
-    ]
-There are no else statements. To check the opposite statement, use the notation
-
-    if(!statement) [
+    ] else [
         bar();
     ]
 
