@@ -1,6 +1,7 @@
 package edu.gordian.scopes;
 
 import edu.gordian.Scope;
+import edu.gordian.Strings;
 
 public class If extends Scope {
 
@@ -12,8 +13,15 @@ public class If extends Scope {
     }
 
     public void run(String script) throws Exception {
+        String i = script, e = "";
+        if(Strings.contains(script, "else;")) {
+            i = script.substring(0, script.indexOf("else;"));
+            e = script.substring(script.indexOf("else;") + 5);
+        }
         if (((Boolean) toValue(condition).getValue()).booleanValue()) {
-            super.run(script);
+            super.run(i);
+        } else {
+            super.run(e);
         }
     }
 }

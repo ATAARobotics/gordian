@@ -4,15 +4,15 @@ import edu.gordian.Scope;
 
 public class For extends Scope {
 
-    private final String condition;
+    private final int condition;
 
     public For(String condition, Scope scope) {
         super(scope);
-        this.condition = condition;
+        this.condition = ((Double) toValue(condition).getValue()).intValue();
     }
 
     public void run(String script) throws Exception {
-        for (int x = 0; x < ((Double) toValue(condition).getValue()).intValue(); x++) {
+        for (int x = 0; x < condition; x++) {
             super.run(script);
         }
     }

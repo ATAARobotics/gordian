@@ -60,10 +60,6 @@ public class Scope {
 
     public Value toValue(String e) {
         try {
-            return new StaticValue(Integer.valueOf(e));
-        } catch (NumberFormatException ex) {
-        }
-        try {
             return new StaticValue(Double.valueOf(e));
         } catch (NumberFormatException ex) {
         }
@@ -102,19 +98,24 @@ public class Scope {
             return (Value) publicVars.get(e);
         }
         if (Strings.containsThatIsnt(e, '-', "--")) {
-            return new Subtraction(e);
+            return new Subtraction(e.substring(0, Strings.indexThatIsnt(e, '-', "--")),
+                    e.substring(Strings.indexThatIsnt(e, '-', "--") + 1));
         }
         if (Strings.containsThatIsnt(e, '+', "++")) {
-            return new Addition(e);
+            return new Addition(e.substring(0, Strings.indexThatIsnt(e, '+', "++")),
+                    e.substring(Strings.indexThatIsnt(e, '+', "++") + 1));
         }
         if (Strings.contains(e, '/')) {
-            return new Division(e);
+            return new Division(e.substring(0, e.indexOf('/')),
+                    e.substring(e.indexOf('/') + 1));
         }
         if (Strings.contains(e, '*')) {
-            return new Multiplication(e);
+            return new Multiplication(e.substring(0, e.indexOf('*')),
+                    e.substring(e.indexOf('*') + 1));
         }
         if (Strings.contains(e, '%')) {
-            return new Modulus(e);
+            return new Modulus(e.substring(0, e.indexOf('%')),
+                    e.substring(e.indexOf('%') + 1));
         }
 
         if (Strings.contains(e, '(') && Strings.contains(e, ')')) {
@@ -133,6 +134,9 @@ public class Scope {
             return new Increment(e.substring(0, e.indexOf("--")), -1);
         }
 
+        if(Strings.contains(e, "\"")) {
+            e = e.substring(1, e.length() - 1);
+        }
         return new StaticValue(e);
     }
 
@@ -146,10 +150,10 @@ public class Scope {
 
     public Element toElement(String e) throws Exception {
         if (Strings.contains(e, '=')
-                && !Strings.isFirstInstanceBeside(e, '=', '!')
-                && !Strings.isFirstInstanceBeside(e, '=', '=')
-                && !Strings.isFirstInstanceBeside(e, '=', '>')
-                && !Strings.isFirstInstanceBeside(e, '=', '<')) {
+                && e.indexOf('=') != e.indexOf("!=")
+                && e.indexOf('=') != e.indexOf("==")
+                && e.indexOf('=') != e.indexOf("<=")
+                && e.indexOf('=') != e.indexOf(">=")) {
             // DECLARATION
             return new Declaration(e.substring(0, e.indexOf('=')), e.substring(e.indexOf('=') + 1));
         }
@@ -213,7 +217,7 @@ public class Scope {
         String scope = "";
         while (t.hasMoreElements()) {
             String next = t.nextToken();
-            if(Strings.isEmpty(next)) {
+            if (Strings.isEmpty(next)) {
                 continue;
             }
             line++;
@@ -264,8 +268,6 @@ public class Scope {
         Object o = v.getValue();
         if (o instanceof Double) {
             return (Double) o;
-        } else if (o instanceof Integer) {
-            return Double.valueOf(((Integer) o).doubleValue());
         } else {
             return Double.valueOf(0);
         }
@@ -308,17 +310,17 @@ public class Scope {
             int value;
             if (publicVars.containsKey(key)) {
                 int old = toNumber((Value) publicVars.get(key)).intValue();
-                publicVars.put(key, new StaticValue(Integer.valueOf(old + i)));
+                publicVars.put(key, new StaticValue(Double.valueOf(old + i)));
                 value = old + i;
             } else if (privateVars.containsKey(key)) {
                 int old = toNumber((Value) privateVars.get(key)).intValue();
-                privateVars.put(key, new StaticValue(Integer.valueOf(old + i)));
+                privateVars.put(key, new StaticValue(Double.valueOf(old + i)));
                 value = old + i;
             } else {
-                privateVars.put(key, new StaticValue(Integer.valueOf(0 + i)));
+                privateVars.put(key, new StaticValue(Double.valueOf(0 + i)));
                 value = 0 + i;
             }
-            return Integer.valueOf(value);
+            return Double.valueOf(value);
         }
 
         public String toString() {
@@ -328,17 +330,15 @@ public class Scope {
 
     private abstract class Calculation implements Value {
 
-        private final String full;
-        private final int symbol;
+        private Double value;
 
-        public Calculation(String full, int symbol) {
-            this.full = full;
-            this.symbol = symbol;
+        public Calculation(String first, String second) {
+            value = getNumber(toNumber(toValue(first)),
+                    toNumber(toValue(second)));
         }
 
         public Object getValue() {
-            return getNumber(toNumber(toValue(full.substring(0, symbol))),
-                    toNumber(toValue(full.substring(symbol + 1))));
+            return value;
         }
 
         public abstract Double getNumber(Double f1, Double f2);
@@ -350,8 +350,8 @@ public class Scope {
 
     private final class Addition extends Calculation {
 
-        public Addition(String full) {
-            super(full, Strings.indexThatIsnt(full, '+', "++"));
+        public Addition(String first, String second) {
+            super(first, second);
         }
 
         public Double getNumber(Double f1, Double f2) {
@@ -361,8 +361,8 @@ public class Scope {
 
     private final class Subtraction extends Calculation {
 
-        public Subtraction(String full) {
-            super(full, Strings.indexThatIsnt(full, '-', "--"));
+        public Subtraction(String first, String second) {
+            super(first, second);
         }
 
         public Double getNumber(Double f1, Double f2) {
@@ -372,8 +372,8 @@ public class Scope {
 
     private final class Multiplication extends Calculation {
 
-        public Multiplication(String full) {
-            super(full, full.indexOf('*'));
+        public Multiplication(String first, String second) {
+            super(first, second);
         }
 
         public Double getNumber(Double f1, Double f2) {
@@ -383,8 +383,8 @@ public class Scope {
 
     private final class Division extends Calculation {
 
-        public Division(String full) {
-            super(full, full.indexOf('/'));
+        public Division(String first, String second) {
+            super(first, second);
         }
 
         public Double getNumber(Double f1, Double f2) {
@@ -394,8 +394,8 @@ public class Scope {
 
     private final class Modulus extends Calculation {
 
-        public Modulus(String full) {
-            super(full, full.indexOf('%'));
+        public Modulus(String first, String second) {
+            super(first, second);
         }
 
         public Double getNumber(Double f1, Double f2) {
