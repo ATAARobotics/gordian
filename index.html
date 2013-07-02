@@ -39,163 +39,141 @@
         <ul></ul>
       </nav>
       <section>
-        <h2>Gordian</h2>
+        <h1>
+<a name="gordian" class="anchor" href="#gordian"><span class="octicon octicon-link"></span></a>GORDIAN</h1>
 
-<h1></h1>
+<hr><p>This is Gordian. It is a scripting language written in Java to run programs based solely on their text.
+It is interpreted, and provides no guarantees. A lot of errors are caught at runtime, which might make your job harder. As a bonus however, Gordian is extremely lightweight, flexible and can be hacked very easily. (in a good way)</p>
 
-<p>Alberta Tech Alliance's Scripting Language</p>
+<h1>
+<a name="datatypes-and-operators" class="anchor" href="#datatypes-and-operators"><span class="octicon octicon-link"></span></a>Datatypes and Operators</h1>
 
-<p>Designed for quick, easy scripting of autonomous modes</p>
+<h3>
+<a name="numbers-are-doubles" class="anchor" href="#numbers-are-doubles"><span class="octicon octicon-link"></span></a>Numbers are doubles</h3>
 
-<h2>Script Specification</h2>
-
-<h1></h1>
-
-<h1>Using Gordian</h1>
-
-<p>To run multiple methods / assignments in a row, separate the commands using semi-colons or newlines.</p>
-
-<pre><code>foo();bar;
+<pre><code>x = 12
+x = 232.32914
 </code></pre>
 
-<p>or</p>
+<h3>
+<a name="math-works-in-floating-point" class="anchor" href="#math-works-in-floating-point"><span class="octicon octicon-link"></span></a>Math works in floating point</h3>
 
-<pre><code>foo()
-bar()
+<pre><code>x = 12 / 23 ### =&gt; 0.5217391304347826
 </code></pre>
 
-<p>or</p>
+<h3>
+<a name="even-integer-math" class="anchor" href="#even-integer-math"><span class="octicon octicon-link"></span></a>Even integer math</h3>
 
-<pre><code>foo();
-bar();
+<pre><code>x = 2 / 1 ### =&gt; 2.0
 </code></pre>
 
-<h1>Comments</h1>
+<h3>
+<a name="enforce-precedence-by-steps-not-parentheses" class="anchor" href="#enforce-precedence-by-steps-not-parentheses"><span class="octicon octicon-link"></span></a>Enforce precedence by steps (Not parentheses!)</h3>
 
-<p>Comments are marked using pound signs</p>
-
-<pre><code>foo();
-#bar();
+<pre><code>x = 3 / 2 ### =&gt; 1.5
+x = x * 3 ### =&gt; 4.5
+x = x + 2 ### =&gt; 6.5
 </code></pre>
 
-<p>bar(); will never be run</p>
+<h3>
+<a name="incrementing-and-decrementing" class="anchor" href="#incrementing-and-decrementing"><span class="octicon octicon-link"></span></a>Incrementing and decrementing</h3>
 
-<h2>If statements</h2>
-
-<p>If statements use the notation</p>
-
-<pre><code>if(statement) [
-    foo();
-] else [
-    bar();
-]
+<pre><code>x++ ### When x doesn't exist, starts at 0 (x++ is 1)
+x-- ### When x doesn't exist, starts at 0 (x-- is -1)
 </code></pre>
 
-<h1>While loops</h1>
-
-<p>While loops use the notation</p>
-
-<pre><code>while(statement) [
-    foo();
-]
-</code></pre>
-
-<h1>For loops</h1>
-
-<p>For loops use the notation</p>
-
-<pre><code>for(Integer) [
-    bar();
-]
-</code></pre>
-
-<p>For loops take the number of times to loop as an argument. They do not follow the typical notation.</p>
-
-<h1>Assignments</h1>
-
-<p>To assign a variable use the notation</p>
-
-<pre><code>string = "String"
-integer = 20
-double = 120.3443
-boolean = true
-</code></pre>
-
-<p>Type is inferred, so no type declaration is needed.</p>
-
-<h2>Values</h2>
-
-<h1>Strings</h1>
-
-<p>Strings are in the notation
-    "String"
-Which is equivalent to 
-    String
-Quotation marks are ignored and treated as boundaries of the string (only if 2 quotation marks exist)</p>
-
-<h1>Doubles / Integers</h1>
-
-<p>Double and Integer type is inferred (ie. 2 is an integer and 2.1 is a double), and cannot be declared.</p>
-
-<h1>Calculations</h1>
-
-<p>All calculations are double values. Calculations follow basic PEDMAS rules. Parenthesis are not available (use multi-step calculations if needed).
-Variables can be used in calculations.</p>
-
-<pre><code>x = 10.3 / 1
-y = 2039 * 9 + x / 2
-</code></pre>
-
-<p>In this case</p>
-
-<pre><code>x = (10.3 / 1.0)
-y = (2039 * 9.0) + ((10.3) / 2.0)
-</code></pre>
-
-<p>Integer division is treated as double division.</p>
-
-<h1>Operators</h1>
-
-<p>Integers and Doubles can be incremented or decremented using "++" and "--"</p>
-
-<pre><code>x = 10
-x--
-# x is 9
-x++
-# x is 10
-</code></pre>
-
-<h1>Booleans</h1>
-
-<p>Booleans can be literal values of "true" and "false".</p>
+<h2>
+<a name="booleans" class="anchor" href="#booleans"><span class="octicon octicon-link"></span></a>Booleans</h2>
 
 <pre><code>x = true
-y = false
+x = false
 </code></pre>
 
-<p>They can also contain &amp;&amp;, ||, &gt;, &lt;, &gt;=, &lt;=, == and !=</p>
+<p>*Types are not bound to variables!</p>
 
-<pre><code>x = true &amp;&amp; true
-# x is true
-x = x || false
-# x is still true
-x = 10 &gt; 3
-# x is still true
-x = 12 &lt; 7
-# x is false
-x = 1 &gt;= 1
-# x is true
-x = 29 &lt;= 2
-# x is false
-x = 12 == 12
-# x is true
-x = 13 != 13
-# x is false
+<h3>
+<a name="reverse-booleans-with-" class="anchor" href="#reverse-booleans-with-"><span class="octicon octicon-link"></span></a>Reverse booleans with !</h3>
+
+<pre><code>x = !true ### =&gt; false
+</code></pre>
+
+<h3>
+<a name="equality-uses-objectequals---strings-too" class="anchor" href="#equality-uses-objectequals---strings-too"><span class="octicon octicon-link"></span></a>Equality (uses Object.equals() - strings too!)</h3>
+
+<pre><code>x = h == h ### =&gt; true
+</code></pre>
+
+<h3>
+<a name="inequality" class="anchor" href="#inequality"><span class="octicon octicon-link"></span></a>Inequality</h3>
+
+<pre><code>x = h != g ### =&gt; true
+</code></pre>
+
+<h3>
+<a name="comparisons" class="anchor" href="#comparisons"><span class="octicon octicon-link"></span></a>Comparisons</h3>
+
+<pre><code>x = 3 &gt; 2 ### =&gt; true
+x = 4.5 &lt; 2 ### =&gt; false
+x = 1 &gt;= 1 ### =&gt; true
+x = 4 &lt;= 10 ### =&gt; false
+</code></pre>
+
+<h3>
+<a name="strings-are-created-in-quotes" class="anchor" href="#strings-are-created-in-quotes"><span class="octicon octicon-link"></span></a>Strings are created in quotes</h3>
+
+<pre><code>x = "Hello World" ### =&gt; Hello World
+</code></pre>
+
+<h3>
+<a name="can-also-create-strings-without-quotes-but-removes-spaces" class="anchor" href="#can-also-create-strings-without-quotes-but-removes-spaces"><span class="octicon octicon-link"></span></a>Can also create strings without quotes, but removes spaces</h3>
+
+<pre><code>x = Hello World ### =&gt; HelloWorld
+</code></pre>
+
+<h1>
+<a name="variables" class="anchor" href="#variables"><span class="octicon octicon-link"></span></a>Variables</h1>
+
+<h3>
+<a name="type-is-not-enforced" class="anchor" href="#type-is-not-enforced"><span class="octicon octicon-link"></span></a>Type is not enforced</h3>
+
+<pre><code>x = true
+x = 3
+x = Hello
+</code></pre>
+
+<h3>
+<a name="remove-value-using-notation-sets-as-empty-value" class="anchor" href="#remove-value-using-notation-sets-as-empty-value"><span class="octicon octicon-link"></span></a>Remove value using notation (sets as empty value)</h3>
+
+<pre><code>x = 
+</code></pre>
+
+<h1>
+<a name="control-flow" class="anchor" href="#control-flow"><span class="octicon octicon-link"></span></a>Control flow</h1>
+
+<pre><code>x = 0
+
+if(x &gt;= 1)
+    x++
+else
+    x = 12
+end
+</code></pre>
+
+<h3>
+<a name="for-runs-x-amount-of-times" class="anchor" href="#for-runs-x-amount-of-times"><span class="octicon octicon-link"></span></a>For runs x amount of times</h3>
+
+<pre><code>for(x)
+    x++
+end
+
+while(x++ &lt; 100)
+    ### Do things
+end
 </code></pre>
       </section>
       <footer>
         <p>Project maintained by <a href="https://github.com/Team4334">Team4334</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
