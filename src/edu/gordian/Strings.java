@@ -1,6 +1,6 @@
 package edu.gordian;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * A set of utility methods to manipulate and test strings. Contains many of the
@@ -27,6 +27,216 @@ public final class Strings {
     }
 
     /**
+     * Returns the index of {@code s} that is not {@code i}. If no {@code s}
+     * exists that is not an {@code i}, this returns -1.
+     *
+     * @param string string to test
+     * @param s element to find index of
+     * @param i element that {@code s} should not have the same index as
+     * @return index of {@code s} that isn't the same index as {@code i}
+     */
+    public static int indexThatIsnt(String string, String s, String i) {
+        int index;
+        int spare = 0;
+        while ((index = string.indexOf(s)) >= 0 && index == string.indexOf(i)) {
+            string = string.substring(index + i.length());
+            spare += index + i.length();
+        }
+        return index < 0 ? -1 : index + spare;
+    }
+
+    /**
+     * Returns the index of {@code s} that is not {@code i}. If no {@code s}
+     * exists that is not an {@code i}, this returns -1.
+     *
+     * @param string string to test
+     * @param s element to find index of
+     * @param i element that {@code s} should not have the same index as
+     * @return index of {@code s} that isn't the same index as {@code i}
+     */
+    public static int indexThatIsnt(String string, char s, String i) {
+        return indexThatIsnt(string, String.valueOf(s), i);
+    }
+
+    /**
+     * Returns the index of {@code s} that is not {@code i}. If no {@code s}
+     * exists that is not an {@code i}, this returns -1.
+     *
+     * @param string string to test
+     * @param s element to find index of
+     * @param i element that {@code s} should not have the same index as
+     * @return index of {@code s} that isn't the same index as {@code i}
+     */
+    public static int indexThatIsnt(String string, String s, char i) {
+        return indexThatIsnt(string, s, String.valueOf(i));
+    }
+
+    /**
+     * Returns the index of {@code s} that is not {@code i}. If no {@code s}
+     * exists that is not an {@code i}, this returns -1.
+     *
+     * @param string string to test
+     * @param s element to find index of
+     * @param i element that {@code s} should not have the same index as
+     * @return index of {@code s} that isn't the same index as {@code i}
+     */
+    public static int indexThatIsnt(String string, char s, char i) {
+        return indexThatIsnt(string, String.valueOf(s), String.valueOf(i));
+    }
+
+    /**
+     * Uses {@link #isBeside(java.lang.String, int, int, java.lang.String)} to
+     * test if the first instance of {@code is} is beside {@code beside}.
+     *
+     * <p> Basically equivalent to calling
+     * <pre>
+     * isBeside(string, string.indexOf(is), is.length(), beside)
+     * </pre>
+     *
+     * @param string original string to check in
+     * @param is string to check beside
+     * @param beside string that could be beside {@code is}
+     * @return if {@code beside} is directly beside the first instance of
+     * {@code is}
+     */
+    public static boolean isFirstInstanceBeside(String string, String is, String beside) {
+        return isBeside(string, string.indexOf(is), is.length(), beside);
+    }
+
+    /**
+     * Uses {@link #isBeside(java.lang.String, int, int, java.lang.String)} to
+     * test if the first instance of {@code is} is beside {@code beside}.
+     *
+     * <p> Basically equivalent to calling
+     * <pre>
+     * isBeside(string, string.indexOf(is), is.length(), beside)
+     * </pre>
+     *
+     * @param string original string to check in
+     * @param is string to check beside
+     * @param beside character that could be beside {@code is}
+     * @return if {@code beside} is directly beside the first instance of
+     * {@code is}
+     */
+    public static boolean isFirstInstanceBeside(String string, String is, char beside) {
+        return isFirstInstanceBeside(string, is, String.valueOf(beside));
+    }
+
+    /**
+     * Uses {@link #isBeside(java.lang.String, int, int, java.lang.String)} to
+     * test if the first instance of {@code is} is beside {@code beside}.
+     *
+     * <p> Basically equivalent to calling
+     * <pre>
+     * isBeside(string, string.indexOf(is), 1, beside)
+     * </pre>
+     *
+     * @param string original string to check in
+     * @param is string to check beside
+     * @param beside string that could be beside {@code is}
+     * @return if {@code beside} is directly beside the first instance of
+     * {@code is}
+     */
+    public static boolean isFirstInstanceBeside(String string, char is, String beside) {
+        return isBeside(string, string.indexOf(is), 1, beside);
+    }
+
+    /**
+     * Uses {@link #isBeside(java.lang.String, int, int, java.lang.String)} to
+     * test if the first instance of {@code is} is beside {@code beside}.
+     *
+     * <p> Basically equivalent to calling
+     * <pre>
+     * isBeside(string, string.indexOf(is), 1, beside)
+     * </pre>
+     *
+     * @param string original string to check in
+     * @param is string to check beside
+     * @param beside character that could be beside {@code is}
+     * @return if {@code beside} is directly beside the first instance of
+     * {@code is}
+     */
+    public static boolean isFirstInstanceBeside(String string, char is, char beside) {
+        return isFirstInstanceBeside(string, is, String.valueOf(beside));
+    }
+
+    /**
+     * Returns whether the element at {@code c} index in {@code string} with
+     * {@code length} length is directly beside {@code beside}.
+     *
+     * @param string original string to check in
+     * @param c index of the element to check beside
+     * @param length the length of {@code c}
+     * @param beside string that could be beside {@code c}
+     * @return if {@code beside} is directly beside {@code c}, in the context of
+     * {@code c}'s length
+     */
+    public static boolean isBeside(String string, int c, int length, String beside) {
+        if (c < 0 || c + length >= string.length()) {
+            return false;
+        }
+        int startFront = c - beside.length();
+        int endback = c + length + beside.length();
+        boolean f = true, b = true;
+        if (startFront < 0 || startFront >= string.length()) {
+            f = false;
+        }
+        if (endback < 0 || endback >= string.length()) {
+            b = false;
+        }
+
+        return f || b ? ((f ? (string.substring(startFront, c).equals(beside)) : false)
+                || (b ? string.substring(c + length, endback).equals(beside) : false)) : false;
+    }
+
+    /**
+     * Returns whether <b>any</b> of the instances of {@code is} are directly
+     * beside {@code beside}. Use
+     * {@link #isBeside(java.lang.String, int, int, java.lang.String)} to check
+     * a specific instance of the string.
+     *
+     * @param string original string to check in
+     * @param is string to check beside
+     * @param beside string that could be beside {@code is}
+     * @return if {@code beside} is directly beside any instances of {@code is}
+     */
+    public static boolean isBeside(String string, String is, String beside) {
+        String[] s = split(string, beside);
+        for (int x = 0; x < s.length; x++) {
+            if (s[x].startsWith(is) || s[x].endsWith(is)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether any instances of {@code c} are directly beside
+     * {@code beside} in {@code string}.
+     *
+     * @param string original string to check in
+     * @param c character to check beside
+     * @param beside string that could be beside {@code c}
+     * @return if {@code beside} is directly beside any instances of {@code c}
+     */
+    public static boolean isBeside(String string, char c, String beside) {
+        return isBeside(string, String.valueOf(c), beside);
+    }
+
+    /**
+     * Returns whether any instances of {@code c} are directly beside
+     * {@code beside} in {@code string}.
+     *
+     * @param string original string to check in
+     * @param c character to check beside
+     * @param beside character that could be beside {@code c}
+     * @return if {@code beside} is directly beside any instances of {@code c}
+     */
+    public static boolean isBeside(String string, char c, char beside) {
+        return isBeside(string, c, String.valueOf(beside));
+    }
+
+    /**
      * Splits the string into separate parts that happen in between the split.
      * <p>
      * Ex. {@code spilt("Hello world, my name is Tim.", ",")}
@@ -48,18 +258,18 @@ public final class Strings {
         if (string.indexOf(split) < 0) {
             return new String[]{string};
         }
-        ArrayList node = new ArrayList();
+        Vector node = new Vector();
         int index = string.indexOf(split);
         while (index >= 0) {
-            node.add(string.substring(0, index));
+            node.addElement(string.substring(0, index));
             string = string.substring(index + split.length());
             index = string.indexOf(split);
         }
-        node.add(string);
+        node.addElement(string);
 
         String[] a = new String[node.size()];
         for (int x = 0; x < a.length; x++) {
-            a[x] = node.get(x).toString();
+            a[x] = node.elementAt(x).toString();
         }
 
         return a;
@@ -133,6 +343,62 @@ public final class Strings {
      */
     public static boolean containsIgnoreCase(String string, char contains) {
         return containsIgnoreCase(string, String.valueOf(contains));
+    }
+
+    /**
+     * Returns whether {@code string} contains an instance of {@code contains}
+     * that isn't {@code isnt}.
+     *
+     * @param string string to test
+     * @param contains element it could contain
+     * @param isnt element that index cannot be of
+     * @return if string contains an instance of {@code contains} that isn't
+     * {@code isnt}
+     */
+    public static boolean containsThatIsnt(String string, String contains, String isnt) {
+        return indexThatIsnt(string, contains, isnt) >= 0;
+    }
+
+    /**
+     * Returns whether {@code string} contains an instance of {@code contains}
+     * that isn't {@code isnt}.
+     *
+     * @param string string to test
+     * @param contains element it could contain
+     * @param isnt element that index cannot be of
+     * @return if string contains an instance of {@code contains} that isn't
+     * {@code isnt}
+     */
+    public static boolean containsThatIsnt(String string, char contains, String isnt) {
+        return containsThatIsnt(string, String.valueOf(contains), isnt);
+    }
+
+    /**
+     * Returns whether {@code string} contains an instance of {@code contains}
+     * that isn't {@code isnt}.
+     *
+     * @param string string to test
+     * @param contains element it could contain
+     * @param isnt element that index cannot be of
+     * @return if string contains an instance of {@code contains} that isn't
+     * {@code isnt}
+     */
+    public static boolean containsThatIsnt(String string, String contains, char isnt) {
+        return containsThatIsnt(string, contains, String.valueOf(isnt));
+    }
+
+    /**
+     * Returns whether {@code string} contains an instance of {@code contains}
+     * that isn't {@code isnt}.
+     *
+     * @param string string to test
+     * @param contains element it could contain
+     * @param isnt element that index cannot be of
+     * @return if string contains an instance of {@code contains} that isn't
+     * {@code isnt}
+     */
+    public static boolean containsThatIsnt(String string, char contains, char isnt) {
+        return containsThatIsnt(string, String.valueOf(contains), String.valueOf(isnt));
     }
 
     /**
