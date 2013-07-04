@@ -170,7 +170,8 @@ public class Scope {
                 && e.indexOf('=') != e.indexOf("==")
                 && e.indexOf('=') != e.indexOf("<=")
                 && e.indexOf('=') != e.indexOf(">=")
-                && (e.indexOf('(') >= 0 ? (e.indexOf('=') < e.indexOf('(')) : true)) {
+                && (e.indexOf('(') >= 0 ? (e.indexOf('=') < e.indexOf('(')) : true)
+                && e.indexOf('=') > 0) {
             return new Declaration(this, e.substring(0, e.indexOf('=')), e.substring(e.indexOf('=') + 1));
         }
         if (Strings.contains(e, '(') && Strings.contains(e, ')')) {
