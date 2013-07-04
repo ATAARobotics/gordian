@@ -1,11 +1,11 @@
 package edu.gordian.elements.methods;
 
 import edu.gordian.values.ReturningMethodBase;
-import edu.gordian.Element;
-import edu.gordian.Scope;
+
+import edu.gordian.scopes.Scope;
 import edu.gordian.values.Value;
 
-public class ReturningMethod implements Element {
+public final class ReturningMethod implements Runnable {
 
     private final ReturningMethodBase base;
     private final Value[] args;

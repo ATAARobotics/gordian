@@ -1,8 +1,6 @@
 package edu.gordian.scopes;
 
-import edu.gordian.Scope;
-
-public class While extends Scope {
+class While extends Scope {
 
     private final String condition;
 

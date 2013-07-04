@@ -1,9 +1,10 @@
 package edu.gordian;
 
+import edu.gordian.scopes.Scope;
 import edu.gordian.elements.methods.UserMethod;
 import edu.gordian.values.UserReturningMethod;
 
-public class Gordian {
+public final class Gordian {
 
     private Gordian() {
     }

@@ -1,6 +1,6 @@
 package edu.gordian.values;
 
-public class StaticValue implements Value {
+public final class StaticValue implements Value {
 
     private final Object o;
 

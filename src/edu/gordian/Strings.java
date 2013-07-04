@@ -1,6 +1,6 @@
 package edu.gordian;
 
-import java.util.Vector;
+import edu.wpi.first.wpilibj.networktables2.util.List;
 
 /**
  * A set of utility methods to manipulate and test strings. Contains many of the
@@ -31,8 +31,8 @@ public final class Strings {
      * exists that is not an {@code i}, this returns -1.
      *
      * @param string string to test
-     * @param s element to find index of
-     * @param i element that {@code s} should not have the same index as
+     * @param s Element to find index of
+     * @param i Element that {@code s} should not have the same index as
      * @return index of {@code s} that isn't the same index as {@code i}
      */
     public static int indexThatIsnt(String string, String s, String i) {
@@ -50,8 +50,8 @@ public final class Strings {
      * exists that is not an {@code i}, this returns -1.
      *
      * @param string string to test
-     * @param s element to find index of
-     * @param i element that {@code s} should not have the same index as
+     * @param s Element to find index of
+     * @param i Element that {@code s} should not have the same index as
      * @return index of {@code s} that isn't the same index as {@code i}
      */
     public static int indexThatIsnt(String string, char s, String i) {
@@ -63,8 +63,8 @@ public final class Strings {
      * exists that is not an {@code i}, this returns -1.
      *
      * @param string string to test
-     * @param s element to find index of
-     * @param i element that {@code s} should not have the same index as
+     * @param s Element to find index of
+     * @param i Element that {@code s} should not have the same index as
      * @return index of {@code s} that isn't the same index as {@code i}
      */
     public static int indexThatIsnt(String string, String s, char i) {
@@ -76,8 +76,8 @@ public final class Strings {
      * exists that is not an {@code i}, this returns -1.
      *
      * @param string string to test
-     * @param s element to find index of
-     * @param i element that {@code s} should not have the same index as
+     * @param s Element to find index of
+     * @param i Element that {@code s} should not have the same index as
      * @return index of {@code s} that isn't the same index as {@code i}
      */
     public static int indexThatIsnt(String string, char s, char i) {
@@ -161,11 +161,11 @@ public final class Strings {
     }
 
     /**
-     * Returns whether the element at {@code c} index in {@code string} with
+     * Returns whether the Element at {@code c} index in {@code string} with
      * {@code length} length is directly beside {@code beside}.
      *
      * @param string original string to check in
-     * @param c index of the element to check beside
+     * @param c index of the Element to check beside
      * @param length the length of {@code c}
      * @param beside string that could be beside {@code c}
      * @return if {@code beside} is directly beside {@code c}, in the context of
@@ -258,18 +258,18 @@ public final class Strings {
         if (string.indexOf(split) < 0) {
             return new String[]{string};
         }
-        Vector node = new Vector();
+        List node = new List();
         int index = string.indexOf(split);
         while (index >= 0) {
-            node.addElement(string.substring(0, index));
+            node.add(string.substring(0, index));
             string = string.substring(index + split.length());
             index = string.indexOf(split);
         }
-        node.addElement(string);
+        node.add(string);
 
         String[] a = new String[node.size()];
         for (int x = 0; x < a.length; x++) {
-            a[x] = node.elementAt(x).toString();
+            a[x] = node.get(x).toString();
         }
 
         return a;
@@ -350,8 +350,8 @@ public final class Strings {
      * that isn't {@code isnt}.
      *
      * @param string string to test
-     * @param contains element it could contain
-     * @param isnt element that index cannot be of
+     * @param contains Element it could contain
+     * @param isnt Element that index cannot be of
      * @return if string contains an instance of {@code contains} that isn't
      * {@code isnt}
      */
@@ -364,8 +364,8 @@ public final class Strings {
      * that isn't {@code isnt}.
      *
      * @param string string to test
-     * @param contains element it could contain
-     * @param isnt element that index cannot be of
+     * @param contains Element it could contain
+     * @param isnt Element that index cannot be of
      * @return if string contains an instance of {@code contains} that isn't
      * {@code isnt}
      */
@@ -378,8 +378,8 @@ public final class Strings {
      * that isn't {@code isnt}.
      *
      * @param string string to test
-     * @param contains element it could contain
-     * @param isnt element that index cannot be of
+     * @param contains Element it could contain
+     * @param isnt Element that index cannot be of
      * @return if string contains an instance of {@code contains} that isn't
      * {@code isnt}
      */
@@ -392,13 +392,80 @@ public final class Strings {
      * that isn't {@code isnt}.
      *
      * @param string string to test
-     * @param contains element it could contain
-     * @param isnt element that index cannot be of
+     * @param contains Element it could contain
+     * @param isnt Element that index cannot be of
      * @return if string contains an instance of {@code contains} that isn't
      * {@code isnt}
      */
     public static boolean containsThatIsnt(String string, char contains, char isnt) {
         return containsThatIsnt(string, String.valueOf(contains), String.valueOf(isnt));
+    }
+
+    /**
+     * Returns the string before {@code regex} in {@code string}.
+     *
+     * @param string original string
+     * @param regex Element to split before
+     * @return string before {@code regex}
+     */
+    public static String before(String string, String regex) {
+        return before(string, string.indexOf(regex));
+    }
+
+    /**
+     * Returns the string before {@code regex} in {@code string}.
+     *
+     * @param string original string
+     * @param regex Element to split before
+     * @return string before {@code regex}
+     */
+    public static String before(String string, char regex) {
+        return before(string, string.indexOf(regex));
+    }
+
+    /**
+     * Returns the string before {@code index} in {@code string}.
+     *
+     * @param string original string
+     * @param index index to split at
+     * @return string before {@code index}
+     */
+    public static String before(String string, int index) {
+        return string.substring(0, index);
+    }
+
+    /**
+     * Returns the string after {@code regex} in {@code string}.
+     *
+     * @param string original string
+     * @param regex Element to split after
+     * @return string after {@code regex}
+     */
+    public static String after(String string, String regex) {
+        return after(string, string.indexOf(regex), regex.length());
+    }
+
+    /**
+     * Returns the string after {@code regex} in {@code string}.
+     *
+     * @param string original string
+     * @param regex Element to split after
+     * @return string after {@code regex}
+     */
+    public static String after(String string, char regex) {
+        return after(string, string.indexOf(regex), 1);
+    }
+
+    /**
+     * Returns the string after {@code index} in {@code string}.
+     *
+     * @param string original string
+     * @param index index to split at
+     * @param length length after index to ignore
+     * @return string after {@code index}
+     */
+    public static String after(String string, int index, int length) {
+        return string.substring(index + length);
     }
 
     /**

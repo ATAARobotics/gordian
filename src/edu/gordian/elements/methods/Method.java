@@ -1,10 +1,9 @@
 package edu.gordian.elements.methods;
 
-import edu.gordian.Element;
-import edu.gordian.Scope;
+import edu.gordian.scopes.Scope;
 import edu.gordian.values.Value;
 
-public class Method implements Element {
+public final class Method implements Runnable {
 
     private final MethodBase base;
     private final Value[] args;

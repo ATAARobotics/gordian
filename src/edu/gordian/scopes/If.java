@@ -1,9 +1,8 @@
 package edu.gordian.scopes;
 
-import edu.gordian.Scope;
 import edu.gordian.Strings;
 
-public class If extends Scope {
+final class If extends Scope {
 
     private final String condition;
 

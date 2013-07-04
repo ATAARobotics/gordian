@@ -1,8 +1,6 @@
 package edu.gordian.scopes;
 
-import edu.gordian.Scope;
-
-public class For extends Scope {
+final class For extends Scope {
 
     private final int condition;
 
