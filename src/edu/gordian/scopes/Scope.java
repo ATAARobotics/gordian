@@ -348,7 +348,7 @@ public class Scope {
     }
 
     private String removeSpaces(final String s, int start) {
-        String a = s;
+        String a = Strings.replaceAll(s, '\t', " ");
 
         boolean inQuotes = false;
         int x = start + s.substring(start).indexOf(' ');
@@ -362,10 +362,10 @@ public class Scope {
         }
 
         if (Strings.contains(s.substring(x + 1), ' ')) {
-            return removeSpaces(a, start + 1);
+            return removeSpaces(a, x);
         }
 
-        return Strings.replaceAll(a, '\t', "");
+        return a;
     }
 
     private double getNumber(String val) {

@@ -21,6 +21,11 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
     x = 3 / 2 ### => 1.5
     x = x * 3 ### => 4.5
     x = x + 2 ### => 6.5
+    
+### Modulus > Multiplication > Division > Addition > Subtraction > Right > Left
+    x = 3 * 2 * 1 ### => (3 * (2 * 1))
+    x = 1 / 2 / 3 ### => (1 / (2 / 3))
+    x = 1 * 2 / 3 + 4 - 5 ### => (((1 * (2 / 3)) + 4) - 5)
 
 ### Incrementing and decrementing
     x++ ### When x doesn't exist, starts at 0 (x++ is 1)
