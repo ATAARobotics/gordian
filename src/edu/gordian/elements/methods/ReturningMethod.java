@@ -20,6 +20,6 @@ public final class ReturningMethod implements Runnable {
     }
 
     public void run() {
-        base.run(args);
+        base.runFor(args);
     }
 }

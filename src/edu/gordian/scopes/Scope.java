@@ -35,6 +35,7 @@ public class Scope {
     private final Hashtable privateVars = new Hashtable();
     private final Hashtable privateMethods = new Hashtable();
     private final Hashtable privateReturning = new Hashtable();
+    private final List parents = new List();
 
     public Scope() {
         publicVars = new MapGroup(new Hashtable());
@@ -56,6 +57,7 @@ public class Scope {
     }
 
     public Scope(Scope scope) {
+        parents.add(scope);
         publicVars = new MapGroup(scope.publicVars);
         publicMethods = new MapGroup(scope.publicMethods);
         publicReturning = new MapGroup(scope.publicReturning);
@@ -113,9 +115,9 @@ public class Scope {
             String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
             Value[] a = toValues(args);
             if (publicReturning.containsKey(name)) {
-                return new StaticValue(((ReturningMethodBase) publicReturning.get(name)).run(a));
+                return new StaticValue(((ReturningMethodBase) publicReturning.get(name)).runFor(a));
             } else if (privateReturning.containsKey(name)) {
-                return new StaticValue(((ReturningMethodBase) privateReturning.get(name)).run(a));
+                return new StaticValue(((ReturningMethodBase) privateReturning.get(name)).runFor(a));
             }
         }
 
@@ -202,10 +204,10 @@ public class Scope {
                 return new Method((MethodBase) privateMethods.get(name), a);
             } else if (publicMethods.containsKey(name)) {
                 return new Method((MethodBase) publicMethods.get(name), a);
-            } else if (publicReturning.containsKey(name)) {
-                return new ReturningMethod((ReturningMethodBase) publicReturning.get(name), a);
             } else if (privateReturning.containsKey(name)) {
                 return new ReturningMethod((ReturningMethodBase) privateReturning.get(name), a);
+            } else if (publicReturning.containsKey(name)) {
+                return new ReturningMethod((ReturningMethodBase) publicReturning.get(name), a);
             }
         }
         if (Strings.contains(e, "++")) {
@@ -321,12 +323,29 @@ public class Scope {
                     String name = scope.substring(scope.indexOf("def") + 3, scope.indexOf('('));
                     String start = scope.substring(0, scope.indexOf(';'));
                     String s = scope.substring(scope.indexOf(';') + 1);
-                    privateMethods.put(name, new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, this));
-                    if (Strings.contains(s, "return(")) {
-                        privateReturning.put(name, ((DefinedMethod) privateMethods.get(name)).returningMethod());
+                    DefinedMethod method = new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, this);
+                    privateMethods.put(name, method);
+                    if (Strings.contains(s, "return")) {
+                        privateReturning.put(name, method);
                     }
                     scope = "";
                     continue;
+                }
+
+                DefinedMethod method = null;
+                if (this instanceof DefinedMethod) {
+                    method = (DefinedMethod) this;
+                } else {
+                    for (int x = parents.size() - 1; x >= 0; x--) {
+                        if (parents.get(x) instanceof DefinedMethod) {
+                            method = (DefinedMethod) parents.get(x);
+                            break;
+                        }
+                    }
+                }
+                if (next.startsWith("return") && method != null) {
+                    method.returnValue(toValue(next.substring(next.indexOf("return") + 6)).getValue());
+                    break;
                 }
 
                 toElement(next).run();

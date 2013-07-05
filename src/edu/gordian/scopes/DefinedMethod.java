@@ -4,11 +4,11 @@ import edu.gordian.elements.methods.MethodBase;
 import edu.gordian.values.ReturningMethodBase;
 import edu.gordian.values.Value;
 
-final class DefinedMethod extends Scope implements MethodBase {
+final class DefinedMethod extends Scope implements MethodBase, ReturningMethodBase {
 
     private final String[] args;
     private final String script;
-    private Object returnedValue;
+    private Object value;
 
     public DefinedMethod(String[] args, String script, Scope scope) {
         super(scope);
@@ -28,29 +28,23 @@ final class DefinedMethod extends Scope implements MethodBase {
                 throw new IllegalArgumentException("Argument " + args[x] + " was already defined outside scope!");
             }
         }
-        addMethod("return", new MethodBase() {
-            public void run(Value[] arguments) {
-                if (arguments.length < 1) {
-                    returnedValue = null;
-                } else {
-                    returnedValue = arguments[0];
-                }
-            }
-        });
 
         try {
             run(script);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex.getMessage());
         }
     }
 
-    public ReturningMethodBase returningMethod() {
-        return new ReturningMethodBase() {
-            public Object run(Value[] arguments) {
-                DefinedMethod.this.run(arguments);
-                return returnedValue;
-            }
-        };
+    public void returnValue(Object value) {
+        this.value = value;
+    }
+
+    public Object runFor(Value[] arguments) {
+        run(arguments);
+        if(value == null) {
+            throw new RuntimeException("No value was returned");
+        }
+        return value;
     }
 }

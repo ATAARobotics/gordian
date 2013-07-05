@@ -99,7 +99,7 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
         print(x + 3)
     end
     
-### Returning methods use a `return(x)` method
+### Returning methods use a `return x`
     def get(x)
-        return(x + 1)
+        return x + 1
     end
