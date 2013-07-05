@@ -45,9 +45,16 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
     x = 4.5 < 2 ### => false
     x = 1 >= 1 ### => true
     x = 4 <= 10 ### => false
+    
+### Boolean operators
+    x = true && false ### => false
+    x = true || false ### => true
 
 ### Strings are created in quotes
     x = "Hello World" ### => Hello World
+    
+### Concatenate strings using `+`
+    x = "Hello " + World
 
 ### Can also create strings without quotes, but removes spaces
     x = Hello World ### => HelloWorld
@@ -67,6 +74,8 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
 
     if(x >= 1)
         x++
+    else if(x < 0)
+        x--
     else
         x = 12
     end
@@ -78,4 +87,14 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
 
     while(x++ < 100)
         ### Do things
+    end
+
+### Create methods with def
+    def printMore(x)
+        print(x + 3)
+    end
+    
+### Returning methods use a `return(x)` method
+    def get(x)
+        return(x + 1)
     end

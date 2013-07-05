@@ -78,7 +78,7 @@ public class Scope {
         }
 
         if (e.startsWith("!")) {
-            return new StaticValue(Boolean.valueOf(!getBoolean(e)));
+            return new StaticValue(Boolean.valueOf(!getBoolean(e.substring(1))));
         }
         if (Strings.contains(e, "||")) {
             return new StaticValue(Boolean.valueOf(getBoolean(e.substring(0, e.indexOf("||")))
