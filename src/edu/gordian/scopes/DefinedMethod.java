@@ -21,7 +21,10 @@ final class DefinedMethod extends Scope implements MethodBase {
             throw new IllegalArgumentException("Not enough arguments");
         }
         for (int x = 0; x < args.length; x++) {
-            setVariable(args[x], arguments[x]);
+            // CANNOT REDECLARE VARS IN A DEF
+            if (getVariable(args[x]) == null) {
+                setPrivateVariable(args[x], arguments[x]);
+            }
         }
         addMethod("return", new MethodBase() {
             public void run(Value[] arguments) {
