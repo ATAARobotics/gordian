@@ -107,6 +107,18 @@ public class Scope {
             return new Less(toValue(Strings.before(e, '<')), toValue(Strings.after(e, '<')));
         }
 
+        if (Strings.contains(e, '(') && Strings.contains(e, ')')) {
+            // METHOD
+            String name = e.substring(0, e.indexOf('('));
+            String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
+            Value[] a = toValues(args);
+            if (publicReturning.containsKey(name)) {
+                return new StaticValue(((ReturningMethodBase) publicReturning.get(name)).run(a));
+            } else if (privateReturning.containsKey(name)) {
+                return new StaticValue(((ReturningMethodBase) privateReturning.get(name)).run(a));
+            }
+        }
+
         if (privateVars.containsKey(e)) {
             return (Value) privateVars.get(e);
         }
@@ -144,17 +156,6 @@ public class Scope {
                     Double.valueOf(getNumber(e.substring(e.indexOf('%') + 1))));
         }
 
-        if (Strings.contains(e, '(') && Strings.contains(e, ')')) {
-            // METHOD
-            String name = e.substring(0, e.indexOf('('));
-            String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
-            Value[] a = toValues(args);
-            if (publicReturning.containsKey(name)) {
-                return new StaticValue(((ReturningMethodBase) publicReturning.get(name)).run(a));
-            } else if (privateReturning.containsKey(name)) {
-                return new StaticValue(((ReturningMethodBase) privateReturning.get(name)).run(a));
-            }
-        }
         if (Strings.contains(e, "++")) {
             return new ValueAdjustment(this, e.substring(0, e.indexOf("++")), +1);
         }
@@ -222,6 +223,22 @@ public class Scope {
             return (Value) privateVars.get(key);
         } else if (publicVars.containsKey(key)) {
             return (Value) publicVars.get(key);
+        } else {
+            return null;
+        }
+    }
+
+    protected final Value getPublicVariable(String key) {
+        if (publicVars.containsKey(key)) {
+            return (Value) publicVars.get(key);
+        } else {
+            return null;
+        }
+    }
+
+    protected final Value getPrivateVariable(String key) {
+        if (privateVars.containsKey(key)) {
+            return (Value) privateVars.get(key);
         } else {
             return null;
         }
@@ -314,24 +331,30 @@ public class Scope {
 
                 toElement(next).run();
             } catch (Exception ex) {
+                ex.printStackTrace();
                 throw new Exception("LINE " + line + " in " + getClass().getName() + " - " + ex.getClass().getName() + ": " + ex.getMessage());
             }
         }
     }
 
     private String[] getArgs(String s) {
-        if (!Strings.contains(s, '\"')) {
+        if (!Strings.contains(s, '\"') && !Strings.contains(s, '(')) {
             return Strings.split(s, ',');
         } else {
             List l = new List();
             boolean inQuotes = false;
+            int paren = 0;
             int last = 0;
             char[] d = s.toCharArray();
             for (int x = 0; x < d.length; x++) {
                 if (d[x] == '\"') {
                     inQuotes = !inQuotes;
+                } else if (d[x] == '(') {
+                    paren++;
+                } else if (d[x] == ')') {
+                    paren--;
                 }
-                if (d[x] == ',' && !inQuotes && !Strings.isEmpty(s.substring(last, x))) {
+                if (d[x] == ',' && !inQuotes && paren == 0 && !Strings.isEmpty(s.substring(last, x))) {
                     l.add(s.substring(last, x));
                     last = x + 1;
                 }
@@ -347,21 +370,27 @@ public class Scope {
         }
     }
 
-    private String removeSpaces(final String s, int start) {
+    private String removeSpaces(final String s, int x) {
         String a = Strings.replaceAll(s, '\t', " ");
 
         boolean inQuotes = false;
-        int x = start + s.substring(start).indexOf(' ');
+        x += a.substring(x).indexOf(' ');
         for (int i = 0; i < x; i++) {
-            if (s.charAt(i) == '"') {
+            if (a.charAt(i) == '"') {
                 inQuotes = !inQuotes;
             }
         }
         if (!inQuotes) {
-            a = s.substring(0, x) + s.substring(x + 1);
+            a = a.substring(0, x) + s.substring(x + 1);
+        } else {
+            if (a.substring(x + 1).indexOf(' ') == -1) {
+                x = a.length() - 1;
+            } else {
+                x = a.substring(x + 1).indexOf(' ') + x + 1;
+            }
         }
 
-        if (Strings.contains(s.substring(x + 1), ' ')) {
+        if (Strings.contains(a.substring(x), ' ')) {
             return removeSpaces(a, x);
         }
 

@@ -17,13 +17,15 @@ final class DefinedMethod extends Scope implements MethodBase {
     }
 
     public void run(Value[] arguments) {
-        if(arguments.length < args.length) {
+        if (arguments.length < args.length) {
             throw new IllegalArgumentException("Not enough arguments");
         }
         for (int x = 0; x < args.length; x++) {
             // CANNOT REDECLARE VARS IN A DEF
-            if (getVariable(args[x]) == null) {
+            if (getPublicVariable(args[x]) == null) {
                 setPrivateVariable(args[x], arguments[x]);
+            } else {
+                throw new IllegalArgumentException("Argument " + args[x] + " was already defined outside scope!");
             }
         }
         addMethod("return", new MethodBase() {
