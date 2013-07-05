@@ -171,7 +171,7 @@ public class Scope {
         }
 
         if (Strings.contains(e, "\"")) {
-            e = e.substring(1, e.length() - 1);
+            e = Strings.replaceAll(e, '\"', "");
         }
         return new StaticValue(e);
     }
