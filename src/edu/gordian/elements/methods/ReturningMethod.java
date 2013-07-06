@@ -1,8 +1,6 @@
 package edu.gordian.elements.methods;
 
 import edu.gordian.values.ReturningMethodBase;
-
-import edu.gordian.scopes.Scope;
 import edu.gordian.values.Value;
 
 public final class ReturningMethod implements Runnable {
@@ -11,12 +9,14 @@ public final class ReturningMethod implements Runnable {
     private final Value[] args;
 
     public ReturningMethod(ReturningMethodBase base, Value[] args) {
+        if (base == null) {
+            throw new NullPointerException("Base given was null");
+        }
+        if (args == null) {
+            throw new NullPointerException("Args given was null");
+        }
         this.base = base;
         this.args = args;
-    }
-
-    public ReturningMethod(ReturningMethodBase base, Scope scope, String[] args) {
-        this(base, scope.toValues(args));
     }
 
     public void run() {

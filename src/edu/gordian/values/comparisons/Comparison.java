@@ -7,11 +7,17 @@ public abstract class Comparison implements Value {
     private final Value first, second;
 
     public Comparison(Value first, Value second) {
+        if (first == null) {
+            throw new NullPointerException("First value is null");
+        }
+        if (second == null) {
+            throw new NullPointerException("Second value is null");
+        }
         this.first = first;
         this.second = second;
     }
 
-    public Object getValue() {
+    public final Object getValue() {
         return Boolean.valueOf(get(first.getValue(), second.getValue()));
     }
 

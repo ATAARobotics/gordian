@@ -9,7 +9,7 @@ abstract class NumberComparison extends Comparison {
         super(first, second);
     }
 
-    public boolean get(Object f1, Object f2) {
+    public final boolean get(Object f1, Object f2) {
         return get(((Double) f1).doubleValue(), ((Double) f2).doubleValue());
     }
 

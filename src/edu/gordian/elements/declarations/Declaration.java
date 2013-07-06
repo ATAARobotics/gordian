@@ -10,6 +10,15 @@ public final class Declaration implements Runnable, Value {
     private final String value;
 
     public Declaration(Scope scope, String key, String value) {
+        if(scope == null) {
+            throw new NullPointerException("Scope is null");
+        }
+        if(key == null) {
+            throw new NullPointerException("Key is null");
+        }
+        if(value == null) {
+            throw new NullPointerException("Value is null");
+        }
         this.scope = scope;
         this.key = key;
         this.value = value;

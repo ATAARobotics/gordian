@@ -44,6 +44,12 @@ public class Scope {
     }
 
     public Scope(UserMethod[] methods, UserReturningMethod[] returning) {
+        if (methods == null) {
+            throw new NullPointerException("Methods were null");
+        }
+        if (returning == null) {
+            throw new NullPointerException("Returning methods were null");
+        }
         publicMethods = new MapGroup(new Hashtable());
         for (int x = 0; x < methods.length; x++) {
             publicMethods.put(methods[x].getName(), methods[x]);
@@ -57,6 +63,9 @@ public class Scope {
     }
 
     public Scope(Scope scope) {
+        if (scope == null) {
+            throw new NullPointerException("Parent scope is null");
+        }
         parents.add(scope);
         publicVars = new MapGroup(scope.publicVars);
         publicMethods = new MapGroup(scope.publicMethods);
@@ -68,6 +77,9 @@ public class Scope {
     }
 
     public final Value toValue(String e) {
+        if (e == null || Strings.isEmpty(e)) {
+            throw new IllegalArgumentException("Value is not valid - " + e);
+        }
         try {
             return new StaticValue(Double.valueOf(e));
         } catch (NumberFormatException ex) {
@@ -186,7 +198,10 @@ public class Scope {
         return v;
     }
 
-    protected Runnable toElement(String e) throws Exception {
+    public final Runnable toElement(String e) throws Exception {
+        if (e == null || Strings.isEmpty(e)) {
+            throw new IllegalArgumentException("Element is not valid - " + e);
+        }
         if (Strings.contains(e, '=')
                 && e.indexOf('=') != e.indexOf("!=")
                 && e.indexOf('=') != e.indexOf("==")
@@ -220,29 +235,41 @@ public class Scope {
         throw new Exception("Not a valid instruction: " + e);
     }
 
+    public final boolean isVariable(String key) {
+        return privateVars.containsKey(key) || publicVars.containsKey(key);
+    }
+
     public final Value getVariable(String key) {
         if (privateVars.containsKey(key)) {
             return (Value) privateVars.get(key);
         } else if (publicVars.containsKey(key)) {
             return (Value) publicVars.get(key);
         } else {
-            return null;
+            throw new NullPointerException("Variable " + key + " was not found in scope");
         }
+    }
+
+    protected final boolean isPublicVariable(String key) {
+        return publicVars.containsKey(key);
     }
 
     protected final Value getPublicVariable(String key) {
         if (publicVars.containsKey(key)) {
             return (Value) publicVars.get(key);
         } else {
-            return null;
+            throw new NullPointerException("Variable " + key + " was not found in scope");
         }
+    }
+
+    protected final boolean isPrivateVariable(String key) {
+        return privateVars.containsKey(key);
     }
 
     protected final Value getPrivateVariable(String key) {
         if (privateVars.containsKey(key)) {
             return (Value) privateVars.get(key);
         } else {
-            return null;
+            throw new NullPointerException("Variable " + key + " was not found in scope");
         }
     }
 
@@ -254,21 +281,32 @@ public class Scope {
         }
     }
 
-    protected final void setPrivateVariable(String key, Value value) {
+    public final void setPublicVariable(String key, Value value) {
+        publicVars.put(key, value);
+    }
+
+    public final void setPrivateVariable(String key, Value value) {
         privateVars.put(key, value);
     }
 
-    protected final void addMethod(String name, MethodBase base) {
+    public final void addMethod(String name, MethodBase base) {
         privateMethods.put(name, base);
     }
 
-    protected final void addReturning(String name, ReturningMethodBase base) {
+    public final void addGlobalMethod(String name, MethodBase base) {
+        publicMethods.put(name, base);
+    }
+
+    public final void addReturning(String name, ReturningMethodBase base) {
         privateReturning.put(name, base);
     }
 
-    public void run(String script) throws Exception {
-        script = script + ';';
-        script = Strings.replaceAll(script, '\n', ';');
+    public final void addGlobalReturning(String name, ReturningMethodBase base) {
+        publicReturning.put(name, base);
+    }
+
+    public final StringTokenizer preRun(String script) {
+        script = Strings.replaceAll(script + ';', '\n', ';');
         if (Strings.contains(script, ' ')) {
             script = removeSpaces(script, 0);
         }
@@ -276,7 +314,11 @@ public class Scope {
             String toRemove = script.substring(script.indexOf('#'), (script.substring(script.indexOf('#'))).indexOf(';') + script.indexOf('#'));
             script = Strings.replace(script, toRemove, "");
         }
-        StringTokenizer t = new StringTokenizer(script, ";");
+        return new StringTokenizer(script, ";");
+    }
+
+    public void run(String script) throws Exception {
+        StringTokenizer t = preRun(script);
         int line = 0;
         int scopes = 0;
         String scope = "";
@@ -291,7 +333,7 @@ public class Scope {
                     || next.startsWith("if") || next.startsWith("def")) {
                 scopes++;
             }
-            if (next.toLowerCase().startsWith("end")) {
+            if (next.toLowerCase().equals("end") || next.toLowerCase().equals("fi")) {
                 scopes--;
             }
             if (scopes > 0) {
@@ -303,6 +345,12 @@ public class Scope {
                 if (scopes == 0 && scope.startsWith("while")) {
                     String start = scope.substring(0, scope.indexOf(';'));
                     String s = scope.substring(scope.indexOf(';') + 1);
+
+                    // Validity check
+                    if (!Strings.contains(start, '(') || !Strings.contains(start, ')')) {
+                        throw new IllegalArgumentException("Argument was not given");
+                    }
+
                     new While(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), this).run(s);
                     scope = "";
                     continue;
@@ -315,6 +363,12 @@ public class Scope {
                 if (scopes == 0 && scope.startsWith("for")) {
                     String start = scope.substring(0, scope.indexOf(';'));
                     String s = scope.substring(scope.indexOf(';') + 1);
+
+                    // Validity check
+                    if (!Strings.contains(start, '(') || !Strings.contains(start, ')')) {
+                        throw new IllegalArgumentException("Argument was not given");
+                    }
+
                     new For(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), this).run(s);
                     scope = "";
                     continue;
@@ -323,6 +377,12 @@ public class Scope {
                     String name = scope.substring(scope.indexOf("def") + 3, scope.indexOf('('));
                     String start = scope.substring(0, scope.indexOf(';'));
                     String s = scope.substring(scope.indexOf(';') + 1);
+
+                    // Validity check
+                    if (!Strings.contains(start, '(') || !Strings.contains(start, ')')) {
+                        throw new IllegalArgumentException("Arguments were not given");
+                    }
+
                     DefinedMethod method = new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, this);
                     privateMethods.put(name, method);
                     if (Strings.contains(s, "return")) {
@@ -350,9 +410,12 @@ public class Scope {
 
                 toElement(next).run();
             } catch (Exception ex) {
-                ex.printStackTrace();
                 throw new Exception("LINE " + line + " in " + getClass().getName() + " - " + ex.getClass().getName() + ": " + ex.getMessage());
             }
+        }
+
+        if (scopes != 0) {
+            throw new RuntimeException("Scope was never completed. Use 'end' or 'fi' to complete scopes.");
         }
     }
 
@@ -390,7 +453,7 @@ public class Scope {
     }
 
     private String removeSpaces(final String s, int x) {
-        String a = Strings.replaceAll(s, '\t', " ");
+        String a = Strings.replaceAll(s, '\t', ' ');
 
         boolean inQuotes = false;
         x += a.substring(x).indexOf(' ');

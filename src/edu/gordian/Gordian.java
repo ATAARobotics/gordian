@@ -18,6 +18,6 @@ public final class Gordian {
     }
     
     public static void run(String script) throws Exception {
-        run(new UserMethod[0], script);
+        new Scope().run(script);
     }
 }
