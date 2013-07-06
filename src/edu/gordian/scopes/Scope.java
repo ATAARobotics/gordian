@@ -35,12 +35,13 @@ public class Scope {
     private final Hashtable privateVars = new Hashtable();
     private final Hashtable privateMethods = new Hashtable();
     private final Hashtable privateReturning = new Hashtable();
-    private final List parents = new List();
+    private final Scope[] parents;
 
     public Scope() {
         publicVars = new MapGroup(new Hashtable());
         publicMethods = new MapGroup(new Hashtable());
         publicReturning = new MapGroup(new Hashtable());
+        parents = new Scope[0];
     }
 
     public Scope(UserMethod[] methods, UserReturningMethod[] returning) {
@@ -60,13 +61,17 @@ public class Scope {
         }
 
         publicVars = new MapGroup(new Hashtable());
+        parents = new Scope[0];
     }
 
     public Scope(Scope scope) {
         if (scope == null) {
             throw new NullPointerException("Parent scope is null");
         }
-        parents.add(scope);
+        parents = new Scope[scope.parents.length + 1];
+        System.arraycopy(scope.parents, 0, parents, 0, scope.parents.length);
+        parents[parents.length - 1] = scope;
+        
         publicVars = new MapGroup(scope.publicVars);
         publicMethods = new MapGroup(scope.publicMethods);
         publicReturning = new MapGroup(scope.publicReturning);
@@ -396,9 +401,9 @@ public class Scope {
                 if (this instanceof DefinedMethod) {
                     method = (DefinedMethod) this;
                 } else {
-                    for (int x = parents.size() - 1; x >= 0; x--) {
-                        if (parents.get(x) instanceof DefinedMethod) {
-                            method = (DefinedMethod) parents.get(x);
+                    for (int x = parents.length - 1; x >= 0; x--) {
+                        if (parents[x] instanceof DefinedMethod) {
+                            method = (DefinedMethod) parents[x];
                             break;
                         }
                     }
