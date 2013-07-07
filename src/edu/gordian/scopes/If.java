@@ -10,29 +10,40 @@ final class If extends Scope {
     }
 
     public void run(String script) throws Exception {
-        List cases = new List();
+        script = "#" + script.substring(2);
+        List conditions = new List();
         List run = new List();
-        if (Strings.contains(script, "if(")) {
-            cases.add(script.substring(script.indexOf("if(") + 3, script.indexOf(");")));
-            run.add(script.substring(script.indexOf(");") + 2,
-                    script.indexOf("else") >= 0 ? script.indexOf("else") : script.length()));
-            script = script.substring(script.indexOf("else") >= 0
-                    ? script.indexOf("else") : script.length());
+
+        String[] e = Strings.split(script, ';');
+        StringBuffer buffer = new StringBuffer(e[0] + ';');
+        int scopes = 0;
+        for (int x = 1; x < e.length; x++) {
+            if (e[x].startsWith("if")) {
+                scopes++;
+            } else if (e[x].startsWith("end")) {
+                scopes--;
+            }
+
+            if (scopes == 0 && e[x].startsWith("elseif")) {
+                buffer.append('#').append(e[x].substring(6));
+            } else if (scopes == 0 && e[x].startsWith("else")) {
+                buffer.append("#(true)").append(e[x].substring(4));
+            } else {
+                buffer.append(e[x]);
+            }
+            
+            buffer.append(';');
         }
-        while (Strings.contains(script, "elseif(")) {
-            cases.add(script.substring(script.indexOf("elseif(") + 7, script.indexOf(");")));
-            run.add(script.substring(script.indexOf(");") + 2,
-                    script.substring(6).indexOf("else") >= 0 ? script.substring(6).indexOf("else") + 6 : script.length()));
-            script = script.substring(script.substring(6).indexOf("else") >= 0
-                    ? script.substring(6).indexOf("else") + 6 : script.length());
-        }
-        if (Strings.contains(script, "else;")) {
-            cases.add("true");
-            run.add(script.substring(script.indexOf(";") + 1));
+        script = buffer.toString();
+
+        String[] conds = Strings.split(script, "#(");
+        for (int x = 1; x < conds.length; x++) {
+            conditions.add(conds[x].substring(0, conds[x].substring(0, conds[x].indexOf(';')).lastIndexOf(')')));
+            run.add(conds[x].substring(conds[x].substring(0, conds[x].indexOf(';')).lastIndexOf(')') + 2));
         }
 
-        for (int x = 0; x < cases.size(); x++) {
-            if (((Boolean) toValue((String) cases.get(x)).getValue()).booleanValue()) {
+        for (int x = 0; x < conditions.size(); x++) {
+            if (((Boolean) toValue((String) conditions.get(x)).getValue()).booleanValue()) {
                 super.run((String) run.get(x));
                 return;
             }

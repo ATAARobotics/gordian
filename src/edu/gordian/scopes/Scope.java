@@ -71,7 +71,7 @@ public class Scope {
         parents = new Scope[scope.parents.length + 1];
         System.arraycopy(scope.parents, 0, parents, 0, scope.parents.length);
         parents[parents.length - 1] = scope;
-        
+
         publicVars = new MapGroup(scope.publicVars);
         publicMethods = new MapGroup(scope.publicMethods);
         publicReturning = new MapGroup(scope.publicReturning);
@@ -310,7 +310,7 @@ public class Scope {
         publicReturning.put(name, base);
     }
 
-    public final StringTokenizer preRun(String script) {
+    public static final StringTokenizer preRun(String script) {
         script = Strings.replaceAll(script + ';', '\n', ';');
         if (Strings.contains(script, ' ')) {
             script = removeSpaces(script, 0);
@@ -341,7 +341,7 @@ public class Scope {
             if (next.toLowerCase().equals("end") || next.toLowerCase().equals("fi")) {
                 scopes--;
             }
-            if (scopes > 0) {
+            if (scopes != 0) {
                 scope += next + ';';
                 continue;
             }
@@ -397,24 +397,26 @@ public class Scope {
                     continue;
                 }
 
-                DefinedMethod method = null;
+                DefinedMethod m = null;
                 if (this instanceof DefinedMethod) {
-                    method = (DefinedMethod) this;
+                    m = (DefinedMethod) this;
                 } else {
                     for (int x = parents.length - 1; x >= 0; x--) {
                         if (parents[x] instanceof DefinedMethod) {
-                            method = (DefinedMethod) parents[x];
+                            m = (DefinedMethod) parents[x];
                             break;
                         }
                     }
                 }
-                if (next.startsWith("return") && method != null) {
-                    method.returnValue(toValue(next.substring(next.indexOf("return") + 6)).getValue());
-                    break;
+
+                if (scopes == 0 && next.startsWith("return") && m != null) {
+                    m.returnValue(toValue(next.substring(next.indexOf("return") + 6)).getValue());
+                    return;
                 }
 
                 toElement(next).run();
             } catch (Exception ex) {
+                ex.printStackTrace();
                 throw new Exception("LINE " + line + " in " + getClass().getName() + " - " + ex.getClass().getName() + ": " + ex.getMessage());
             }
         }
@@ -457,7 +459,7 @@ public class Scope {
         }
     }
 
-    private String removeSpaces(final String s, int x) {
+    private static String removeSpaces(final String s, int x) {
         String a = Strings.replaceAll(s, '\t', ' ');
 
         boolean inQuotes = false;
