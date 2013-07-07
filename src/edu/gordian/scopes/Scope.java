@@ -500,7 +500,14 @@ public class Scope {
     }
 
     private double getNumber(String val) {
-        return ((GordianNumber) toValue(val).getValue()).doubleValue();
+        Object v = toValue(val).getValue();
+        if (v instanceof GordianNumber) {
+            return ((GordianNumber) v).doubleValue();
+        } else if (v instanceof Double) {
+            return ((Double) v).doubleValue();
+        } else {
+            throw new ClassCastException(val + " is not a number");
+        }
     }
 
     private boolean getBoolean(String val) {
