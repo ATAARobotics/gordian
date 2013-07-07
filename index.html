@@ -1,44 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Gordian by Team4334</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=640" />
 
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Gordian by Team4334</title>
   </head>
+
   <body>
+    <a id="forkme_banner" href="https://github.com/Team4334/gordian">View on GitHub</a>
+    <div class="shell">
 
       <header>
-        <h1>Gordian</h1>
-        <p>Alberta Tech Alliance's Scripting Language</p>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Gordian</h1>
+            <h2>Alberta Tech Alliance's Scripting Language</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
       </header>
 
-      <div id="banner">
-        <span id="logo"></span>
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/Team4334/gordian/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/Team4334/gordian/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
 
-        <a href="https://github.com/Team4334/gordian" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/Team4334/gordian/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/Team4334/gordian/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
 
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
         <h1>
 <a name="gordian" class="anchor" href="#gordian"><span class="octicon octicon-link"></span></a>GORDIAN</h1>
 
@@ -49,10 +56,10 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
 <a name="datatypes-and-operators" class="anchor" href="#datatypes-and-operators"><span class="octicon octicon-link"></span></a>Datatypes and Operators</h1>
 
 <h3>
-<a name="numbers-are-doubles" class="anchor" href="#numbers-are-doubles"><span class="octicon octicon-link"></span></a>Numbers are doubles</h3>
+<a name="numbers-are-intdouble-variants---in-java-they-are-gordiannumber" class="anchor" href="#numbers-are-intdouble-variants---in-java-they-are-gordiannumber"><span class="octicon octicon-link"></span></a>Numbers are int/double variants - in Java they are GordianNumber</h3>
 
-<pre><code>x = 12
-x = 232.32914
+<pre><code>x = 2.0 ### =&gt; 2
+x = 3.42 ### =&gt; 3.42
 </code></pre>
 
 <h3>
@@ -62,9 +69,9 @@ x = 232.32914
 </code></pre>
 
 <h3>
-<a name="even-integer-math" class="anchor" href="#even-integer-math"><span class="octicon octicon-link"></span></a>Even integer math</h3>
+<a name="but-results-are-inferred-type" class="anchor" href="#but-results-are-inferred-type"><span class="octicon octicon-link"></span></a>But results are inferred type</h3>
 
-<pre><code>x = 2 / 1 ### =&gt; 2.0
+<pre><code>x = 2 / 1 ### =&gt; 2
 </code></pre>
 
 <h3>
@@ -76,20 +83,35 @@ x = x + 2 ### =&gt; 6.5
 </code></pre>
 
 <h3>
-<a name="incrementing-and-decrementing" class="anchor" href="#incrementing-and-decrementing"><span class="octicon octicon-link"></span></a>Incrementing and decrementing</h3>
+<a name="modulus--multiplication--division--addition--subtraction--right--left" class="anchor" href="#modulus--multiplication--division--addition--subtraction--right--left"><span class="octicon octicon-link"></span></a>Modulus &gt; Multiplication &gt; Division &gt; Addition &gt; Subtraction &gt; Right &gt; Left</h3>
 
-<pre><code>x++ ### When x doesn't exist, starts at 0 (x++ is 1)
-x-- ### When x doesn't exist, starts at 0 (x-- is -1)
+<pre><code>x = 3 * 2 * 1 ### =&gt; (3 * (2 * 1))
+x = 1 / 2 / 3 ### =&gt; (1 / (2 / 3))
+x = 1 * 2 / 3 + 4 - 5 ### =&gt; (((1 * (2 / 3)) + 4) - 5)
 </code></pre>
 
-<h2>
-<a name="booleans" class="anchor" href="#booleans"><span class="octicon octicon-link"></span></a>Booleans</h2>
+<h3>
+<a name="incrementing-and-decrementing" class="anchor" href="#incrementing-and-decrementing"><span class="octicon octicon-link"></span></a>Incrementing and decrementing</h3>
+
+<pre><code>x++ ### When x doesn't exist (or isn't a number), starts at 0 (x++ is 1)
+x-- ### When x doesn't exist (or isn't a number), starts at 0 (x-- is -1)
+</code></pre>
+
+<h3>
+<a name="declarations-and-increments-are-both-considered-values-as-well" class="anchor" href="#declarations-and-increments-are-both-considered-values-as-well"><span class="octicon octicon-link"></span></a>Declarations and increments are both considered values as well</h3>
+
+<pre><code>foo(x++) ### Is correct
+foo(x = x + 1) ### Is also correct
+</code></pre>
+
+<h1>
+<a name="booleans" class="anchor" href="#booleans"><span class="octicon octicon-link"></span></a>Booleans</h1>
 
 <pre><code>x = true
 x = false
 </code></pre>
 
-<p>*Types are not bound to variables!</p>
+<p>Types are not bound to variables!</p>
 
 <h3>
 <a name="reverse-booleans-with-" class="anchor" href="#reverse-booleans-with-"><span class="octicon octicon-link"></span></a>Reverse booleans with !</h3>
@@ -119,9 +141,23 @@ x = 4 &lt;= 10 ### =&gt; false
 </code></pre>
 
 <h3>
+<a name="boolean-operators" class="anchor" href="#boolean-operators"><span class="octicon octicon-link"></span></a>Boolean operators</h3>
+
+<pre><code>x = true &amp;&amp; false ### =&gt; false
+x = true || false ### =&gt; true
+</code></pre>
+
+<h3>
 <a name="strings-are-created-in-quotes" class="anchor" href="#strings-are-created-in-quotes"><span class="octicon octicon-link"></span></a>Strings are created in quotes</h3>
 
 <pre><code>x = "Hello World" ### =&gt; Hello World
+</code></pre>
+
+<h3>
+<a name="concatenate-strings-using-" class="anchor" href="#concatenate-strings-using-"><span class="octicon octicon-link"></span></a>Concatenate strings using <code>+</code>
+</h3>
+
+<pre><code>x = "Hello " + World
 </code></pre>
 
 <h3>
@@ -134,17 +170,25 @@ x = 4 &lt;= 10 ### =&gt; false
 <a name="variables" class="anchor" href="#variables"><span class="octicon octicon-link"></span></a>Variables</h1>
 
 <h3>
+<a name="create-empty-variables-using-make" class="anchor" href="#create-empty-variables-using-make"><span class="octicon octicon-link"></span></a>Create empty variables using <code>make</code>
+</h3>
+
+<pre><code>make varName ### =&gt; Empty string value
+</code></pre>
+
+<h3>
+<a name="remove-value-using-del" class="anchor" href="#remove-value-using-del"><span class="octicon octicon-link"></span></a>Remove value using <code>del</code>
+</h3>
+
+<pre><code>del x ### =&gt; Var no longer exists
+</code></pre>
+
+<h3>
 <a name="type-is-not-enforced" class="anchor" href="#type-is-not-enforced"><span class="octicon octicon-link"></span></a>Type is not enforced</h3>
 
 <pre><code>x = true
 x = 3
 x = Hello
-</code></pre>
-
-<h3>
-<a name="remove-value-using-notation-sets-as-empty-value" class="anchor" href="#remove-value-using-notation-sets-as-empty-value"><span class="octicon octicon-link"></span></a>Remove value using notation (sets as empty value)</h3>
-
-<pre><code>x = 
 </code></pre>
 
 <h1>
@@ -154,6 +198,8 @@ x = Hello
 
 if(x &gt;= 1)
     x++
+else if(x &lt; 0)
+    x--
 else
     x = 12
 end
@@ -170,13 +216,52 @@ while(x++ &lt; 100)
     ### Do things
 end
 </code></pre>
+
+<h3>
+<a name="create-methods-with-def" class="anchor" href="#create-methods-with-def"><span class="octicon octicon-link"></span></a>Create methods with def</h3>
+
+<pre><code>def printMore(x)
+    print(x + 3)
+end
+</code></pre>
+
+<h3>
+<a name="returning-methods-use-a-return-x" class="anchor" href="#returning-methods-use-a-return-x"><span class="octicon octicon-link"></span></a>Returning methods use a <code>return x</code>
+</h3>
+
+<pre><code>def get(x)
+    return x + 1
+end
+</code></pre>
+
+<h3>
+<a name="everything-has-a-scope" class="anchor" href="#everything-has-a-scope"><span class="octicon octicon-link"></span></a>Everything has a scope</h3>
+
+<pre><code>def foo()
+    def bar()
+    end
+
+    ### Can call bar!
+end
+
+### Can't call bar!
+</code></pre>
       </section>
+
       <footer>
-        <p>Project maintained by <a href="https://github.com/Team4334">Team4334</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/Team4334">Team4334</a> can be found on <a href="https://github.com/Team4334/gordian">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
       </footer>
+
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
     
   </body>
 </html>
