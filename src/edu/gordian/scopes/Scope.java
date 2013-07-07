@@ -364,7 +364,7 @@ public class Scope {
                     || next.startsWith("if") || next.startsWith("def")) {
                 scopes++;
             }
-            if (next.toLowerCase().equals("end") || next.toLowerCase().equals("fi")) {
+            if (next.toLowerCase().equals("end")) {
                 scopes--;
             }
             if (scopes != 0) {
@@ -431,7 +431,7 @@ public class Scope {
         }
 
         if (scopes != 0) {
-            throw new RuntimeException("Scope was never completed. Use 'end' or 'fi' to complete scopes.");
+            throw new RuntimeException("Scope was never completed. Use 'end' to complete scopes.");
         }
     }
 
