@@ -3,6 +3,7 @@ package edu.gordian.elements.declarations;
 import edu.gordian.scopes.Scope;
 import edu.gordian.values.StaticValue;
 import edu.gordian.values.Value;
+import edu.gordian.values.GordianNumber;
 
 public final class ValueAdjustment implements Runnable, Value {
 
@@ -28,10 +29,10 @@ public final class ValueAdjustment implements Runnable, Value {
 
     public Object getValue() {
         Value v = scope.getVariable(key);
-        double value = (v == null || !(v.getValue() instanceof Double)
-                ? 0 : ((Double) v.getValue()).doubleValue()) + i;
-        scope.setVariable(key, new StaticValue(Double.valueOf(value)));
-        return Double.valueOf(value);
+        double value = (v == null || !(v.getValue() instanceof GordianNumber)
+                ? 0 : ((GordianNumber) v.getValue()).doubleValue()) + i;
+        scope.setVariable(key, new StaticValue(GordianNumber.valueOf(value)));
+        return GordianNumber.valueOf(value);
     }
 
     public String toString() {

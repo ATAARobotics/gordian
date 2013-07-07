@@ -7,15 +7,15 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
 
 # Datatypes and Operators
 
-### Numbers are doubles
-    x = 12
-    x = 232.32914
-
+### Numbers are int/double variants
+    x = 2.0 ### => 2
+    x = 3.42 ### => 3.42
+    
 ### Math works in floating point
     x = 12 / 23 ### => 0.5217391304347826
 
-### Even integer math
-    x = 2 / 1 ### => 2.0
+### But results are inferred type
+    x = 2 / 1 ### => 2
 
 ### Enforce precedence by steps (Not parentheses!)
     x = 3 / 2 ### => 1.5
@@ -34,7 +34,8 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
 ## Booleans
     x = true
     x = false
-*Types are not bound to variables!
+    
+Types are not bound to variables!
 
 ### Reverse booleans with !
     x = !true ### => false
@@ -103,3 +104,13 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
     def get(x)
         return x + 1
     end
+
+### Everything has a scope
+    def foo()
+        def bar()
+        end
+        
+        ### Can call bar!
+    end
+    
+    ### Can't call bar!

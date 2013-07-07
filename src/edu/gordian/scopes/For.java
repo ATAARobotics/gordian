@@ -1,12 +1,14 @@
 package edu.gordian.scopes;
 
+import edu.gordian.values.GordianNumber;
+
 final class For extends Scope {
 
     private final int condition;
 
     public For(String condition, Scope scope) {
         super(scope);
-        this.condition = ((Double) toValue(condition).getValue()).intValue();
+        this.condition = ((GordianNumber) toValue(condition).getValue()).intValue();
     }
 
     public void run(String script) throws Exception {

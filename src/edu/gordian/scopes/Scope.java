@@ -8,6 +8,7 @@ import edu.gordian.elements.methods.Method;
 import edu.gordian.elements.methods.MethodBase;
 import edu.gordian.elements.methods.ReturningMethod;
 import edu.gordian.elements.methods.UserMethod;
+import edu.gordian.values.GordianNumber;
 import edu.gordian.values.ReturningMethodBase;
 import edu.gordian.values.StaticValue;
 import edu.gordian.values.UserReturningMethod;
@@ -86,7 +87,7 @@ public class Scope {
             throw new IllegalArgumentException("Value is not valid - " + e);
         }
         try {
-            return new StaticValue(Double.valueOf(e));
+            return new StaticValue(GordianNumber.valueOf(e));
         } catch (NumberFormatException ex) {
         }
         if (e.toLowerCase().equals("true")) {
@@ -152,27 +153,27 @@ public class Scope {
             return new Declaration(this, e.substring(0, e.indexOf('=')), e.substring(e.indexOf('=') + 1));
         }
         if (Strings.containsThatIsnt(e, '-', "--")) {
-            return new Subtraction(Double.valueOf(getNumber(e.substring(0, Strings.indexThatIsnt(e, '-', "--")))),
-                    Double.valueOf(getNumber(e.substring(Strings.indexThatIsnt(e, '-', "--") + 1))));
+            return new Subtraction(GordianNumber.valueOf(getNumber(e.substring(0, Strings.indexThatIsnt(e, '-', "--")))),
+                    GordianNumber.valueOf(getNumber(e.substring(Strings.indexThatIsnt(e, '-', "--") + 1))));
         }
         if (Strings.containsThatIsnt(e, '+', "++")
                 // Need to ensure this is math (could be string concatenation)
-                && toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue() instanceof Double
-                && toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue() instanceof Double) {
-            return new Addition(Double.valueOf(getNumber(e.substring(0, Strings.indexThatIsnt(e, '+', "++")))),
-                    Double.valueOf(getNumber(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1))));
+                && toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue() instanceof GordianNumber
+                && toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue() instanceof GordianNumber) {
+            return new Addition(GordianNumber.valueOf(getNumber(e.substring(0, Strings.indexThatIsnt(e, '+', "++")))),
+                    GordianNumber.valueOf(getNumber(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1))));
         }
         if (Strings.contains(e, '/')) {
-            return new Division(Double.valueOf(getNumber(e.substring(0, e.indexOf('/')))),
-                    Double.valueOf(getNumber(e.substring(e.indexOf('/') + 1))));
+            return new Division(GordianNumber.valueOf(getNumber(e.substring(0, e.indexOf('/')))),
+                    GordianNumber.valueOf(getNumber(e.substring(e.indexOf('/') + 1))));
         }
         if (Strings.contains(e, '*')) {
-            return new Multiplication(Double.valueOf(getNumber(e.substring(0, e.indexOf('*')))),
-                    Double.valueOf(getNumber(e.substring(e.indexOf('*') + 1))));
+            return new Multiplication(GordianNumber.valueOf(getNumber(e.substring(0, e.indexOf('*')))),
+                    GordianNumber.valueOf(getNumber(e.substring(e.indexOf('*') + 1))));
         }
         if (Strings.contains(e, '%')) {
-            return new Modulus(Double.valueOf(getNumber(e.substring(0, e.indexOf('%')))),
-                    Double.valueOf(getNumber(e.substring(e.indexOf('%') + 1))));
+            return new Modulus(GordianNumber.valueOf(getNumber(e.substring(0, e.indexOf('%')))),
+                    GordianNumber.valueOf(getNumber(e.substring(e.indexOf('%') + 1))));
         }
 
         if (Strings.contains(e, "++")) {
@@ -183,8 +184,8 @@ public class Scope {
         }
         if (Strings.containsThatIsnt(e, '+', "++")
                 // STRING CONCATENATION
-                && (!(toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue() instanceof Double)
-                || !(toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue() instanceof Double))) {
+                && (!(toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue() instanceof GordianNumber)
+                || !(toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue() instanceof GordianNumber))) {
             return new StaticValue(toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue().toString()
                     + toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue().toString());
         }
@@ -207,6 +208,23 @@ public class Scope {
         if (e == null || Strings.isEmpty(e)) {
             throw new IllegalArgumentException("Element is not valid - " + e);
         }
+
+        DefinedMethod m = null;
+        if (this instanceof DefinedMethod) {
+            m = (DefinedMethod) this;
+        } else {
+            for (int x = parents.length - 1; x >= 0; x--) {
+                if (parents[x] instanceof DefinedMethod) {
+                    m = (DefinedMethod) parents[x];
+                    break;
+                }
+            }
+        }
+
+        if (e.startsWith("return") && m != null) {
+            return new Return(m, e.substring(e.indexOf("return") + 6));
+        }
+
         if (Strings.contains(e, '=')
                 && e.indexOf('=') != e.indexOf("!=")
                 && e.indexOf('=') != e.indexOf("==")
@@ -397,23 +415,6 @@ public class Scope {
                     continue;
                 }
 
-                DefinedMethod m = null;
-                if (this instanceof DefinedMethod) {
-                    m = (DefinedMethod) this;
-                } else {
-                    for (int x = parents.length - 1; x >= 0; x--) {
-                        if (parents[x] instanceof DefinedMethod) {
-                            m = (DefinedMethod) parents[x];
-                            break;
-                        }
-                    }
-                }
-
-                if (scopes == 0 && next.startsWith("return") && m != null) {
-                    m.returnValue(toValue(next.substring(next.indexOf("return") + 6)).getValue());
-                    return;
-                }
-
                 toElement(next).run();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -487,11 +488,26 @@ public class Scope {
     }
 
     private double getNumber(String val) {
-        return ((Double) toValue(val).getValue()).doubleValue();
+        return ((GordianNumber) toValue(val).getValue()).doubleValue();
     }
 
     private boolean getBoolean(String val) {
         return ((Boolean) toValue(val).getValue()).booleanValue();
+    }
+
+    private final class Return implements Runnable {
+
+        private final DefinedMethod definedMethod;
+        private final String value;
+
+        public Return(DefinedMethod definedMethod, String value) {
+            this.definedMethod = definedMethod;
+            this.value = value;
+        }
+
+        public void run() {
+            definedMethod.returnValue(toValue(value).getValue());
+        }
     }
 
     private static final class MapGroup {

@@ -1,12 +1,14 @@
 package edu.gordian.values.calculations;
 
+import edu.gordian.values.GordianNumber;
+
 public final class Multiplication extends Calculation {
 
-    public Multiplication(Double first, Double second) {
+    public Multiplication(GordianNumber first, GordianNumber second) {
         super(first, second);
     }
 
-    public Double getNumber(Double f1, Double f2) {
-        return Double.valueOf(f1.doubleValue() * f2.doubleValue());
+    public GordianNumber getNumber(GordianNumber f1, GordianNumber f2) {
+        return GordianNumber.valueOf(f1.doubleValue() * f2.doubleValue());
     }
 }

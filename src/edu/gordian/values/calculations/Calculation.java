@@ -1,12 +1,13 @@
 package edu.gordian.values.calculations;
 
+import edu.gordian.values.GordianNumber;
 import edu.gordian.values.Value;
 
 abstract class Calculation implements Value {
 
-    private Double first, second;
+    private GordianNumber first, second;
 
-    public Calculation(Double first, Double second) {
+    public Calculation(GordianNumber first, GordianNumber second) {
         if (first == null) {
             throw new NullPointerException("First number is null");
         }
@@ -21,7 +22,7 @@ abstract class Calculation implements Value {
         return getNumber(first, second);
     }
 
-    public abstract Double getNumber(Double f1, Double f2);
+    public abstract GordianNumber getNumber(GordianNumber f1, GordianNumber f2);
 
     public String toString() {
         return getValue().toString();
