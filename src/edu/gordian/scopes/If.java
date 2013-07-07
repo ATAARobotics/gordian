@@ -31,7 +31,7 @@ final class If extends Scope {
             } else {
                 buffer.append(e[x]);
             }
-            
+
             buffer.append(';');
         }
         script = buffer.toString();

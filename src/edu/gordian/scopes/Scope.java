@@ -221,8 +221,16 @@ public class Scope {
             }
         }
 
-        if (e.startsWith("return") && m != null) {
-            return new Return(m, e.substring(e.indexOf("return") + 6));
+        if (e.startsWith("return ") && m != null) {
+            return new Return(m, e.substring(e.indexOf("return ") + 7));
+        }
+
+        if (e.startsWith("del ")) {
+            return new Remove(e.substring(4));
+        }
+
+        if (e.startsWith("make ")) {
+            return new Make(e.substring(5));
         }
 
         if (Strings.contains(e, '=')
@@ -408,7 +416,7 @@ public class Scope {
 
                     DefinedMethod method = new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, this);
                     privateMethods.put(name, method);
-                    if (Strings.contains(s, "return")) {
+                    if (Strings.contains(s, "return ")) {
                         privateReturning.put(name, method);
                     }
                     scope = "";
@@ -470,7 +478,11 @@ public class Scope {
                 inQuotes = !inQuotes;
             }
         }
-        if (!inQuotes) {
+        if (!inQuotes
+                // Special statements
+                && !a.substring(x - 6 < 0 ? 0 : x - 6, x).equals("return")
+                && !a.substring(x - 3 < 0 ? 0 : x - 3, x).equals("del")
+                && !a.substring(x - 4 < 0 ? 0 : x - 4, x).equals("make")) {
             a = a.substring(0, x) + s.substring(x + 1);
         } else {
             if (a.substring(x + 1).indexOf(' ') == -1) {
@@ -507,6 +519,33 @@ public class Scope {
 
         public void run() {
             definedMethod.returnValue(toValue(value).getValue());
+        }
+    }
+
+    private final class Remove implements Runnable {
+
+        private final String key;
+
+        public Remove(String key) {
+            this.key = key;
+        }
+
+        public void run() {
+            privateVars.remove(key);
+            publicVars.remove(key);
+        }
+    }
+
+    private final class Make implements Runnable {
+
+        private final String key;
+
+        public Make(String key) {
+            this.key = key;
+        }
+
+        public void run() {
+            setVariable(key, new StaticValue(""));
         }
     }
 

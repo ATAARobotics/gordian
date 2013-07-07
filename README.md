@@ -7,7 +7,7 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
 
 # Datatypes and Operators
 
-### Numbers are int/double variants
+### Numbers are int/double variants - in Java they are GordianNumber
     x = 2.0 ### => 2
     x = 3.42 ### => 3.42
     
@@ -28,10 +28,14 @@ It is interpreted, and provides no guarantees. A lot of errors are caught at run
     x = 1 * 2 / 3 + 4 - 5 ### => (((1 * (2 / 3)) + 4) - 5)
 
 ### Incrementing and decrementing
-    x++ ### When x doesn't exist, starts at 0 (x++ is 1)
-    x-- ### When x doesn't exist, starts at 0 (x-- is -1)
+    x++ ### When x doesn't exist (or isn't a number), starts at 0 (x++ is 1)
+    x-- ### When x doesn't exist (or isn't a number), starts at 0 (x-- is -1)
+    
+### Declarations and increments are both considered values as well
+    foo(x++) ### Is correct
+    foo(x = x + 1) ### Is also correct
 
-## Booleans
+# Booleans
     x = true
     x = false
     
@@ -67,13 +71,16 @@ Types are not bound to variables!
 
 # Variables
 
+### Create empty variables using `make`
+    make varName ### => Empty string value
+
+### Remove value using `del`
+    del x ### => Var no longer exists
+    
 ### Type is not enforced
     x = true
     x = 3
     x = Hello
-
-### Remove value using notation (sets as empty value)
-    x = 
 
 # Control flow
     x = 0
