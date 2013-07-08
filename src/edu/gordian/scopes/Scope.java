@@ -321,18 +321,30 @@ public class Scope {
     }
 
     public final void addMethod(String name, MethodBase base) {
+        if (privateMethods.containsKey(name)) {
+            throw new RuntimeException("Cannot create another " + name + " method");
+        }
         privateMethods.put(name, base);
     }
 
     public final void addGlobalMethod(String name, MethodBase base) {
+        if (publicMethods.containsKey(name)) {
+            throw new RuntimeException("Cannot create another " + name + " method");
+        }
         publicMethods.put(name, base);
     }
 
     public final void addReturning(String name, ReturningMethodBase base) {
+        if (privateReturning.containsKey(name)) {
+            throw new RuntimeException("Cannot create another " + name + " method");
+        }
         privateReturning.put(name, base);
     }
 
     public final void addGlobalReturning(String name, ReturningMethodBase base) {
+        if (publicReturning.containsKey(name)) {
+            throw new RuntimeException("Cannot create another " + name + " method");
+        }
         publicReturning.put(name, base);
     }
 
@@ -415,9 +427,9 @@ public class Scope {
                     }
 
                     DefinedMethod method = new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, this);
-                    privateMethods.put(name, method);
+                    addMethod(name, method);
                     if (Strings.contains(s, "return ")) {
-                        privateReturning.put(name, method);
+                        addReturning(name, method);
                     }
                     scope = "";
                     continue;
