@@ -12,10 +12,10 @@ public final class ValueAdjustment implements Runnable, Value {
     private final double i;
 
     public ValueAdjustment(Scope scope, String key, double i) {
-        if(scope == null) {
+        if (scope == null) {
             throw new NullPointerException("Scope is null");
         }
-        if(key == null) {
+        if (key == null) {
             throw new NullPointerException("Key is null");
         }
         this.scope = scope;
@@ -28,9 +28,18 @@ public final class ValueAdjustment implements Runnable, Value {
     }
 
     public Object getValue() {
-        Value v = scope.getVariable(key);
-        double value = (v == null || !(v.getValue() instanceof GordianNumber)
-                ? 0 : ((GordianNumber) v.getValue()).doubleValue()) + i;
+        double value;
+        try {
+            Value v = scope.getVariable(key);
+            if (v.getValue() instanceof GordianNumber) {
+                value = ((GordianNumber) v.getValue()).doubleValue();
+            } else {
+                value = 0;
+            }
+        } catch (NullPointerException ex) {
+            value = 0;
+        }
+        value += i;
         scope.setVariable(key, new StaticValue(GordianNumber.valueOf(value)));
         return GordianNumber.valueOf(value);
     }

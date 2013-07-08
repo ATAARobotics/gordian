@@ -176,11 +176,11 @@ public class Scope {
                     GordianNumber.valueOf(getNumber(e.substring(e.indexOf('%') + 1))));
         }
 
-        if (Strings.contains(e, "++")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("++")), +1);
+        if (e.endsWith("++")) {
+            return new ValueAdjustment(this, e.substring(0, e.length() - 2), +1);
         }
-        if (Strings.contains(e, "--")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("--")), -1);
+        if (e.endsWith("--")) {
+            return new ValueAdjustment(this, e.substring(0, e.length() - 2), -1);
         }
         if (Strings.containsThatIsnt(e, '+', "++")
                 // STRING CONCATENATION
@@ -256,11 +256,11 @@ public class Scope {
                 return new ReturningMethod((ReturningMethodBase) publicReturning.get(name), a);
             }
         }
-        if (Strings.contains(e, "++")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("++")), +1);
+        if (Strings.contains(e, "++;")) {
+            return new ValueAdjustment(this, e.substring(0, e.indexOf("++;")), +1);
         }
-        if (Strings.contains(e, "--")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("--")), -1);
+        if (Strings.contains(e, "--;")) {
+            return new ValueAdjustment(this, e.substring(0, e.indexOf("--;")), -1);
         }
 
         throw new Exception("Not a valid instruction: " + e);
@@ -431,7 +431,7 @@ public class Scope {
         }
 
         if (scopes != 0) {
-            throw new RuntimeException("Scope was never completed. Use 'end' to complete scopes.");
+            throw new RuntimeException("Scope was never completed. Use 'end' or 'fi' to complete scopes.");
         }
     }
 
