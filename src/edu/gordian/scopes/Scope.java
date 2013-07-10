@@ -304,20 +304,37 @@ public class Scope {
         }
     }
 
+    public static boolean isValidKey(String key) {
+        try {
+            Double.parseDouble(key);
+            return false;
+        } catch (NumberFormatException ex) {
+            return !(Strings.isEmpty(key));
+        }
+    }
+
     public final void setVariable(String key, Value value) {
         if (publicVars.containsKey(key)) {
-            publicVars.put(key, value);
+            setPublicVariable(key, value);
         } else {
-            privateVars.put(key, value);
+            setPrivateVariable(key, value);
         }
     }
 
     public final void setPublicVariable(String key, Value value) {
-        publicVars.put(key, value);
+        if (isValidKey(key)) {
+            publicVars.put(key, value);
+        } else {
+            throw new RuntimeException(key + " is not a valid key for a variable");
+        }
     }
 
     public final void setPrivateVariable(String key, Value value) {
-        privateVars.put(key, value);
+        if (isValidKey(key)) {
+            privateVars.put(key, value);
+        } else {
+            throw new RuntimeException(key + " is not a valid key for a variable");
+        }
     }
 
     public final void addMethod(String name, MethodBase base) {

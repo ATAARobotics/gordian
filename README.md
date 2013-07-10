@@ -3,7 +3,24 @@
 
 This is Gordian. It is a scripting language written in Java to run programs based solely on their text.
 It is interpreted, and provides no guarantees. A lot of errors are caught at runtime, which might make your job harder. As a bonus however, Gordian is extremely lightweight, flexible and can be hacked very easily. (in a good way)
+It isn't meant to solve any problem that another language couldn't. It's purpose is to be run on robots (see [FRC](https://en.wikipedia.org/wiki/FIRST_Robotics_Competition)). Since implementing another language would require a lot of dependencies that I just can't do on the platform, I wanted to make the language portable and by itself using only parsing.
+And the platform I run it on is Java ME with [squawk](http://en.wikipedia.org/wiki/Squawk_virtual_machine).
 
+# Basics
+Gordian separates instructions using line breaks (\n) and ';'. They are functionally equivalent. For this reason, you can use this notation:
+
+    def foo(x)
+        # instructions
+    end
+
+Or this notation:
+
+    def foo(x); # instructions; end
+    
+They are the same to Gordian.
+
+## Calling from Java
+Use `Gordian.run` to run your script in Java. For more access to variables and elements, create a `Scope` object in the same way as `Gordian.run`, and call `Scope.run(String)` to run your script. The `Scope` object has access to some useful internals of the language.
 
 # Datatypes and Operators
 
@@ -121,3 +138,9 @@ Types are not bound to variables!
     end
     
     ### Can't call bar!
+
+# Language quirks
+
+- Variable shadowing is not supported
+- Parentheses are not supported for any operation
+- Using the `x = val` notation as a value is equivalent to using `val`, and calling `x = val`. It has nothing to do with the method's variables (like python).
