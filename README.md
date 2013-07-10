@@ -3,8 +3,10 @@
 
 This is Gordian. It is a scripting language written in Java to run programs based solely on their text.
 It is interpreted, and provides no guarantees. A lot of errors are caught at runtime, which might make your job harder. As a bonus however, Gordian is extremely lightweight, flexible and can be hacked very easily. (in a good way)
+
 It isn't meant to solve any problem that another language couldn't. It's purpose is to be run on robots (see [FRC](https://en.wikipedia.org/wiki/FIRST_Robotics_Competition)). Since implementing another language would require a lot of dependencies that I just can't do on the platform, I wanted to make the language portable and by itself using only parsing.
-And the platform I run it on is Java ME with [squawk](http://en.wikipedia.org/wiki/Squawk_virtual_machine).
+
+And the platform it is run on is Java ME with [squawk](http://en.wikipedia.org/wiki/Squawk_virtual_machine).
 
 # Basics
 Gordian separates instructions using line breaks (\n) and ';'. They are functionally equivalent. For this reason, you can use this notation:
