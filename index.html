@@ -1,56 +1,67 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Gordian : Alberta Tech Alliance's Scripting Language" />
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Gordian by Team4334</title>
+    <title>Gordian</title>
   </head>
 
   <body>
-    <a id="forkme_banner" href="https://github.com/Team4334/gordian">View on GitHub</a>
-    <div class="shell">
 
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Gordian</h1>
-            <h2>Alberta Tech Alliance's Scripting Language</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Team4334/gordian">View on GitHub</a>
 
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/Team4334/gordian/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/Team4334/gordian/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
+          <h1 id="project_title">Gordian</h1>
+          <h2 id="project_tagline">Alberta Tech Alliance's Scripting Language</h2>
 
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Team4334/gordian/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Team4334/gordian/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a name="gordian" class="anchor" href="#gordian"><span class="octicon octicon-link"></span></a>GORDIAN</h1>
 
 <hr><p>This is Gordian. It is a scripting language written in Java to run programs based solely on their text.
 It is interpreted, and provides no guarantees. A lot of errors are caught at runtime, which might make your job harder. As a bonus however, Gordian is extremely lightweight, flexible and can be hacked very easily. (in a good way)</p>
+
+<p>It isn't meant to solve any problem that another language couldn't. It's purpose is to be run on robots (see <a href="https://en.wikipedia.org/wiki/FIRST_Robotics_Competition">FRC</a>). Since implementing another language would require a lot of dependencies that I just can't do on the platform, I wanted to make the language portable and by itself using only parsing.</p>
+
+<p>And the platform it is run on is Java ME with <a href="http://en.wikipedia.org/wiki/Squawk_virtual_machine">squawk</a>.</p>
+
+<h1>
+<a name="basics" class="anchor" href="#basics"><span class="octicon octicon-link"></span></a>Basics</h1>
+
+<p>Gordian separates instructions using line breaks (\n) and ';'. They are functionally equivalent. For this reason, you can use this notation:</p>
+
+<pre><code>def foo(x)
+    # instructions
+end
+</code></pre>
+
+<p>Or this notation:</p>
+
+<pre><code>def foo(x); # instructions; end
+</code></pre>
+
+<p>They are the same to Gordian.</p>
+
+<h2>
+<a name="calling-from-java" class="anchor" href="#calling-from-java"><span class="octicon octicon-link"></span></a>Calling from Java</h2>
+
+<p>Use <code>Gordian.run</code> to run your script in Java. For more access to variables and elements, create a <code>Scope</code> object in the same way as <code>Gordian.run</code>, and call <code>Scope.run(String)</code> to run your script. The <code>Scope</code> object has access to some useful internals of the language.</p>
 
 <h1>
 <a name="datatypes-and-operators" class="anchor" href="#datatypes-and-operators"><span class="octicon octicon-link"></span></a>Datatypes and Operators</h1>
@@ -246,22 +257,27 @@ end
 
 ### Can't call bar!
 </code></pre>
+
+<h1>
+<a name="language-quirks" class="anchor" href="#language-quirks"><span class="octicon octicon-link"></span></a>Language quirks</h1>
+
+<ul>
+<li>Variable shadowing is not supported</li>
+<li>Parentheses are not supported for any operation</li>
+<li>Using the <code>x = val</code> notation as a value is equivalent to using <code>val</code>, and calling <code>x = val</code>. It has nothing to do with the method's variables (like python).</li>
+</ul>
       </section>
+    </div>
 
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/Team4334">Team4334</a> can be found on <a href="https://github.com/Team4334/gordian">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Gordian maintained by <a href="https://github.com/Team4334">Team4334</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
-
     </div>
 
     
+
   </body>
 </html>
