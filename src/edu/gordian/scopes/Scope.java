@@ -1,6 +1,8 @@
 package edu.gordian.scopes;
 
 import com.sun.squawk.util.StringTokenizer;
+import edu.first.util.list.ArrayList;
+import edu.first.util.list.List;
 import edu.gordian.Strings;
 import edu.gordian.elements.declarations.Declaration;
 import edu.gordian.elements.declarations.ValueAdjustment;
@@ -24,9 +26,6 @@ import edu.gordian.values.comparisons.numbers.Greater;
 import edu.gordian.values.comparisons.numbers.GreaterOrEqual;
 import edu.gordian.values.comparisons.numbers.Less;
 import edu.gordian.values.comparisons.numbers.LessOrEqual;
-import edu.wpi.first.wpilibj.networktables2.util.List;
-import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * The representation of a scope in the context of Gordian. A scope can be
@@ -36,12 +35,7 @@ import java.util.Hashtable;
  */
 public class Scope {
 
-    private final MapGroup publicVars;
-    private final MapGroup publicMethods;
-    private final MapGroup publicReturning;
-    private final Hashtable privateVars = new Hashtable();
-    private final Hashtable privateMethods = new Hashtable();
-    private final Hashtable privateReturning = new Hashtable();
+    private final ScopeStorage storage;
     private final Scope[] parents;
 
     /**
@@ -49,9 +43,7 @@ public class Scope {
      * should be used for entire scripts.
      */
     public Scope() {
-        publicVars = new MapGroup(new Hashtable());
-        publicMethods = new MapGroup(new Hashtable());
-        publicReturning = new MapGroup(new Hashtable());
+        storage = new ScopeStorage();
         parents = new Scope[0];
     }
 
@@ -68,16 +60,16 @@ public class Scope {
         if (returning == null) {
             throw new NullPointerException("Returning methods were null");
         }
-        publicMethods = new MapGroup(new Hashtable());
+
+        storage = new ScopeStorage();
+
         for (int x = 0; x < methods.length; x++) {
-            publicMethods.put(methods[x].getName(), methods[x]);
+            storage.getMethods().setPublicValue(methods[x].getName(), methods[x]);
         }
-        publicReturning = new MapGroup(new Hashtable());
         for (int x = 0; x < returning.length; x++) {
-            publicReturning.put(returning[x].getName(), returning[x]);
+            storage.getReturning().setPublicValue(returning[x].getName(), returning[x]);
         }
 
-        publicVars = new MapGroup(new Hashtable());
         parents = new Scope[0];
     }
 
@@ -95,13 +87,7 @@ public class Scope {
         System.arraycopy(scope.parents, 0, parents, 0, scope.parents.length);
         parents[parents.length - 1] = scope;
 
-        publicVars = new MapGroup(scope.publicVars);
-        publicMethods = new MapGroup(scope.publicMethods);
-        publicReturning = new MapGroup(scope.publicReturning);
-
-        publicVars.add(scope.privateVars);
-        publicMethods.add(scope.privateMethods);
-        publicReturning.add(scope.privateReturning);
+        storage = new ScopeStorage(scope.storage);
     }
 
     /**
@@ -117,6 +103,9 @@ public class Scope {
         }
         if (Strings.contains(e, "\"")) {
             return new StaticValue(Strings.replaceAll(e, "\"", ""));
+        }
+        if (storage.getVariables().isValue(e)) {
+            return (Value) storage.getVariables().getValue(e);
         }
         try {
             return new StaticValue(GordianNumber.valueOf(e));
@@ -164,24 +153,18 @@ public class Scope {
             String name = e.substring(0, e.indexOf('('));
             String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
             Value[] a = toValues(args);
-            if (publicReturning.containsKey(name)) {
-                return new StaticValue(((ReturningMethodBase) publicReturning.get(name)).runFor(a));
-            } else if (privateReturning.containsKey(name)) {
-                return new StaticValue(((ReturningMethodBase) privateReturning.get(name)).runFor(a));
+            if (storage.getReturning().isValue(name)) {
+                return new StaticValue(((ReturningMethodBase) storage.getReturning().getValue(name)).runFor(a));
             }
         }
 
-        if (privateVars.containsKey(e)) {
-            return (Value) privateVars.get(e);
-        }
-        if (publicVars.containsKey(e)) {
-            return (Value) publicVars.get(e);
-        }
         if (Strings.contains(e, '=')
                 && e.indexOf('=') != e.indexOf("!=")
                 && e.indexOf('=') != e.indexOf("==")
                 && e.indexOf('=') != e.indexOf("<=")
-                && e.indexOf('=') != e.indexOf(">=")) {
+                && e.indexOf('=') != e.indexOf(">=")
+                && (e.indexOf('(') >= 0 ? (e.indexOf('=') < e.indexOf('(')) : true)
+                && e.indexOf('=') > 0) {
             return new Declaration(this, e.substring(0, e.indexOf('=')), e.substring(e.indexOf('=') + 1));
         }
         if (Strings.containsThatIsnt(e, '-', "--")) {
@@ -289,14 +272,10 @@ public class Scope {
             String name = e.substring(0, e.indexOf('('));
             String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
             Value[] a = toValues(args);
-            if (privateMethods.containsKey(name)) {
-                return new Method((MethodBase) privateMethods.get(name), a);
-            } else if (publicMethods.containsKey(name)) {
-                return new Method((MethodBase) publicMethods.get(name), a);
-            } else if (privateReturning.containsKey(name)) {
-                return new ReturningMethod((ReturningMethodBase) privateReturning.get(name), a);
-            } else if (publicReturning.containsKey(name)) {
-                return new ReturningMethod((ReturningMethodBase) publicReturning.get(name), a);
+            if (storage.getMethods().isValue(name)) {
+                return new Method((MethodBase) storage.getMethods().getValue(name), a);
+            } else if (storage.getReturning().isValue(name)) {
+                return new ReturningMethod((ReturningMethodBase) storage.getReturning().getValue(name), a);
             }
         }
         if (Strings.contains(e, "++;")) {
@@ -316,7 +295,7 @@ public class Scope {
      * @return if key is a variable
      */
     public final boolean isVariable(String key) {
-        return privateVars.containsKey(key) || publicVars.containsKey(key);
+        return storage.getVariables().isValue(key);
     }
 
     /**
@@ -326,13 +305,7 @@ public class Scope {
      * @return key as a variable
      */
     public final Value getVariable(String key) {
-        if (privateVars.containsKey(key)) {
-            return (Value) privateVars.get(key);
-        } else if (publicVars.containsKey(key)) {
-            return (Value) publicVars.get(key);
-        } else {
-            throw new NullPointerException("Variable " + key + " was not found in scope");
-        }
+        return (Value) storage.getVariables().getValue(key);
     }
 
     /**
@@ -342,7 +315,7 @@ public class Scope {
      * @return if key is a variable
      */
     protected final boolean isPublicVariable(String key) {
-        return publicVars.containsKey(key);
+        return storage.getVariables().isPrivateValue(key);
     }
 
     /**
@@ -352,11 +325,7 @@ public class Scope {
      * @return key as a variable
      */
     protected final Value getPublicVariable(String key) {
-        if (publicVars.containsKey(key)) {
-            return (Value) publicVars.get(key);
-        } else {
-            throw new NullPointerException("Variable " + key + " was not found in scope");
-        }
+        return (Value) storage.getVariables().getPublicValue(key);
     }
 
     /**
@@ -366,7 +335,7 @@ public class Scope {
      * @return if key is a variable
      */
     protected final boolean isPrivateVariable(String key) {
-        return privateVars.containsKey(key);
+        return storage.getVariables().isPrivateValue(key);
     }
 
     /**
@@ -376,31 +345,7 @@ public class Scope {
      * @return key as a variable
      */
     protected final Value getPrivateVariable(String key) {
-        if (privateVars.containsKey(key)) {
-            return (Value) privateVars.get(key);
-        } else {
-            throw new NullPointerException("Variable " + key + " was not found in scope");
-        }
-    }
-
-    /**
-     * Returns whether it's valid to save a variable as the key.
-     *
-     * @param key string used to access variable
-     * @return if program can save a variable under the key
-     */
-    public static boolean isValidKey(String key) {
-        try {
-            Double.parseDouble(key);
-            return false;
-        } catch (NumberFormatException ex) {
-            return !(Strings.isEmpty(key) || Strings.contains(key, "\"")
-                    || key.equalsIgnoreCase("true") || key.equalsIgnoreCase("false")
-                    || key.startsWith("!") || Strings.contains(key, "||") || Strings.contains(key, "&&")
-                    || Strings.contains(key, '=') || Strings.contains(key, '>') || Strings.contains(key, '<')
-                    || Strings.contains(key, '(') || Strings.contains(key, ')') || Strings.contains(key, '+')
-                    || Strings.contains(key, '-') || Strings.contains(key, '*') || Strings.contains(key, '/'));
-        }
+        return (Value) storage.getVariables().getPrivateValue(key);
     }
 
     /**
@@ -410,11 +355,7 @@ public class Scope {
      * @param value value to associate with key
      */
     public final void setVariable(String key, Value value) {
-        if (publicVars.containsKey(key)) {
-            setPublicVariable(key, value);
-        } else {
-            setPrivateVariable(key, value);
-        }
+        storage.getVariables().setValue(key, value);
     }
 
     /**
@@ -424,11 +365,7 @@ public class Scope {
      * @param value value to associate with key
      */
     public final void setPublicVariable(String key, Value value) {
-        if (isValidKey(key)) {
-            publicVars.put(key, value);
-        } else {
-            throw new RuntimeException(key + " is not a valid key for a variable");
-        }
+        storage.getVariables().setPublicValue(key, value);
     }
 
     /**
@@ -438,11 +375,7 @@ public class Scope {
      * @param value value to associate with key
      */
     public final void setPrivateVariable(String key, Value value) {
-        if (isValidKey(key)) {
-            privateVars.put(key, value);
-        } else {
-            throw new RuntimeException(key + " is not a valid key for a variable");
-        }
+        storage.getVariables().setPrivateValue(key, value);
     }
 
     /**
@@ -452,10 +385,7 @@ public class Scope {
      * @param base method to call
      */
     public final void addMethod(String name, MethodBase base) {
-        if (privateMethods.containsKey(name) || Strings.contains(name, '=')) {
-            throw new RuntimeException("Cannot create another " + name + " method");
-        }
-        privateMethods.put(name, base);
+        storage.getMethods().setValue(name, base);
     }
 
     /**
@@ -465,10 +395,7 @@ public class Scope {
      * @param base method to call
      */
     public final void addGlobalMethod(String name, MethodBase base) {
-        if (publicMethods.containsKey(name) || Strings.contains(name, '=')) {
-            throw new RuntimeException("Cannot create another " + name + " method");
-        }
-        publicMethods.put(name, base);
+        storage.getMethods().setPublicValue(name, base);
     }
 
     /**
@@ -479,10 +406,7 @@ public class Scope {
      * @param base method to call
      */
     public final void addReturning(String name, ReturningMethodBase base) {
-        if (privateReturning.containsKey(name) || !isValidKey(name)) {
-            throw new RuntimeException("Cannot create another " + name + " method");
-        }
-        privateReturning.put(name, base);
+        storage.getReturning().setValue(name, base);
     }
 
     /**
@@ -493,10 +417,7 @@ public class Scope {
      * @param base method to call
      */
     public final void addGlobalReturning(String name, ReturningMethodBase base) {
-        if (publicReturning.containsKey(name) || !isValidKey(name)) {
-            throw new RuntimeException("Cannot create another " + name + " method");
-        }
-        publicReturning.put(name, base);
+        storage.getReturning().setPublicValue(name, base);
     }
 
     /**
@@ -616,7 +537,7 @@ public class Scope {
         if (!Strings.contains(s, '\"') && !Strings.contains(s, '(')) {
             return Strings.split(s, ',');
         } else {
-            List l = new List();
+            List l = new ArrayList();
             boolean inQuotes = false;
             int paren = 0;
             int last = 0;
@@ -715,8 +636,7 @@ public class Scope {
         }
 
         public void run() {
-            privateVars.remove(key);
-            publicVars.remove(key);
+            storage.getVariables().remove(key);
         }
     }
 
@@ -730,129 +650,6 @@ public class Scope {
 
         public void run() {
             setVariable(key, new StaticValue(""));
-        }
-    }
-
-    private static final class MapGroup {
-
-        private final List maps = new List();
-
-        public MapGroup(Hashtable start) {
-            maps.add(start);
-        }
-
-        public MapGroup(MapGroup group) {
-            for (int x = 0; x < group.maps.size(); x++) {
-                maps.add(group.maps.get(x));
-            }
-        }
-
-        public void add(Hashtable h) {
-            maps.add(h);
-        }
-
-        public Enumeration keys() {
-            return new Enumeration() {
-                private final Enumeration[] enumerations;
-                private int i;
-
-                {
-                    enumerations = new Enumeration[maps.size()];
-                    for (int x = 0; x < maps.size(); x++) {
-                        enumerations[x] = ((Hashtable) maps.get(x)).keys();
-                    }
-                }
-
-                public boolean hasMoreElements() {
-                    return enumerations[i].hasMoreElements()
-                            || (++i < enumerations.length && enumerations[i].hasMoreElements());
-                }
-
-                public Object nextElement() {
-                    // needed to increment i
-                    return hasMoreElements() ? enumerations[i].nextElement() : null;
-                }
-            };
-        }
-
-        public Enumeration Elements() {
-            return new Enumeration() {
-                private final Enumeration[] enumerations;
-                private int i;
-
-                {
-                    enumerations = new Enumeration[maps.size()];
-                    for (int x = 0; x < maps.size(); x++) {
-                        enumerations[x] = ((Hashtable) maps.get(x)).elements();
-                    }
-                }
-
-                public boolean hasMoreElements() {
-                    return enumerations[i].hasMoreElements()
-                            || (++i < enumerations.length && enumerations[i].hasMoreElements());
-                }
-
-                public Object nextElement() {
-                    // needed to increment i
-                    return hasMoreElements() ? enumerations[i].nextElement() : null;
-                }
-            };
-        }
-
-        public boolean contains(Object value) {
-            for (int x = 0; x < maps.size(); x++) {
-                if (((Hashtable) maps.get(x)).contains(value)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public boolean containsKey(Object key) {
-            for (int x = 0; x < maps.size(); x++) {
-                if (((Hashtable) maps.get(x)).containsKey(key)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public Object get(Object key) {
-            for (int x = 0; x < maps.size(); x++) {
-                if (((Hashtable) maps.get(x)).containsKey(key)) {
-                    return ((Hashtable) maps.get(x)).get(key);
-                }
-            }
-            return null;
-        }
-
-        public Object put(Object key, Object value) {
-            for (int x = 0; x < maps.size(); x++) {
-                if (((Hashtable) maps.get(x)).containsKey(key)) {
-                    return ((Hashtable) maps.get(x)).put(key, value);
-                }
-            }
-            return ((Hashtable) maps.get(maps.size() - 1)).put(key, value);
-        }
-
-        public Object remove(Object key) {
-            // Nothing is ever removed - don't worry
-            return null;
-        }
-
-        public void clear() {
-        }
-
-        public int size() {
-            int s = 0;
-            for (int x = 0; x < maps.size(); x++) {
-                s += ((Hashtable) maps.get(x)).size();
-            }
-            return s;
-        }
-
-        public boolean isEmpty() {
-            return size() == 0;
         }
     }
 }

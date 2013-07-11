@@ -143,6 +143,5 @@ Types are not bound to variables!
 
 # Language quirks
 
-- Variable shadowing is not supported
 - Parentheses are not supported for any operation
 - Using the `x = val` notation as a value is equivalent to using `val`, and calling `x = val`. It has nothing to do with the method's variables (like python).

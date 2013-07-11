@@ -27,12 +27,7 @@ final class DefinedMethod extends Scope implements MethodBase, ReturningMethodBa
             throw new IllegalArgumentException("Not enough arguments");
         }
         for (int x = 0; x < args.length; x++) {
-            // CANNOT REDECLARE VARS IN A DEF
-            if (!isPublicVariable(args[x])) {
-                setPrivateVariable(args[x], arguments[x]);
-            } else {
-                throw new IllegalArgumentException("Argument " + args[x] + " was already defined outside scope!");
-            }
+            setPrivateVariable(args[x], arguments[x]);
         }
 
         try {

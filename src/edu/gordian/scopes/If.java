@@ -1,7 +1,8 @@
 package edu.gordian.scopes;
 
+import edu.first.util.list.ArrayList;
+import edu.first.util.list.List;
 import edu.gordian.Strings;
-import edu.wpi.first.wpilibj.networktables2.util.List;
 
 final class If extends Scope {
 
@@ -11,8 +12,8 @@ final class If extends Scope {
 
     public void run(String script) throws Exception {
         script = "#" + script.substring(2);
-        List conditions = new List();
-        List run = new List();
+        List conditions = new ArrayList();
+        List run = new ArrayList();
 
         String[] e = Strings.split(script, ';');
         StringBuffer buffer = new StringBuffer(e[0] + ';');
