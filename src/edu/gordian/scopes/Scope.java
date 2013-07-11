@@ -574,6 +574,8 @@ public class Scope {
         for (int i = 0; i < x; i++) {
             if (a.charAt(i) == '"') {
                 inQuotes = !inQuotes;
+            } else if (a.charAt(i) == ';') {
+                inQuotes = false;
             }
         }
         if (!inQuotes
