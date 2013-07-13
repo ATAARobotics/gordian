@@ -10,7 +10,6 @@ import edu.gordian.elements.methods.Method;
 import edu.gordian.elements.methods.MethodBase;
 import edu.gordian.elements.methods.ReturningMethod;
 import edu.gordian.elements.methods.UserMethod;
-import edu.gordian.values.gordian.GordianNumber;
 import edu.gordian.values.ReturningMethodBase;
 import edu.gordian.values.UserReturningMethod;
 import edu.gordian.values.Value;
@@ -551,21 +550,6 @@ public class Scope {
         }
 
         return a;
-    }
-
-    private double getNumber(String val) {
-        Object v = toValue(val).getValue();
-        if (v instanceof GordianNumber) {
-            return ((GordianNumber) v).doubleValue();
-        } else if (v instanceof Double) {
-            return ((Double) v).doubleValue();
-        } else {
-            throw new ClassCastException(val + " is not a number");
-        }
-    }
-
-    private boolean getBoolean(String val) {
-        return ((Boolean) toValue(val).getValue()).booleanValue();
     }
 
     private final class Return implements Runnable {

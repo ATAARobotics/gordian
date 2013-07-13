@@ -1,5 +1,7 @@
 package edu.gordian.scopes;
 
+import edu.gordian.values.gordian.GordianBoolean;
+
 class While extends Scope {
 
     private final String condition;
@@ -10,7 +12,7 @@ class While extends Scope {
     }
 
     public void run(String script) throws Exception {
-        while (((Boolean) toValue(condition).getValue()).booleanValue()) {
+        while (((GordianBoolean) toValue(condition)).booleanValue()) {
             super.run(script);
         }
     }

@@ -3,6 +3,7 @@ package edu.gordian.scopes;
 import edu.first.util.list.ArrayList;
 import edu.first.util.list.List;
 import edu.gordian.Strings;
+import edu.gordian.values.gordian.GordianBoolean;
 
 final class If extends Scope {
 
@@ -44,7 +45,7 @@ final class If extends Scope {
         }
 
         for (int x = 0; x < conditions.size(); x++) {
-            if (((Boolean) toValue((String) conditions.get(x)).getValue()).booleanValue()) {
+            if (((GordianBoolean) toValue((String) conditions.get(x))).booleanValue()) {
                 super.run((String) run.get(x));
                 return;
             }
