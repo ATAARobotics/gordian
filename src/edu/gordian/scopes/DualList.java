@@ -13,8 +13,9 @@ class DualList {
     }
 
     public DualList(DualList parent) {
-        publicList.addAll(parent.publicList);
+        // Private is added first to find closer scope first
         publicList.addAll(parent.privateList);
+        publicList.addAll(parent.publicList);
     }
 
     public boolean isValue(String key) {
