@@ -128,7 +128,7 @@ public final class ScopeStorage {
 
         public void checkKey(String key) {
             if (!isValidKey(key)) {
-                throw new RuntimeException(key + " is an illegal key for a variable (conflicts with parsing)"
+                throw new RuntimeException(key + " is an illegal key for a returning method (conflicts with parsing)"
                         + "\n\tNames cannot be empty or contain any of these characters: \",(equal)true,(equal)false,"
                         + "(starts with)!, ||, &&, =, >, <, (, ), +, -, *, /");
             }
