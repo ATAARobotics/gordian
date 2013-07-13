@@ -26,7 +26,7 @@ Use `Gordian.run` to run your script in Java. For more access to variables and e
 
 # Datatypes and Operators
 
-### Numbers are int/double variants - in Java they are GordianNumber
+### Numbers are int/double variants
     x = 2.0 ### => 2
     x = 3.42 ### => 3.42
     
@@ -41,7 +41,7 @@ Use `Gordian.run` to run your script in Java. For more access to variables and e
     x = x * 3 ### => 4.5
     x = x + 2 ### => 6.5
     
-### Modulus > Multiplication > Division > Addition > Subtraction > Right > Left
+### Modulus > Multiplication > Division > Addition > Subtraction > Left > Right
     x = 3 * 2 * 1 ### => (3 * (2 * 1))
     x = 1 / 2 / 3 ### => (1 / (2 / 3))
     x = 1 * 2 / 3 + 4 - 5 ### => (((1 * (2 / 3)) + 4) - 5)
@@ -49,10 +49,6 @@ Use `Gordian.run` to run your script in Java. For more access to variables and e
 ### Incrementing and decrementing
     x++ ### When x doesn't exist (or isn't a number), starts at 0 (x++ is 1)
     x-- ### When x doesn't exist (or isn't a number), starts at 0 (x-- is -1)
-    
-### Declarations and increments are both considered values as well
-    foo(x++) ### Is correct
-    foo(x = x + 1) ### Is also correct
 
 # Booleans
     x = true
@@ -83,15 +79,12 @@ Types are not bound to variables!
     x = "Hello World" ### => Hello World
     
 ### Concatenate strings using `+`
-    x = "Hello " + World
-
-### Can also create strings without quotes, but removes spaces
-    x = Hello World ### => HelloWorld
+    x = "Hello " + "World"
 
 # Variables
 
 ### Create empty variables using `make`
-    make varName ### => Empty string value
+    make varName ### => Empty value
 
 ### Remove value using `del`
     del x ### => Var no longer exists
@@ -117,7 +110,8 @@ Types are not bound to variables!
         x++
     end
 
-    while(x++ < 100)
+    while(x < 100)
+        x++
         ### Do things
     end
 
@@ -126,7 +120,7 @@ Types are not bound to variables!
         print(x + 3)
     end
     
-### Returning methods use a `return x`
+### Returning methods use `return`
     def get(x)
         return x + 1
     end
@@ -144,4 +138,3 @@ Types are not bound to variables!
 # Language quirks
 
 - Parentheses are not supported for any operation
-- Using the `x = val` notation as a value is equivalent to using `val`, and calling `x = val`. It has nothing to do with the method's variables (like python).

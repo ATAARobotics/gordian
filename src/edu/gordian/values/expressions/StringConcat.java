@@ -13,8 +13,8 @@ public final class StringConcat extends GordianString {
     }
 
     public static StringConcat valueOf(Scope s, String v) {
-        return new StringConcat(((GordianString) s.toValue(v.substring(0, v.indexOf('+')))).stringValue(),
-                ((GordianString) s.toValue(v.substring(v.indexOf('+') + 1))).stringValue());
+        return new StringConcat((s.toValue(v.substring(0, v.indexOf('+')))).getValue().toString(),
+                (s.toValue(v.substring(v.indexOf('+') + 1))).getValue().toString());
     }
 
     public StringConcat(String v1, String v2) {

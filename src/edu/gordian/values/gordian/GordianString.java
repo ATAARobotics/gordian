@@ -11,11 +11,11 @@ public class GordianString implements Value {
     }
 
     public GordianString(String value) {
-        this.value = value.substring(1, value.length() - 2);
+        this.value = value;
     }
 
     public static GordianString valueOf(String s) {
-        return new GordianString(s);
+        return new GordianString(s.substring(1, s.length() - 1));
     }
 
     public final String stringValue() {
