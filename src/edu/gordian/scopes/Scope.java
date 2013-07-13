@@ -10,22 +10,25 @@ import edu.gordian.elements.methods.Method;
 import edu.gordian.elements.methods.MethodBase;
 import edu.gordian.elements.methods.ReturningMethod;
 import edu.gordian.elements.methods.UserMethod;
-import edu.gordian.values.GordianNumber;
+import edu.gordian.values.gordian.GordianNumber;
 import edu.gordian.values.ReturningMethodBase;
-import edu.gordian.values.StaticValue;
 import edu.gordian.values.UserReturningMethod;
 import edu.gordian.values.Value;
+import edu.gordian.values.Values;
+import edu.gordian.values.adjustments.Negative;
+import edu.gordian.values.adjustments.Positive;
 import edu.gordian.values.calculations.Addition;
 import edu.gordian.values.calculations.Division;
 import edu.gordian.values.calculations.Modulus;
 import edu.gordian.values.calculations.Multiplication;
 import edu.gordian.values.calculations.Subtraction;
-import edu.gordian.values.comparisons.Equals;
-import edu.gordian.values.comparisons.NotEquals;
-import edu.gordian.values.comparisons.numbers.Greater;
-import edu.gordian.values.comparisons.numbers.GreaterOrEqual;
-import edu.gordian.values.comparisons.numbers.Less;
-import edu.gordian.values.comparisons.numbers.LessOrEqual;
+import edu.gordian.values.expressions.Equals;
+import edu.gordian.values.expressions.NotEquals;
+import edu.gordian.values.expressions.StringConcat;
+import edu.gordian.values.expressions.numbers.Greater;
+import edu.gordian.values.expressions.numbers.GreaterOrEqual;
+import edu.gordian.values.expressions.numbers.Less;
+import edu.gordian.values.expressions.numbers.LessOrEqual;
 
 /**
  * The representation of a scope in the context of Gordian. A scope can be
@@ -36,7 +39,7 @@ import edu.gordian.values.comparisons.numbers.LessOrEqual;
 public class Scope {
 
     private final ScopeStorage storage;
-    private final Scope[] parents;
+    private final DefinedMethod parent;
 
     /**
      * Constructs an empty scope. Empty scopes have nothing predefined. This
@@ -44,7 +47,7 @@ public class Scope {
      */
     public Scope() {
         storage = new ScopeStorage();
-        parents = new Scope[0];
+        parent = null;
     }
 
     /**
@@ -70,7 +73,7 @@ public class Scope {
             storage.getReturning().setPublicValue(returning[x].getName(), returning[x]);
         }
 
-        parents = new Scope[0];
+        parent = null;
     }
 
     /**
@@ -83,9 +86,13 @@ public class Scope {
         if (scope == null) {
             throw new NullPointerException("Parent scope is null");
         }
-        parents = new Scope[scope.parents.length + 1];
-        System.arraycopy(scope.parents, 0, parents, 0, scope.parents.length);
-        parents[parents.length - 1] = scope;
+        if (scope instanceof DefinedMethod) {
+            parent = (DefinedMethod) scope;
+        } else if (this instanceof DefinedMethod) {
+            parent = (DefinedMethod) this;
+        } else {
+            parent = scope.parent;
+        }
 
         storage = new ScopeStorage(scope.storage);
     }
@@ -101,111 +108,70 @@ public class Scope {
         if (e == null || Strings.isEmpty(e)) {
             throw new IllegalArgumentException("Value is not valid - " + e);
         }
-        if (Strings.contains(e, "\"")) {
-            return new StaticValue(Strings.replaceAll(e, "\"", ""));
-        }
-        if (storage.getVariables().isValue(e)) {
+
+        /* ADJUSTMENTS */
+        if (Positive.is(this, e)) {
+            return Positive.valueOf(this, e);
+        } else if (Negative.is(this, e)) {
+            return Negative.valueOf(this, e);
+
+            /* USER DEFINED */
+        } else if (storage.getVariables().isValue(e)) {
             return (Value) storage.getVariables().getValue(e);
-        }
-        try {
-            return new StaticValue(GordianNumber.valueOf(e));
-        } catch (NumberFormatException ex) {
-        }
-        if (e.equalsIgnoreCase("true")) {
-            return new StaticValue(Boolean.TRUE);
-        }
-        if (e.equalsIgnoreCase("false")) {
-            return new StaticValue(Boolean.FALSE);
-        }
+        } else if (Strings.contains(e, '(') && Strings.contains(e, ')')
+                && storage.getReturning().isValue(e.substring(0, e.indexOf('(')))) {
+            int scope = 1;
+            for (int x = e.indexOf('(') + 1; x < e.length(); x++) {
+                if (e.charAt(x) == '(') {
+                    scope++;
+                } else if (e.charAt(x) == ')') {
+                    scope--;
+                }
 
-        if (e.startsWith("!")) {
-            return new StaticValue(Boolean.valueOf(!getBoolean(e.substring(1))));
-        }
-        if (Strings.contains(e, "||")) {
-            return new StaticValue(Boolean.valueOf(getBoolean(e.substring(0, e.indexOf("||")))
-                    || getBoolean(e.substring(e.indexOf("||") + 2))));
-        }
-        if (Strings.contains(e, "&&")) {
-            return new StaticValue(Boolean.valueOf(getBoolean(e.substring(0, e.indexOf("&&")))
-                    && getBoolean(e.substring(e.indexOf("&&") + 2))));
-        }
-        if (Strings.contains(e, "==")) {
-            return new Equals(toValue(Strings.before(e, "==")), toValue(Strings.after(e, "==")));
-        }
-        if (Strings.contains(e, "!=")) {
-            return new NotEquals(toValue(Strings.before(e, "!=")), toValue(Strings.after(e, "!=")));
-        }
-        if (Strings.contains(e, ">=")) {
-            return new GreaterOrEqual(toValue(Strings.before(e, ">=")), toValue(Strings.after(e, ">=")));
-        }
-        if (Strings.contains(e, "<=")) {
-            return new LessOrEqual(toValue(Strings.before(e, "<=")), toValue(Strings.after(e, "<=")));
-        }
-        if (Strings.contains(e, ">")) {
-            return new Greater(toValue(Strings.before(e, '>')), toValue(Strings.after(e, '>')));
-        }
-        if (Strings.contains(e, "<")) {
-            return new Less(toValue(Strings.before(e, '<')), toValue(Strings.after(e, '<')));
-        }
-
-        if (Strings.contains(e, '(') && Strings.contains(e, ')')) {
-            // METHOD
-            String name = e.substring(0, e.indexOf('('));
-            String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
-            Value[] a = toValues(args);
-            if (storage.getReturning().isValue(name)) {
-                return new StaticValue(((ReturningMethodBase) storage.getReturning().getValue(name)).runFor(a));
+                if (scope == 0) {
+                    // X is last parentheses
+                    if (Strings.isEmpty(e.substring(x + 1))) {
+                        // Nothing after final bracket
+                        String[] args = getArgs(e.substring(e.indexOf('(') + 1, x));
+                        return Values.literal(((ReturningMethodBase) storage.getReturning().getValue(e.substring(0, e.indexOf('(')))).runFor(toValues(args)));
+                    }
+                }
             }
+
+            /* EXPRESSIONS */
+        } else if (Greater.is(e)) {
+            return Greater.valueOf(this, e);
+        } else if (Less.is(e)) {
+            return Less.valueOf(this, e);
+        } else if (GreaterOrEqual.is(e)) {
+            return GreaterOrEqual.valueOf(this, e);
+        } else if (LessOrEqual.is(e)) {
+            return LessOrEqual.valueOf(this, e);
+        } else if (Equals.is(e)) {
+            return Equals.valueOf(this, e);
+        } else if (NotEquals.is(e)) {
+            return Equals.valueOf(this, e);
+        } else if (StringConcat.is(this, e)) {
+            return StringConcat.valueOf(this, e);
+
+            /* CALCULATIONS */
+        } else if (Subtraction.is(this, e)) {
+            return Subtraction.valueOf(this, e);
+        } else if (Addition.is(this, e)) {
+            return Addition.valueOf(this, e);
+        } else if (Division.is(this, e)) {
+            return Division.valueOf(this, e);
+        } else if (Multiplication.is(this, e)) {
+            return Multiplication.valueOf(this, e);
+        } else if (Modulus.is(this, e)) {
+            return Modulus.valueOf(this, e);
+
+            /* LITERALS */
+        } else if (Values.isLiteralValue(e)) {
+            return Values.literalValue(e);
         }
 
-        if (Strings.contains(e, '=')
-                && e.indexOf('=') != e.indexOf("!=")
-                && e.indexOf('=') != e.indexOf("==")
-                && e.indexOf('=') != e.indexOf("<=")
-                && e.indexOf('=') != e.indexOf(">=")
-                && (e.indexOf('(') >= 0 ? (e.indexOf('=') < e.indexOf('(')) : true)
-                && e.indexOf('=') > 0) {
-            return new Declaration(this, e.substring(0, e.indexOf('=')), e.substring(e.indexOf('=') + 1));
-        }
-        if (Strings.containsThatIsnt(e, '-', "--")) {
-            return new Subtraction(GordianNumber.valueOf(getNumber(e.substring(0, Strings.indexThatIsnt(e, '-', "--")))),
-                    GordianNumber.valueOf(getNumber(e.substring(Strings.indexThatIsnt(e, '-', "--") + 1))));
-        }
-        if (Strings.containsThatIsnt(e, '+', "++")
-                // Need to ensure this is math (could be string concatenation)
-                && toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue() instanceof GordianNumber
-                && toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue() instanceof GordianNumber) {
-            return new Addition(GordianNumber.valueOf(getNumber(e.substring(0, Strings.indexThatIsnt(e, '+', "++")))),
-                    GordianNumber.valueOf(getNumber(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1))));
-        }
-        if (Strings.contains(e, '/')) {
-            return new Division(GordianNumber.valueOf(getNumber(e.substring(0, e.indexOf('/')))),
-                    GordianNumber.valueOf(getNumber(e.substring(e.indexOf('/') + 1))));
-        }
-        if (Strings.contains(e, '*')) {
-            return new Multiplication(GordianNumber.valueOf(getNumber(e.substring(0, e.indexOf('*')))),
-                    GordianNumber.valueOf(getNumber(e.substring(e.indexOf('*') + 1))));
-        }
-        if (Strings.contains(e, '%')) {
-            return new Modulus(GordianNumber.valueOf(getNumber(e.substring(0, e.indexOf('%')))),
-                    GordianNumber.valueOf(getNumber(e.substring(e.indexOf('%') + 1))));
-        }
-
-        if (e.endsWith("++")) {
-            return new ValueAdjustment(this, e.substring(0, e.length() - 2), +1);
-        }
-        if (e.endsWith("--")) {
-            return new ValueAdjustment(this, e.substring(0, e.length() - 2), -1);
-        }
-        if (Strings.containsThatIsnt(e, '+', "++")
-                // STRING CONCATENATION
-                && (!(toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue() instanceof GordianNumber)
-                || !(toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue() instanceof GordianNumber))) {
-            return new StaticValue(toValue(e.substring(0, Strings.indexThatIsnt(e, '+', "++"))).getValue().toString()
-                    + toValue(e.substring(Strings.indexThatIsnt(e, '+', "++") + 1)).getValue().toString());
-        }
-
-        return new StaticValue(e);
+        throw new RuntimeException(e + " is not a value");
     }
 
     /**
@@ -235,20 +201,8 @@ public class Scope {
             throw new IllegalArgumentException("Element is not valid - " + e);
         }
 
-        DefinedMethod m = null;
-        if (this instanceof DefinedMethod) {
-            m = (DefinedMethod) this;
-        } else {
-            for (int x = parents.length - 1; x >= 0; x--) {
-                if (parents[x] instanceof DefinedMethod) {
-                    m = (DefinedMethod) parents[x];
-                    break;
-                }
-            }
-        }
-
-        if (e.startsWith("return ") && m != null) {
-            return new Return(m, e.substring(e.indexOf("return ") + 7));
+        if (e.startsWith("return ") && parent != null) {
+            return new Return(parent, e.substring(e.indexOf("return ") + 7));
         }
 
         if (e.startsWith("del ")) {
@@ -651,7 +605,7 @@ public class Scope {
         }
 
         public void run() {
-            setVariable(key, new StaticValue(""));
+            setVariable(key, Values.emptyValue());
         }
     }
 }
