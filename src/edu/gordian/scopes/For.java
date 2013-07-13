@@ -1,6 +1,6 @@
 package edu.gordian.scopes;
 
-import edu.gordian.values.GordianNumber;
+import edu.gordian.values.gordian.GordianNumber;
 
 final class For extends Scope {
 
