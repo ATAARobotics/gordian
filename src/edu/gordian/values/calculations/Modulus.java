@@ -1,14 +1,22 @@
 package edu.gordian.values.calculations;
 
-import edu.gordian.values.GordianNumber;
+import edu.gordian.scopes.Scope;
+import edu.gordian.values.gordian.GordianNumber;
 
-public final class Modulus extends Calculation {
+public final class Modulus extends GordianNumber {
 
-    public Modulus(GordianNumber first, GordianNumber second) {
-        super(first, second);
+    public static boolean is(Scope s, String v) {
+        return (v.lastIndexOf('%') > 0 && v.lastIndexOf('%') < v.length() - 1)
+                && (s.toValue(v.substring(0, v.lastIndexOf('%'))) instanceof GordianNumber)
+                && (s.toValue(v.substring(v.lastIndexOf('%') + 1)) instanceof GordianNumber);
     }
 
-    public GordianNumber getNumber(GordianNumber f1, GordianNumber f2) {
-        return GordianNumber.valueOf(f1.doubleValue() % f2.doubleValue());
+    public static Modulus valueOf(Scope s, String v) {
+        return new Modulus(((GordianNumber) s.toValue(v.substring(0, v.lastIndexOf('%')))),
+                ((GordianNumber) s.toValue(v.substring(v.lastIndexOf('%') + 1))));
+    }
+
+    public Modulus(GordianNumber first, GordianNumber second) {
+        super(first.doubleValue() % second.doubleValue());
     }
 }
