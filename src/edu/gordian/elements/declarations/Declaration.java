@@ -3,7 +3,7 @@ package edu.gordian.elements.declarations;
 import edu.gordian.scopes.Scope;
 import edu.gordian.values.Value;
 
-public final class Declaration implements Runnable, Value {
+public final class Declaration implements Runnable {
 
     private final Scope scope;
     private final String key;
@@ -25,16 +25,7 @@ public final class Declaration implements Runnable, Value {
     }
 
     public void run() {
-        getValue();
-    }
-
-    public Object getValue() {
         Value val = scope.toValue(value);
         scope.setVariable(key, val);
-        return val.getValue();
-    }
-
-    public String toString() {
-        return getValue().toString();
     }
 }
