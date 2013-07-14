@@ -2,7 +2,6 @@ package edu.gordian.values.expressions.numbers;
 
 import edu.gordian.Strings;
 import edu.gordian.scopes.Scope;
-import edu.gordian.values.expressions.Equals;
 import edu.gordian.values.gordian.GordianBoolean;
 import edu.gordian.values.gordian.GordianNumber;
 
@@ -19,6 +18,5 @@ public final class Greater extends GordianBoolean {
 
     public Greater(GordianNumber first, GordianNumber second) {
         super(first.doubleValue() > second.doubleValue());
-        System.out.println(first + " > " + second);
     }
 }

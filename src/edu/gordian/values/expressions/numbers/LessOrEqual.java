@@ -12,8 +12,8 @@ public final class LessOrEqual extends GordianBoolean {
     }
 
     public static LessOrEqual valueOf(Scope s, String v) {
-        return new LessOrEqual((GordianNumber) s.toValue(v.substring(0, v.indexOf('>'))),
-                (GordianNumber) s.toValue(v.substring(v.indexOf('>') + 1)));
+        return new LessOrEqual((GordianNumber) s.toValue(v.substring(0, v.indexOf("<="))),
+                (GordianNumber) s.toValue(v.substring(v.indexOf("<=") + 2)));
     }
 
     public LessOrEqual(GordianNumber first, GordianNumber second) {

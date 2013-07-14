@@ -12,8 +12,8 @@ public final class GreaterOrEqual extends GordianBoolean {
     }
 
     public static GreaterOrEqual valueOf(Scope s, String v) {
-        return new GreaterOrEqual((GordianNumber) s.toValue(v.substring(0, v.indexOf('>'))),
-                (GordianNumber) s.toValue(v.substring(v.indexOf('>') + 1)));
+        return new GreaterOrEqual((GordianNumber) s.toValue(v.substring(0, v.indexOf(">="))),
+                (GordianNumber) s.toValue(v.substring(v.indexOf(">=") + 2)));
     }
 
     public GreaterOrEqual(GordianNumber first, GordianNumber second) {

@@ -138,14 +138,14 @@ public class Scope {
             }
 
             /* EXPRESSIONS */
-        } else if (Greater.is(e)) {
-            return Greater.valueOf(this, e);
-        } else if (Less.is(e)) {
-            return Less.valueOf(this, e);
         } else if (GreaterOrEqual.is(e)) {
             return GreaterOrEqual.valueOf(this, e);
         } else if (LessOrEqual.is(e)) {
             return LessOrEqual.valueOf(this, e);
+        } else if (Greater.is(e)) {
+            return Greater.valueOf(this, e);
+        } else if (Less.is(e)) {
+            return Less.valueOf(this, e);
         } else if (Equals.is(e)) {
             return Equals.valueOf(this, e);
         } else if (NotEquals.is(e)) {

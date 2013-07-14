@@ -12,8 +12,8 @@ public final class Less extends GordianBoolean {
     }
 
     public static Less valueOf(Scope s, String v) {
-        return new Less((GordianNumber) s.toValue(v.substring(0, v.indexOf('>'))),
-                (GordianNumber) s.toValue(v.substring(v.indexOf('>') + 1)));
+        return new Less((GordianNumber) s.toValue(v.substring(0, v.indexOf('<'))),
+                (GordianNumber) s.toValue(v.substring(v.indexOf('<') + 1)));
     }
 
     public Less(GordianNumber first, GordianNumber second) {
