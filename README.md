@@ -13,6 +13,8 @@ Gordian is well suited for:
 - Complex control flow with input and output
 - Interpreter of input (ie. configuration files)
 
+Gordian is modelled with inspiration from Python and Lua.
+
 ## Platform
 Gordian is designed to run on a minimum of Java ME 1.4 on the squawk VM, using the WPILibJ libraries.
 
