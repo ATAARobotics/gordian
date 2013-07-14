@@ -1,50 +1,103 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Gordian : Alberta Tech Alliance's Scripting Language" />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
 
-    <title>Gordian</title>
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Gordian by Team4334</title>
   </head>
 
   <body>
+    <a id="forkme_banner" href="https://github.com/Team4334/gordian">View on GitHub</a>
+    <div class="shell">
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/Team4334/gordian">View on GitHub</a>
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Gordian</h1>
+            <h2>Alberta Tech Alliance's Scripting Language</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
 
-          <h1 id="project_title">Gordian</h1>
-          <h2 id="project_tagline">Alberta Tech Alliance's Scripting Language</h2>
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/Team4334/gordian/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/Team4334/gordian/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/Team4334/gordian/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/Team4334/gordian/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
         <h1>
 <a name="gordian" class="anchor" href="#gordian"><span class="octicon octicon-link"></span></a>GORDIAN</h1>
 
-<hr><p>This is Gordian. It is a scripting language written in Java to run programs based solely on their text.
-It is interpreted, and provides no guarantees. A lot of errors are caught at runtime, which might make your job harder. As a bonus however, Gordian is extremely lightweight, flexible and can be hacked very easily. (in a good way)</p>
+<h1></h1>
 
-<p>It isn't meant to solve any problem that another language couldn't. It's purpose is to be run on robots (see <a href="https://en.wikipedia.org/wiki/FIRST_Robotics_Competition">FRC</a>). Since implementing another language would require a lot of dependencies that I just can't do on the platform, I wanted to make the language portable and by itself using only parsing.</p>
+<p>Lightweight portable scripting language interpreted and run inside of Java with minimal dependencies.</p>
 
-<p>And the platform it is run on is Java ME with <a href="http://en.wikipedia.org/wiki/Squawk_virtual_machine">squawk</a>.</p>
+<h2>
+<a name="purpose" class="anchor" href="#purpose"><span class="octicon octicon-link"></span></a>Purpose</h2>
+
+<p>Gordian is designed specifically for <a href="http://en.wikipedia.org/wiki/FIRST_Robotics_Competition">FRC</a> programming. Fortunately, it is useful for all kinds of different functions.</p>
+
+<p>Gordian is made to be an easy-to-learn scripting language meant for simple programs with normal control flow. It does not natively support threading or objects, but it can be engineered to simulate them.</p>
+
+<p>Gordian is well suited for:</p>
+
+<ul>
+<li>Very small linear scripts</li>
+<li>Complex control flow with input and output</li>
+<li>Interpreter of input (ie. configuration files)</li>
+</ul><h2>
+<a name="platform" class="anchor" href="#platform"><span class="octicon octicon-link"></span></a>Platform</h2>
+
+<p>Gordian is designed to run on a minimum of Java ME 1.4 on the squawk VM, using the WPILibJ libraries.</p>
+
+<ul>
+<li>Gordian for FRC is available at <a href="https://github.com/Team4334/gordian">https://github.com/Team4334/gordian</a>
+</li>
+<li>Gordian for Java SE (or your choice of supported platform) is available at <a href="https://github.com/Team4334/gordianSE">https://github.com/Team4334/gordianSE</a>
+</li>
+</ul><h2>
+<a name="project-goals" class="anchor" href="#project-goals"><span class="octicon octicon-link"></span></a>Project Goals</h2>
+
+<p>Gordian is a project that aims to help innovate quickly without tinkering embedded code. Its goals are simple:</p>
+
+<ul>
+<li>Provide easy, safe syntax for any use</li>
+<li>Avoid any feature creep and stay stable</li>
+</ul><h2>
+<a name="calling-from-java" class="anchor" href="#calling-from-java"><span class="octicon octicon-link"></span></a>Calling from Java</h2>
+
+<p>Use <code>Gordian.run</code> to run your script in Java. For more access to variables and elements, create a <code>Scope</code> object in the same way as <code>Gordian.run</code>, and call <code>Scope.run(String)</code> to run your script. The <code>Scope</code> object has access to some useful internals of the language.</p>
+
+<h1>
+<a name="language-specification" class="anchor" href="#language-specification"><span class="octicon octicon-link"></span></a>Language specification</h1>
+
+<p>Gordian follows a semi-strict, dynamic syntax that allows the user many options for scripts. Its syntax is designed to avoid as many possible parsing bugs and unpredictable behaviour.</p>
 
 <h1>
 <a name="basics" class="anchor" href="#basics"><span class="octicon octicon-link"></span></a>Basics</h1>
 
-<p>Gordian separates instructions using line breaks (\n) and ';'. They are functionally equivalent. For this reason, you can use this notation:</p>
+<p>Gordian separates instructions using line breaks (\n) and semi-colons (;). They are functionally equivalent. For this reason, you can use this notation:</p>
 
 <pre><code>def foo(x)
     # instructions
@@ -59,225 +112,262 @@ end
 <p>They are the same to Gordian.</p>
 
 <h2>
-<a name="calling-from-java" class="anchor" href="#calling-from-java"><span class="octicon octicon-link"></span></a>Calling from Java</h2>
+<a name="data" class="anchor" href="#data"><span class="octicon octicon-link"></span></a>Data</h2>
 
-<p>Use <code>Gordian.run</code> to run your script in Java. For more access to variables and elements, create a <code>Scope</code> object in the same way as <code>Gordian.run</code>, and call <code>Scope.run(String)</code> to run your script. The <code>Scope</code> object has access to some useful internals of the language.</p>
+<p>There are three main data types in Gordian - Numbers, Booleans and Strings. Each is declared as follows</p>
 
-<h1>
-<a name="datatypes-and-operators" class="anchor" href="#datatypes-and-operators"><span class="octicon octicon-link"></span></a>Datatypes and Operators</h1>
+<pre><code># Number
+13.23233
+11
+
+# Boolean
+true
+false
+
+# String
+"Hello World"
+""
+</code></pre>
+
+<p>Unless you work behind the scenes, these are the only data types you will use.</p>
 
 <h3>
-<a name="numbers-are-intdouble-variants---in-java-they-are-gordiannumber" class="anchor" href="#numbers-are-intdouble-variants---in-java-they-are-gordiannumber"><span class="octicon octicon-link"></span></a>Numbers are int/double variants - in Java they are GordianNumber</h3>
+<a name="adjustments" class="anchor" href="#adjustments"><span class="octicon octicon-link"></span></a>Adjustments</h3>
 
-<pre><code>x = 2.0 ### =&gt; 2
-x = 3.42 ### =&gt; 3.42
+<p>To reverse a boolean, insert a <code>!</code> in front of it.</p>
+
+<pre><code>!true # is false
+!false # is true
+!!!true # is false
+</code></pre>
+
+<p>To make a number negative, insert a <code>-</code> in front of it.</p>
+
+<pre><code>-3 # is -3
+--2 # is 2
 </code></pre>
 
 <h3>
-<a name="math-works-in-floating-point" class="anchor" href="#math-works-in-floating-point"><span class="octicon octicon-link"></span></a>Math works in floating point</h3>
+<a name="calculations" class="anchor" href="#calculations"><span class="octicon octicon-link"></span></a>Calculations</h3>
 
-<pre><code>x = 12 / 23 ### =&gt; 0.5217391304347826
+<p>Calculations follow MDASM</p>
+
+<blockquote>
+<p>Multiplication
+Division
+Addition
+Subtraction
+Modulus
+Left &gt; Right</p>
+</blockquote>
+
+<p>Parentheses <strong>are not supported</strong>. Enforce order with multiple steps!</p>
+
+<pre><code>3  * 20 + 2.3 / 1 # is (3 * 20) + (2.3 / 1)
+5 / 6 / 4 # is (5 / 6) / 4
 </code></pre>
 
 <h3>
-<a name="but-results-are-inferred-type" class="anchor" href="#but-results-are-inferred-type"><span class="octicon octicon-link"></span></a>But results are inferred type</h3>
+<a name="expressions" class="anchor" href="#expressions"><span class="octicon octicon-link"></span></a>Expressions</h3>
 
-<pre><code>x = 2 / 1 ### =&gt; 2
+<p>Expressions evaluate two elements.</p>
+
+<pre><code># `==` and `!=` work on strings and numbers
+"H" == "H" # is true
+13 != 12.99 # is true
+
+# `+` concatenates two strings together
+"H" + "e" + "l" + "l" + "o" # is Hello
+
+# `&gt;`, `&lt;`, `&gt;=`, `&lt;=` evaluate numbers
+13 &gt; 12 # is true
+12.5 &lt; 2 # is false
+10 &gt;= 10 # is true
+32 &lt;= 15 # is false
+
+# `&amp;&amp;` and `||` evaluate booleans
+true &amp;&amp; false # is false
+true || false # is true
 </code></pre>
 
 <h3>
-<a name="enforce-precedence-by-steps-not-parentheses" class="anchor" href="#enforce-precedence-by-steps-not-parentheses"><span class="octicon octicon-link"></span></a>Enforce precedence by steps (Not parentheses!)</h3>
+<a name="literals" class="anchor" href="#literals"><span class="octicon octicon-link"></span></a>Literals</h3>
 
-<pre><code>x = 3 / 2 ### =&gt; 1.5
-x = x * 3 ### =&gt; 4.5
-x = x + 2 ### =&gt; 6.5
+<p>Literals are direct representations of data written in code.</p>
+
+<p><strong>Numbers</strong>
+Numbers are inferred between floating point and integer. If floating point is needed (<code>x % 1 != 0</code>), the number will be represented as floating point. Otherwise it will be an integer.</p>
+
+<p>You shouldn't worry about differences between floating point and integer. If you need flooring or ceiling arithmetic, create the functions yourself.</p>
+
+<pre><code>3 # is functionally equivalent to 3.0
+3.0 # is functionally equivalent to 3
 </code></pre>
 
-<h3>
-<a name="modulus--multiplication--division--addition--subtraction--right--left" class="anchor" href="#modulus--multiplication--division--addition--subtraction--right--left"><span class="octicon octicon-link"></span></a>Modulus &gt; Multiplication &gt; Division &gt; Addition &gt; Subtraction &gt; Right &gt; Left</h3>
+<p><strong>Booleans</strong>
+Boolean literal values are <code>true</code> or <code>false</code>. Case is ignored (so <code>True</code> is still true).</p>
 
-<pre><code>x = 3 * 2 * 1 ### =&gt; (3 * (2 * 1))
-x = 1 / 2 / 3 ### =&gt; (1 / (2 / 3))
-x = 1 * 2 / 3 + 4 - 5 ### =&gt; (((1 * (2 / 3)) + 4) - 5)
+<p><strong>Strings</strong>
+Strings are surrounded with quotation marks. Everything in between the quotation marks is regarded as part of the string.</p>
+
+<p>Quotation marks within quotation marks are part of the string, but can remove spaces from the string.</p>
+
+<pre><code>"Hello " World" # is Hello "World
+"Hello "" World" # is Hello "" World
 </code></pre>
 
-<h3>
-<a name="incrementing-and-decrementing" class="anchor" href="#incrementing-and-decrementing"><span class="octicon octicon-link"></span></a>Incrementing and decrementing</h3>
+<p>All spaces after odd (1st, 3rd, 5th, etc.) quotation marks are removed.</p>
 
-<pre><code>x++ ### When x doesn't exist (or isn't a number), starts at 0 (x++ is 1)
-x-- ### When x doesn't exist (or isn't a number), starts at 0 (x-- is -1)
-</code></pre>
+<h2>
+<a name="variables" class="anchor" href="#variables"><span class="octicon octicon-link"></span></a>Variables</h2>
 
-<h3>
-<a name="declarations-and-increments-are-both-considered-values-as-well" class="anchor" href="#declarations-and-increments-are-both-considered-values-as-well"><span class="octicon octicon-link"></span></a>Declarations and increments are both considered values as well</h3>
+<p>Variables store data under a key that can be accessed by the program. Variables have no type, meaning you can easily do this:</p>
 
-<pre><code>foo(x++) ### Is correct
-foo(x = x + 1) ### Is also correct
-</code></pre>
-
-<h1>
-<a name="booleans" class="anchor" href="#booleans"><span class="octicon octicon-link"></span></a>Booleans</h1>
-
-<pre><code>x = true
+<pre><code>x = 23
 x = false
 </code></pre>
 
-<p>Types are not bound to variables!</p>
+<p>This code causes no errors.</p>
 
 <h3>
-<a name="reverse-booleans-with-" class="anchor" href="#reverse-booleans-with-"><span class="octicon octicon-link"></span></a>Reverse booleans with !</h3>
+<a name="declaration" class="anchor" href="#declaration"><span class="octicon octicon-link"></span></a>Declaration</h3>
 
-<pre><code>x = !true ### =&gt; false
+<p>To declare a variable, use the equals sign. Type is inferred, and the value is interpreted in the current scope of the program.</p>
+
+<pre><code>x = "Hello World"
 </code></pre>
 
 <h3>
-<a name="equality-uses-objectequals---strings-too" class="anchor" href="#equality-uses-objectequals---strings-too"><span class="octicon octicon-link"></span></a>Equality (uses Object.equals() - strings too!)</h3>
+<a name="creation--deletion" class="anchor" href="#creation--deletion"><span class="octicon octicon-link"></span></a>Creation / Deletion</h3>
 
-<pre><code>x = h == h ### =&gt; true
+<p>To create an "empty" value (a plain java <code>Object</code> with no discernible qualities), use the <code>make</code> keyword.</p>
+
+<pre><code>make x
+</code></pre>
+
+<p>This reserves a space in the scope's memory, allowing you to later declare the variable and preserve its scope.</p>
+
+<p>To delete a known variable, use the <code>del</code> keyword. This will only delete the <em>most local</em> version of the variable, so if two <code>x</code> existed (one being shadowed), only the more local one would be removed.</p>
+
+<h2>
+<a name="methods" class="anchor" href="#methods"><span class="octicon octicon-link"></span></a>Methods</h2>
+
+<p>You can create <code>UserMethod</code> objects and add them in <code>Gordian.run</code>, and/or define methods inside of your script.</p>
+
+<h3>
+<a name="java" class="anchor" href="#java"><span class="octicon octicon-link"></span></a>Java</h3>
+
+<p>Submit <code>UserMethod</code> objects in <code>Gordian.run</code> or <code>Scope</code> constructor. Here's an example print method</p>
+
+<pre><code>new UserMethod("print") {
+    public void run(Value[] arguments) {
+        System.out.println(arguments[0].getValue());
+    }
+}
 </code></pre>
 
 <h3>
-<a name="inequality" class="anchor" href="#inequality"><span class="octicon octicon-link"></span></a>Inequality</h3>
+<a name="defined-methods" class="anchor" href="#defined-methods"><span class="octicon octicon-link"></span></a>Defined Methods</h3>
 
-<pre><code>x = h != g ### =&gt; true
+<p>Create methods in your code using the <code>def</code> keyword.</p>
+
+<pre><code>def foo(x)
+    # business code here
+    # can access x
+end
+</code></pre>
+
+<p>Remember that you cannot call a defined method until the method is defined. Define the method before using it!</p>
+
+<h4>
+<a name="returning" class="anchor" href="#returning"><span class="octicon octicon-link"></span></a>Returning</h4>
+
+<p>Use the <code>return</code> keyword to return a value from a defined method.</p>
+
+<pre><code>def spitBack(x)
+    return x
+end
+</code></pre>
+
+<p>You can treat <code>spitBack(x)</code> as a value now.</p>
+
+<h2>
+<a name="control-flow" class="anchor" href="#control-flow"><span class="octicon octicon-link"></span></a>Control flow</h2>
+
+<p>All blocks are completed with the <code>end</code> keyword.</p>
+
+<h3>
+<a name="if" class="anchor" href="#if"><span class="octicon octicon-link"></span></a>If</h3>
+
+<p>If runs if the condition is true</p>
+
+<pre><code>if(1 == 1)
+    # business code here
+else if (2 != 1)
+    # business code here
+else
+    # business code here
+end
 </code></pre>
 
 <h3>
-<a name="comparisons" class="anchor" href="#comparisons"><span class="octicon octicon-link"></span></a>Comparisons</h3>
+<a name="for" class="anchor" href="#for"><span class="octicon octicon-link"></span></a>For</h3>
 
-<pre><code>x = 3 &gt; 2 ### =&gt; true
-x = 4.5 &lt; 2 ### =&gt; false
-x = 1 &gt;= 1 ### =&gt; true
-x = 4 &lt;= 10 ### =&gt; false
+<p>For loops over instructions for an amount of times. The number is evaluated only once, when starting the loop.</p>
+
+<pre><code>for (5)
+    # business code here
+end
 </code></pre>
 
 <h3>
-<a name="boolean-operators" class="anchor" href="#boolean-operators"><span class="octicon octicon-link"></span></a>Boolean operators</h3>
+<a name="while" class="anchor" href="#while"><span class="octicon octicon-link"></span></a>While</h3>
 
-<pre><code>x = true &amp;&amp; false ### =&gt; false
-x = true || false ### =&gt; true
+<p>While loops until its argument is false</p>
+
+<pre><code>x  = 0
+while(x &lt; 100)
+    x++
+end
 </code></pre>
 
-<h3>
-<a name="strings-are-created-in-quotes" class="anchor" href="#strings-are-created-in-quotes"><span class="octicon octicon-link"></span></a>Strings are created in quotes</h3>
+<h2>
+<a name="scope" class="anchor" href="#scope"><span class="octicon octicon-link"></span></a>Scope</h2>
 
-<pre><code>x = "Hello World" ### =&gt; Hello World
-</code></pre>
-
-<h3>
-<a name="concatenate-strings-using-" class="anchor" href="#concatenate-strings-using-"><span class="octicon octicon-link"></span></a>Concatenate strings using <code>+</code>
-</h3>
-
-<pre><code>x = "Hello " + World
-</code></pre>
-
-<h3>
-<a name="can-also-create-strings-without-quotes-but-removes-spaces" class="anchor" href="#can-also-create-strings-without-quotes-but-removes-spaces"><span class="octicon octicon-link"></span></a>Can also create strings without quotes, but removes spaces</h3>
-
-<pre><code>x = Hello World ### =&gt; HelloWorld
-</code></pre>
-
-<h1>
-<a name="variables" class="anchor" href="#variables"><span class="octicon octicon-link"></span></a>Variables</h1>
-
-<h3>
-<a name="create-empty-variables-using-make" class="anchor" href="#create-empty-variables-using-make"><span class="octicon octicon-link"></span></a>Create empty variables using <code>make</code>
-</h3>
-
-<pre><code>make varName ### =&gt; Empty string value
-</code></pre>
-
-<h3>
-<a name="remove-value-using-del" class="anchor" href="#remove-value-using-del"><span class="octicon octicon-link"></span></a>Remove value using <code>del</code>
-</h3>
-
-<pre><code>del x ### =&gt; Var no longer exists
-</code></pre>
-
-<h3>
-<a name="type-is-not-enforced" class="anchor" href="#type-is-not-enforced"><span class="octicon octicon-link"></span></a>Type is not enforced</h3>
-
-<pre><code>x = true
-x = 3
-x = Hello
-</code></pre>
-
-<h1>
-<a name="control-flow" class="anchor" href="#control-flow"><span class="octicon octicon-link"></span></a>Control flow</h1>
+<p>Every method, variable and returning method has a scope. It is only accessible inside of that scope.</p>
 
 <pre><code>x = 0
 
-if(x &gt;= 1)
-    x++
-else if(x &lt; 0)
-    x--
-else
-    x = 12
-end
-</code></pre>
+def foo(x)
+    # can't access original x, only argument x
+    i = 12
+    if(true)
+        y = 13
 
-<h3>
-<a name="for-runs-x-amount-of-times" class="anchor" href="#for-runs-x-amount-of-times"><span class="octicon octicon-link"></span></a>For runs x amount of times</h3>
-
-<pre><code>for(x)
-    x++
-end
-
-while(x++ &lt; 100)
-    ### Do things
-end
-</code></pre>
-
-<h3>
-<a name="create-methods-with-def" class="anchor" href="#create-methods-with-def"><span class="octicon octicon-link"></span></a>Create methods with def</h3>
-
-<pre><code>def printMore(x)
-    print(x + 3)
-end
-</code></pre>
-
-<h3>
-<a name="returning-methods-use-a-return-x" class="anchor" href="#returning-methods-use-a-return-x"><span class="octicon octicon-link"></span></a>Returning methods use a <code>return x</code>
-</h3>
-
-<pre><code>def get(x)
-    return x + 1
-end
-</code></pre>
-
-<h3>
-<a name="everything-has-a-scope" class="anchor" href="#everything-has-a-scope"><span class="octicon octicon-link"></span></a>Everything has a scope</h3>
-
-<pre><code>def foo()
-    def bar()
+        def foo2()
+        end
     end
-
-    ### Can call bar!
+    # can't access y, foo2()
 end
 
-### Can't call bar!
+# can't access i, y, foo2()
 </code></pre>
-
-<h1>
-<a name="language-quirks" class="anchor" href="#language-quirks"><span class="octicon octicon-link"></span></a>Language quirks</h1>
-
-<ul>
-<li>Variable shadowing is not supported</li>
-<li>Parentheses are not supported for any operation</li>
-<li>Using the <code>x = val</code> notation as a value is equivalent to using <code>val</code>, and calling <code>x = val</code>. It has nothing to do with the method's variables (like python).</li>
-</ul>
       </section>
-    </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Gordian maintained by <a href="https://github.com/Team4334">Team4334</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/Team4334">Team4334</a> can be found on <a href="https://github.com/Team4334/gordian">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
       </footer>
+
     </div>
 
     
-
   </body>
 </html>
