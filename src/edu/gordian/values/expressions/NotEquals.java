@@ -7,12 +7,12 @@ import edu.gordian.values.gordian.GordianBoolean;
 public final class NotEquals extends GordianBoolean {
 
     public static boolean is(String v) {
-        return Strings.contains(v, "!=") && v.indexOf("!=") > 0 && v.indexOf("!=") < v.length() - 2;
+        return Strings.contains(v, "!=") && Strings.lastIndexOf(v, "!=") > 0 && Strings.lastIndexOf(v, "!=") < v.length() - 2;
     }
 
     public static Equals valueOf(Scope s, String v) {
-        return new Equals(!s.toValue(v.substring(0, v.indexOf("!="))).getValue().
-                equals(s.toValue(v.substring(v.indexOf("!=") + 2)).getValue()));
+        return new Equals(!s.toValue(v.substring(0, Strings.lastIndexOf(v, "!="))).getValue().
+                equals(s.toValue(v.substring(Strings.lastIndexOf(v, "!=") + 2)).getValue()));
     }
 
     public NotEquals(boolean value) {

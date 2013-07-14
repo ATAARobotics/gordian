@@ -27,6 +27,22 @@ public final class Strings {
     }
 
     /**
+     * Returns the index of the last instance of {@code s} in {@code string}.
+     *
+     * @param string string to test
+     * @param s element to find index of
+     * @return last index of {@code s}
+     */
+    public static int lastIndexOf(String string, String s) {
+        for (int x = string.length() - s.length(); x >= 0; x--) {
+            if (string.substring(x, x + s.length()).equals(s)) {
+                return x;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Returns the index of {@code s} that is not {@code i}. If no {@code s}
      * exists that is not an {@code i}, this returns -1.
      *

@@ -24,14 +24,10 @@ public final class ValueAdjustment implements Runnable {
 
     public void run() {
         double value;
-        try {
-            Value v = scope.getVariable(key);
-            if (v.getValue() instanceof GordianNumber) {
-                value = ((GordianNumber) v.getValue()).doubleValue();
-            } else {
-                value = 0;
-            }
-        } catch (NullPointerException ex) {
+        if (scope.isVariable(key)) {
+            GordianNumber v = (GordianNumber) scope.getVariable(key);
+            value = v.doubleValue();
+        } else {
             value = 0;
         }
         value += i;

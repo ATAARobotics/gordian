@@ -22,8 +22,10 @@ import edu.gordian.values.calculations.Division;
 import edu.gordian.values.calculations.Modulus;
 import edu.gordian.values.calculations.Multiplication;
 import edu.gordian.values.calculations.Subtraction;
+import edu.gordian.values.expressions.And;
 import edu.gordian.values.expressions.Equals;
 import edu.gordian.values.expressions.NotEquals;
+import edu.gordian.values.expressions.Or;
 import edu.gordian.values.expressions.StringConcat;
 import edu.gordian.values.expressions.numbers.Greater;
 import edu.gordian.values.expressions.numbers.GreaterOrEqual;
@@ -141,6 +143,10 @@ public class Scope {
             }
 
             /* EXPRESSIONS */
+        } else if (And.is(this, e)) {
+            return And.valueOf(this, e);
+        } else if (Or.is(this, e)) {
+            return Or.valueOf(this, e);
         } else if (GreaterOrEqual.is(e)) {
             return GreaterOrEqual.valueOf(this, e);
         } else if (LessOrEqual.is(e)) {
@@ -234,11 +240,11 @@ public class Scope {
                 return new ReturningMethod((ReturningMethodBase) storage.getReturning().getValue(name), a);
             }
         }
-        if (Strings.contains(e, "++;")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("++;")), +1);
+        if (e.endsWith("++")) {
+            return new ValueAdjustment(this, e.substring(0, e.indexOf("++")), +1);
         }
-        if (Strings.contains(e, "--;")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("--;")), -1);
+        if (e.endsWith("--")) {
+            return new ValueAdjustment(this, e.substring(0, e.indexOf("--")), -1);
         }
 
         throw new Exception("Not a valid instruction: " + e);
