@@ -112,6 +112,7 @@ Expressions evaluate two elements.
 Literals are direct representations of data written in code.
 
 **Numbers**
+
 Numbers are inferred between floating point and integer. If floating point is needed (`x % 1 != 0`), the number will be represented as floating point. Otherwise it will be an integer.
 
 You shouldn't worry about differences between floating point and integer. If you need flooring or ceiling arithmetic, create the functions yourself.
@@ -120,9 +121,11 @@ You shouldn't worry about differences between floating point and integer. If you
     3.0 # is functionally equivalent to 3
     
 **Booleans**
+
 Boolean literal values are `true` or `false`. Case is ignored (so `True` is still true).
 
 **Strings**
+
 Strings are surrounded with quotation marks. Everything in between the quotation marks is regarded as part of the string.
 
 Quotation marks within quotation marks are part of the string, but can remove spaces from the string.
