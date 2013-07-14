@@ -149,7 +149,7 @@ public class Scope {
         } else if (Equals.is(e)) {
             return Equals.valueOf(this, e);
         } else if (NotEquals.is(e)) {
-            return Equals.valueOf(this, e);
+            return NotEquals.valueOf(this, e);
         } else if (StringConcat.is(this, e)) {
             return StringConcat.valueOf(this, e);
 
