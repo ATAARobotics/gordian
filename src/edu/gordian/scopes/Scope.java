@@ -16,6 +16,7 @@ import edu.gordian.values.Value;
 import edu.gordian.values.Values;
 import edu.gordian.values.adjustments.Negative;
 import edu.gordian.values.adjustments.Positive;
+import edu.gordian.values.adjustments.ReversedBoolean;
 import edu.gordian.values.calculations.Addition;
 import edu.gordian.values.calculations.Division;
 import edu.gordian.values.calculations.Modulus;
@@ -113,6 +114,8 @@ public class Scope {
             return Positive.valueOf(this, e);
         } else if (Negative.is(this, e)) {
             return Negative.valueOf(this, e);
+        } else if (ReversedBoolean.is(this, e)) {
+            return ReversedBoolean.valueOf(this, e);
 
             /* USER DEFINED */
         } else if (storage.getVariables().isValue(e)) {
