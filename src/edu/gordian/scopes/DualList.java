@@ -93,7 +93,7 @@ class DualList {
                 return;
             }
         }
-        publicList.add(new Link(key, v));
+        publicList.add(0, new Link(key, v));
     }
 
     public void setPrivateValue(String key, Object v) {
@@ -103,20 +103,20 @@ class DualList {
                 return;
             }
         }
-        privateList.add(new Link(key, v));
+        privateList.add(0, new Link(key, v));
     }
 
     public void remove(String key) {
         for (int x = 0; x < privateList.size(); x++) {
             if (key.equals(((Link) privateList.get(x)).getKey())) {
                 privateList.remove(x);
-                break;
+                return;
             }
         }
         for (int x = 0; x < publicList.size(); x++) {
             if (key.equals(((Link) publicList.get(x)).getKey())) {
                 publicList.remove(x);
-                break;
+                return;
             }
         }
     }
