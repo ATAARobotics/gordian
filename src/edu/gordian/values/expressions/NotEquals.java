@@ -11,7 +11,7 @@ public final class NotEquals extends GordianBoolean {
     }
 
     public static Equals valueOf(Scope s, String v) {
-        return new Equals(s.toValue(v.substring(0, v.indexOf("!="))).getValue().
+        return new Equals(!s.toValue(v.substring(0, v.indexOf("!="))).getValue().
                 equals(s.toValue(v.substring(v.indexOf("!=") + 2)).getValue()));
     }
 
