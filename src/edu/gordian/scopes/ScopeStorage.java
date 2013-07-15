@@ -35,6 +35,10 @@ public final class ScopeStorage {
         return methods;
     }
 
+    public String toString() {
+        return "Variables=" + variables + " Returning=" + returning + " Methods=" + methods;
+    }
+
     private static boolean isValidKey(String key) {
         try {
             Double.parseDouble(key);
@@ -78,13 +82,6 @@ public final class ScopeStorage {
             super.setPublicValue(key, v);
         }
 
-        public void setValue(String key, Object v) {
-            if (!(v instanceof Value)) {
-                throw new IllegalArgumentException("Saving a non-value");
-            }
-            super.setValue(key, v);
-        }
-
         public void checkKey(String key) {
             if (!isValidKey(key)) {
                 throw new RuntimeException(key + " is an illegal key for a variable (conflicts with parsing)"
@@ -119,13 +116,6 @@ public final class ScopeStorage {
             super.setPublicValue(key, v);
         }
 
-        public void setValue(String key, Object v) {
-            if (!(v instanceof ReturningMethodBase)) {
-                throw new IllegalArgumentException("Saving a non-value");
-            }
-            super.setValue(key, v);
-        }
-
         public void checkKey(String key) {
             if (!isValidKey(key)) {
                 throw new RuntimeException(key + " is an illegal key for a returning method (conflicts with parsing)"
@@ -158,13 +148,6 @@ public final class ScopeStorage {
             }
             checkKey(key);
             super.setPublicValue(key, v);
-        }
-
-        public void setValue(String key, Object v) {
-            if (!(v instanceof MethodBase)) {
-                throw new IllegalArgumentException("Saving a non-value");
-            }
-            super.setValue(key, v);
         }
 
         public void checkKey(String key) {

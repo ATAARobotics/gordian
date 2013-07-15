@@ -121,6 +121,10 @@ class DualList {
         }
     }
 
+    public String toString() {
+        return "private=" + privateList + " public=" + publicList;
+    }
+
     private static final class Link {
 
         private final String s;
@@ -141,6 +145,10 @@ class DualList {
 
         public void setValue(Object value) {
             this.value = value;
+        }
+
+        public String toString() {
+            return s;
         }
     }
 }

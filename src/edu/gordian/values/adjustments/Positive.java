@@ -6,7 +6,12 @@ import edu.gordian.values.gordian.GordianNumber;
 public final class Positive extends GordianNumber {
 
     public static boolean is(Scope s, String v) {
-        return v.startsWith("+") && (s.toValue(v.substring(1)) instanceof GordianNumber);
+        try {
+            return v.startsWith("+") && (s.toValue(v.substring(1)) instanceof GordianNumber);
+        } catch (Scope.IsNotValue e) {
+            // toValue didn't work
+            return false;
+        }
     }
 
     public static Positive valueOf(Scope s, String v) {

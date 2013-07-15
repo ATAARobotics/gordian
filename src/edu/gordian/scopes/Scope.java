@@ -179,7 +179,7 @@ public class Scope {
             return Values.literalValue(e);
         }
 
-        throw new RuntimeException(e + " is not a value");
+        throw new IsNotValue(e);
     }
 
     /**
@@ -247,7 +247,7 @@ public class Scope {
             return new ValueAdjustment(this, e.substring(0, e.indexOf("--")), -1);
         }
 
-        throw new Exception("Not a valid instruction: " + e);
+        throw new IsNotInstruction(e);
     }
 
     /**
@@ -382,6 +382,10 @@ public class Scope {
         storage.getReturning().setPublicValue(name, base);
     }
 
+    protected ScopeStorage scopeStorage() {
+        return storage;
+    }
+    
     /**
      * Converts a script into a {@link StringTokenizer} that can be run through.
      * Does all of the pre-run conversions that gets rid of unnecessary
@@ -475,9 +479,13 @@ public class Scope {
                     }
 
                     DefinedMethod method = new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, this);
+                    // Give method access to itself for recursion
+                    method.addMethod(name, method);
                     addMethod(name, method);
                     if (Strings.contains(s, "return ")) {
                         addReturning(name, method);
+                        // Give method access to itself for recursion
+                        method.addReturning(name, method);
                     }
                     scope = "";
                     continue;
@@ -492,6 +500,20 @@ public class Scope {
 
         if (scopes != 0) {
             throw new RuntimeException("Scope was never completed. Use 'end' or 'fi' to complete scopes.");
+        }
+    }
+
+    public static final class IsNotValue extends RuntimeException {
+
+        public IsNotValue(String v) {
+            super(v + " is not a value");
+        }
+    }
+
+    public static final class IsNotInstruction extends RuntimeException {
+
+        public IsNotInstruction(String v) {
+            super(v + " is not an instruction");
         }
     }
 

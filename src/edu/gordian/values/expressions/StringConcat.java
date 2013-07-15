@@ -7,9 +7,14 @@ import edu.gordian.values.gordian.GordianString;
 public final class StringConcat extends GordianString {
 
     public static boolean is(Scope s, String v) {
-        return (Strings.contains(v, '+') && v.lastIndexOf('+') > 0 && v.lastIndexOf('+') < v.length() - 1)
-                && ((s.toValue(v.substring(0, v.lastIndexOf('+'))) instanceof GordianString)
-                || (s.toValue(v.substring(v.lastIndexOf('+') + 1)) instanceof GordianString));
+        try {
+            return (Strings.contains(v, '+') && v.lastIndexOf('+') > 0 && v.lastIndexOf('+') < v.length() - 1)
+                    && ((s.toValue(v.substring(0, v.lastIndexOf('+'))) instanceof GordianString)
+                    || (s.toValue(v.substring(v.lastIndexOf('+') + 1)) instanceof GordianString));
+        } catch (Scope.IsNotValue e) {
+            // toValue didn't work
+            return false;
+        }
     }
 
     public static StringConcat valueOf(Scope s, String v) {

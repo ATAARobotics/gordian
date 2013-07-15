@@ -7,9 +7,14 @@ import edu.gordian.values.gordian.GordianBoolean;
 public final class And extends GordianBoolean {
 
     public static boolean is(Scope s, String v) {
-        return Strings.contains(v, "&&") && Strings.lastIndexOf(v, "&&") > 0 && Strings.lastIndexOf(v, "&&") < v.length() - 2
-                && (s.toValue(v.substring(0, Strings.lastIndexOf(v, "&&"))) instanceof GordianBoolean)
-                && (s.toValue(v.substring(Strings.lastIndexOf(v, "&&") + 2)) instanceof GordianBoolean);
+        try {
+            return Strings.contains(v, "&&") && Strings.lastIndexOf(v, "&&") > 0 && Strings.lastIndexOf(v, "&&") < v.length() - 2
+                    && (s.toValue(v.substring(0, Strings.lastIndexOf(v, "&&"))) instanceof GordianBoolean)
+                    && (s.toValue(v.substring(Strings.lastIndexOf(v, "&&") + 2)) instanceof GordianBoolean);
+        } catch (Scope.IsNotValue e) {
+            // toValue didn't work
+            return false;
+        }
     }
 
     public static And valueOf(Scope s, String v) {
