@@ -100,157 +100,6 @@ public class Scope {
     }
 
     /**
-     * Converts a string value into a {@link Value} in the context of this
-     * scope.
-     *
-     * @param e value as it appears in code
-     * @return value as interpreted by the code
-     */
-    public final Value toValue(String e) {
-        if (e == null || Strings.isEmpty(e)) {
-            throw new IllegalArgumentException("Value is not valid - " + e);
-        }
-
-        /* ADJUSTMENTS */
-        if (Positive.is(this, e)) {
-            return Positive.valueOf(this, e);
-        } else if (Negative.is(this, e)) {
-            return Negative.valueOf(this, e);
-        } else if (ReversedBoolean.is(this, e)) {
-            return ReversedBoolean.valueOf(this, e);
-
-            /* USER DEFINED */
-        } else if (storage.getVariables().isValue(e)) {
-            return (Value) storage.getVariables().getValue(e);
-        } else if (Strings.contains(e, '(') && Strings.contains(e, ')')
-                && storage.getReturning().isValue(e.substring(0, e.indexOf('(')))) {
-            int scope = 1;
-            for (int x = e.indexOf('(') + 1; x < e.length(); x++) {
-                if (e.charAt(x) == '(') {
-                    scope++;
-                } else if (e.charAt(x) == ')') {
-                    scope--;
-                }
-
-                if (scope == 0) {
-                    // X is last parentheses
-                    if (Strings.isEmpty(e.substring(x + 1))) {
-                        // Nothing after final bracket
-                        String[] args = getArgs(e.substring(e.indexOf('(') + 1, x));
-                        return Values.literal(((ReturningMethodBase) storage.getReturning().getValue(e.substring(0, e.indexOf('(')))).runFor(toValues(args)));
-                    }
-                }
-            }
-
-            /* EXPRESSIONS */
-        } else if (And.is(this, e)) {
-            return And.valueOf(this, e);
-        } else if (Or.is(this, e)) {
-            return Or.valueOf(this, e);
-        } else if (GreaterOrEqual.is(e)) {
-            return GreaterOrEqual.valueOf(this, e);
-        } else if (LessOrEqual.is(e)) {
-            return LessOrEqual.valueOf(this, e);
-        } else if (Greater.is(e)) {
-            return Greater.valueOf(this, e);
-        } else if (Less.is(e)) {
-            return Less.valueOf(this, e);
-        } else if (Equals.is(e)) {
-            return Equals.valueOf(this, e);
-        } else if (NotEquals.is(e)) {
-            return NotEquals.valueOf(this, e);
-        } else if (StringConcat.is(this, e)) {
-            return StringConcat.valueOf(this, e);
-
-            /* CALCULATIONS */
-        } else if (Subtraction.is(this, e)) {
-            return Subtraction.valueOf(this, e);
-        } else if (Addition.is(this, e)) {
-            return Addition.valueOf(this, e);
-        } else if (Division.is(this, e)) {
-            return Division.valueOf(this, e);
-        } else if (Multiplication.is(this, e)) {
-            return Multiplication.valueOf(this, e);
-        } else if (Modulus.is(this, e)) {
-            return Modulus.valueOf(this, e);
-
-            /* LITERALS */
-        } else if (Values.isLiteralValue(e)) {
-            return Values.literalValue(e);
-        }
-
-        throw new IsNotValue(e);
-    }
-
-    /**
-     * Converts an array of strings into values using
-     * {@link #toValue(java.lang.String)}.
-     *
-     * @param values original values
-     * @return converted values
-     */
-    public final Value[] toValues(String[] values) {
-        Value[] v = new Value[values.length];
-        for (int x = 0; x < values.length; x++) {
-            v[x] = toValue(values[x]);
-        }
-        return v;
-    }
-
-    /**
-     * Converts a string into a runnable element that the program can run.
-     *
-     * @param e original string as it appears in code
-     * @return executable element that the program can run
-     * @throws Exception when string is not an instruction
-     */
-    public final Runnable toElement(String e) throws Exception {
-        if (e == null || Strings.isEmpty(e)) {
-            throw new IllegalArgumentException("Element is not valid - " + e);
-        }
-
-        if (e.startsWith("return ") && parent != null) {
-            return new Return(parent, e.substring(e.indexOf("return ") + 7));
-        }
-
-        if (e.startsWith("del ")) {
-            return new Remove(e.substring(4));
-        }
-
-        if (e.startsWith("make ")) {
-            return new Make(e.substring(5));
-        }
-
-        if (Strings.contains(e, '=')
-                && e.indexOf('=') != e.indexOf("!=")
-                && e.indexOf('=') != e.indexOf("==")
-                && e.indexOf('=') != e.indexOf("<=")
-                && e.indexOf('=') != e.indexOf(">=")
-                && (e.indexOf('(') >= 0 ? (e.indexOf('=') < e.indexOf('(')) : true)
-                && e.indexOf('=') > 0) {
-            return new Declaration(this, e.substring(0, e.indexOf('=')), e.substring(e.indexOf('=') + 1));
-        }
-        if (Strings.contains(e, '(') && Strings.contains(e, ')')) {
-            String name = e.substring(0, e.indexOf('('));
-            String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
-            Value[] a = toValues(args);
-            if (storage.getMethods().isValue(name)) {
-                return new Method((MethodBase) storage.getMethods().getValue(name), a);
-            } else if (storage.getReturning().isValue(name)) {
-                return new ReturningMethod((ReturningMethodBase) storage.getReturning().getValue(name), a);
-            }
-        }
-        if (e.endsWith("++")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("++")), +1);
-        }
-        if (e.endsWith("--")) {
-            return new ValueAdjustment(this, e.substring(0, e.indexOf("--")), -1);
-        }
-
-        throw new IsNotInstruction(e);
-    }
-
-    /**
      * Returns whether the scope contains the variable.
      *
      * @param key string used to access variable
@@ -385,7 +234,170 @@ public class Scope {
     protected ScopeStorage scopeStorage() {
         return storage;
     }
-    
+
+    /**
+     * Converts a string value into a {@link Value} in the context of this
+     * scope.
+     *
+     * @param e value as it appears in code
+     * @return value as interpreted by the code
+     */
+    public final Value toValue(String e) {
+        if (e == null || Strings.isEmpty(e)) {
+            throw new IllegalArgumentException("Value is not valid - " + e);
+        }
+
+        /* ADJUSTMENTS */
+        if (Positive.is(this, e)) {
+            return Positive.valueOf(this, e);
+        } else if (Negative.is(this, e)) {
+            return Negative.valueOf(this, e);
+        } else if (ReversedBoolean.is(this, e)) {
+            return ReversedBoolean.valueOf(this, e);
+
+            /* USER DEFINED */
+        } else if (storage.getVariables().isValue(e)) {
+            return (Value) storage.getVariables().getValue(e);
+        } else if (Strings.contains(e, '(') && Strings.contains(e, ')')
+                && storage.getReturning().isValue(e.substring(0, e.indexOf('(')))) {
+            int scope = 1;
+            for (int x = e.indexOf('(') + 1; x < e.length(); x++) {
+                if (e.charAt(x) == '(') {
+                    scope++;
+                } else if (e.charAt(x) == ')') {
+                    scope--;
+                }
+
+                if (scope == 0) {
+                    // X is last parentheses
+                    if (Strings.isEmpty(e.substring(x + 1))) {
+                        // Nothing after final bracket
+                        String[] args = getArgs(e.substring(e.indexOf('(') + 1, x));
+                        return Values.literal(((ReturningMethodBase) storage.getReturning().getValue(e.substring(0, e.indexOf('(')))).runFor(toValues(args)));
+                    }
+                }
+            }
+
+            /* EXPRESSIONS */
+        } else if (And.is(this, e)) {
+            return And.valueOf(this, e);
+        } else if (Or.is(this, e)) {
+            return Or.valueOf(this, e);
+        } else if (GreaterOrEqual.is(this, e)) {
+            return GreaterOrEqual.valueOf(this, e);
+        } else if (LessOrEqual.is(this, e)) {
+            return LessOrEqual.valueOf(this, e);
+        } else if (Greater.is(this, e)) {
+            return Greater.valueOf(this, e);
+        } else if (Less.is(this, e)) {
+            return Less.valueOf(this, e);
+        } else if (Equals.is(this, e)) {
+            return Equals.valueOf(this, e);
+        } else if (NotEquals.is(this, e)) {
+            return NotEquals.valueOf(this, e);
+        } else if (StringConcat.is(this, e)) {
+            return StringConcat.valueOf(this, e);
+
+            /* CALCULATIONS */
+        } else if (Subtraction.is(this, e) && Addition.is(this, e)) {
+            if (e.lastIndexOf('-') > e.lastIndexOf('+')) {
+                return Subtraction.valueOf(this, e);
+            } else {
+                return Addition.valueOf(this, e);
+            }
+        } else if (Subtraction.is(this, e)) {
+            return Subtraction.valueOf(this, e);
+        } else if (Addition.is(this, e)) {
+            return Addition.valueOf(this, e);
+        } else if (Division.is(this, e) && Multiplication.is(this, e)) {
+            if (e.lastIndexOf('/') > e.lastIndexOf('*')) {
+                return Division.valueOf(this, e);
+            } else {
+                return Multiplication.valueOf(this, e);
+            }
+        } else if (Division.is(this, e)) {
+            return Division.valueOf(this, e);
+        } else if (Multiplication.is(this, e)) {
+            return Multiplication.valueOf(this, e);
+        } else if (Modulus.is(this, e)) {
+            return Modulus.valueOf(this, e);
+
+            /* LITERALS */
+        } else if (Values.isLiteralValue(e)) {
+            return Values.literalValue(e);
+        }
+
+        throw new IsNotValue(e);
+    }
+
+    /**
+     * Converts an array of strings into values using
+     * {@link #toValue(java.lang.String)}.
+     *
+     * @param values original values
+     * @return converted values
+     */
+    public final Value[] toValues(String[] values) {
+        Value[] v = new Value[values.length];
+        for (int x = 0; x < values.length; x++) {
+            v[x] = toValue(values[x]);
+        }
+        return v;
+    }
+
+    /**
+     * Converts a string into a runnable element that the program can run.
+     *
+     * @param e original string as it appears in code
+     * @return executable element that the program can run
+     * @throws Exception when string is not an instruction
+     */
+    public final Runnable toElement(String e) throws Exception {
+        if (e == null || Strings.isEmpty(e)) {
+            throw new IllegalArgumentException("Element is not valid - " + e);
+        }
+
+        if (e.startsWith("return ") && parent != null) {
+            return new Return(parent, e.substring(e.indexOf("return ") + 7));
+        }
+
+        if (e.startsWith("del ")) {
+            return new Remove(e.substring(4));
+        }
+
+        if (e.startsWith("make ")) {
+            return new Make(e.substring(5));
+        }
+
+        if (Strings.contains(e, '=')
+                && e.indexOf('=') != e.indexOf("!=")
+                && e.indexOf('=') != e.indexOf("==")
+                && e.indexOf('=') != e.indexOf("<=")
+                && e.indexOf('=') != e.indexOf(">=")
+                && (e.indexOf('(') >= 0 ? (e.indexOf('=') < e.indexOf('(')) : true)
+                && e.indexOf('=') > 0) {
+            return new Declaration(this, e.substring(0, e.indexOf('=')), e.substring(e.indexOf('=') + 1));
+        }
+        if (Strings.contains(e, '(') && Strings.contains(e, ')')) {
+            String name = e.substring(0, e.indexOf('('));
+            String[] args = getArgs(e.substring(e.indexOf('(') + 1, e.lastIndexOf(')')));
+            Value[] a = toValues(args);
+            if (storage.getMethods().isValue(name)) {
+                return new Method((MethodBase) storage.getMethods().getValue(name), a);
+            } else if (storage.getReturning().isValue(name)) {
+                return new ReturningMethod((ReturningMethodBase) storage.getReturning().getValue(name), a);
+            }
+        }
+        if (e.endsWith("++")) {
+            return new ValueAdjustment(this, e.substring(0, e.indexOf("++")), +1);
+        }
+        if (e.endsWith("--")) {
+            return new ValueAdjustment(this, e.substring(0, e.indexOf("--")), -1);
+        }
+
+        throw new IsNotInstruction(e);
+    }
+
     /**
      * Converts a script into a {@link StringTokenizer} that can be run through.
      * Does all of the pre-run conversions that gets rid of unnecessary
@@ -413,14 +425,25 @@ public class Scope {
      * @throws Exception when script running encounters any kind of error
      */
     public void run(String script) throws Exception {
-        StringTokenizer t = preRun(script);
-        int line = 0;
-        int scopes = 0;
-        String scope = "";
-        while (t.hasMoreElements()) {
-            String next = t.nextToken();
+        RunningEnvironment environment = new RunningEnvironment();
+        StringTokenizer tokenizer = preRun(script);
+        while (tokenizer.hasMoreElements()) {
+            environment.next(tokenizer.nextToken());
+        }
+        if (environment.scopes != 0) {
+            throw new RuntimeException("Scope was never completed. Use 'end' to complete scopes.");
+        }
+    }
+
+    public final class RunningEnvironment {
+
+        private int line = 0;
+        public int scopes = 0;
+        private String scope = "";
+
+        public void next(String next) throws Exception {
             if (Strings.isEmpty(next)) {
-                continue;
+                return;
             }
             line++;
 
@@ -433,7 +456,7 @@ public class Scope {
             }
             if (scopes != 0) {
                 scope += next + ';';
-                continue;
+                return;
             }
 
             try {
@@ -446,14 +469,14 @@ public class Scope {
                         throw new IllegalArgumentException("Argument was not given");
                     }
 
-                    new While(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), this).run(s);
+                    new While(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), Scope.this).run(s);
                     scope = "";
-                    continue;
+                    return;
                 }
                 if (scopes == 0 && scope.startsWith("if")) {
-                    new If(this).run(scope);
+                    new If(Scope.this).run(scope);
                     scope = "";
-                    continue;
+                    return;
                 }
                 if (scopes == 0 && scope.startsWith("for")) {
                     String start = scope.substring(0, scope.indexOf(';'));
@@ -464,9 +487,9 @@ public class Scope {
                         throw new IllegalArgumentException("Argument was not given");
                     }
 
-                    new For(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), this).run(s);
+                    new For(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), Scope.this).run(s);
                     scope = "";
-                    continue;
+                    return;
                 }
                 if (scopes == 0 && scope.startsWith("def")) {
                     String name = scope.substring(scope.indexOf("def") + 3, scope.indexOf('('));
@@ -478,7 +501,7 @@ public class Scope {
                         throw new IllegalArgumentException("Arguments were not given");
                     }
 
-                    DefinedMethod method = new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, this);
+                    DefinedMethod method = new DefinedMethod(Strings.split(start.substring(start.indexOf('(') + 1, start.lastIndexOf(')')), ','), s, Scope.this);
                     // Give method access to itself for recursion
                     method.addMethod(name, method);
                     addMethod(name, method);
@@ -488,7 +511,7 @@ public class Scope {
                         method.addReturning(name, method);
                     }
                     scope = "";
-                    continue;
+                    return;
                 }
 
                 toElement(next).run();
@@ -496,10 +519,6 @@ public class Scope {
                 ex.printStackTrace();
                 throw new Exception("LINE " + line + " in " + getClass().getName() + " - " + ex.getClass().getName() + ": " + ex.getMessage());
             }
-        }
-
-        if (scopes != 0) {
-            throw new RuntimeException("Scope was never completed. Use 'end' or 'fi' to complete scopes.");
         }
     }
 

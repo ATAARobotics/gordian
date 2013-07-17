@@ -1,14 +1,20 @@
 package edu.gordian.values.expressions.numbers;
 
-import edu.gordian.Strings;
 import edu.gordian.scopes.Scope;
 import edu.gordian.values.gordian.GordianBoolean;
 import edu.gordian.values.gordian.GordianNumber;
 
 public final class Less extends GordianBoolean {
 
-    public static boolean is(String v) {
-        return Strings.contains(v, '<') && v.indexOf('<') > 0 && v.indexOf('<') < v.length() - 1;
+    public static boolean is(Scope s, String v) {
+        try {
+            return v.indexOf('<') > 0 && v.indexOf('<') < v.length() - 1
+                    && (s.toValue(v.substring(0, v.indexOf('<'))) instanceof GordianNumber)
+                    && (s.toValue(v.substring(v.indexOf('<') + 1)) instanceof GordianNumber);
+        } catch (Scope.IsNotValue e) {
+            // toValue didn't work
+            return false;
+        }
     }
 
     public static Less valueOf(Scope s, String v) {
