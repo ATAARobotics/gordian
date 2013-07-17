@@ -10,7 +10,7 @@ final class DefinedMethod extends Scope implements MethodBase, ReturningMethodBa
     private final String script;
     private Object value;
 
-    public DefinedMethod(String[] args, String script, Scope scope) {
+    DefinedMethod(String[] args, String script, Scope scope) {
         super(scope);
         if (args == null) {
             throw new NullPointerException("Args given was null");

@@ -5,36 +5,69 @@ import edu.gordian.elements.methods.MethodBase;
 import edu.gordian.values.ReturningMethodBase;
 import edu.gordian.values.Value;
 
+/**
+ * The storage mechanism for variables, returning methods and normal methods.
+ *
+ * @author Joel Gallant
+ */
 public final class ScopeStorage {
 
     private final DualList variables;
     private final DualList returning;
     private final DualList methods;
 
+    /**
+     * Constructs an empty scope storage. This does not inherit any storage.
+     */
     public ScopeStorage() {
         variables = new Variables();
         returning = new Returning();
         methods = new Methods();
     }
 
+    /**
+     * Constructs a scope storage.
+     *
+     * @param parent parent storage to inherit elements from
+     */
     public ScopeStorage(ScopeStorage parent) {
         variables = new Variables(parent.variables);
         returning = new Returning(parent.returning);
         methods = new Methods(parent.methods);
     }
 
+    /**
+     * Returns all of the variables.
+     *
+     * @return declared variables
+     */
     DualList getVariables() {
         return variables;
     }
 
+    /**
+     * Returns all of the returning methods.
+     *
+     * @return returning methods
+     */
     DualList getReturning() {
         return returning;
     }
 
+    /**
+     * Returns all of the void methods.
+     *
+     * @return methods
+     */
     DualList getMethods() {
         return methods;
     }
 
+    /**
+     * Returns a representation of all the variables within the storage.
+     *
+     * @return all variables
+     */
     public String toString() {
         return "Variables=" + variables + " Returning=" + returning + " Methods=" + methods;
     }

@@ -6,7 +6,7 @@ final class For extends Scope {
 
     private final int condition;
 
-    public For(String condition, Scope scope) {
+    For(String condition, Scope scope) {
         super(scope);
         this.condition = ((GordianNumber) toValue(condition).getValue()).intValue();
     }

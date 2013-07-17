@@ -7,7 +7,7 @@ import edu.gordian.values.gordian.GordianBoolean;
 
 final class If extends Scope {
 
-    public If(Scope scope) {
+    If(Scope scope) {
         super(scope);
     }
 

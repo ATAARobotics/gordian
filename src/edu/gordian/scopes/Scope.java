@@ -231,6 +231,12 @@ public class Scope {
         storage.getReturning().setPublicValue(name, base);
     }
 
+    /**
+     * The representation of all accessible data in the current scope. <b> Be
+     * careful with manipulating this. </b>.
+     *
+     * @return storage of all variables
+     */
     protected ScopeStorage scopeStorage() {
         return storage;
     }
@@ -435,12 +441,29 @@ public class Scope {
         }
     }
 
+    /**
+     * The environment used to run Gordian scripts. Accepts one line at a time.
+     * Generally, it is assumed that you have run
+     * {@link #preRun(java.lang.String)} before giving input. If you have not,
+     * you may encounter bugs related to that. (If you see spaces in
+     * instructions this is usually the problem)
+     */
     public final class RunningEnvironment {
 
         private int line = 0;
+        /**
+         * The current amount of scopes that the environment is nested in. 0
+         * means the beginning / in no scope.
+         */
         public int scopes = 0;
         private String scope = "";
 
+        /**
+         * Runs the next instruction.
+         *
+         * @param next the next instruction to run
+         * @throws Exception when errors running occur
+         */
         public void next(String next) throws Exception {
             if (Strings.isEmpty(next)) {
                 return;
@@ -522,15 +545,32 @@ public class Scope {
         }
     }
 
+    /**
+     * Exception for when the given value could not be identified as a value.
+     */
     public static final class IsNotValue extends RuntimeException {
 
+        /**
+         * Constructs the exception.
+         *
+         * @param v value
+         */
         public IsNotValue(String v) {
             super(v + " is not a value");
         }
     }
 
+    /**
+     * Exception for when the given value could not be identified as an
+     * instruction.
+     */
     public static final class IsNotInstruction extends RuntimeException {
 
+        /**
+         * Constructs the exception.
+         *
+         * @param v instruction
+         */
         public IsNotInstruction(String v) {
             super(v + " is not an instruction");
         }

@@ -9,7 +9,7 @@ class DualList {
     private final List publicList = new ArrayList();
     private final List privateList = new ArrayList();
 
-    public DualList() {
+    DualList() {
     }
 
     public DualList(DualList parent) {

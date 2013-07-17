@@ -1,15 +1,26 @@
 package edu.gordian.elements.declarations;
 
 import edu.gordian.scopes.Scope;
-import edu.gordian.values.Value;
 import edu.gordian.values.gordian.GordianNumber;
 
+/**
+ * Changes the value of a variable.
+ *
+ * @author Joel Gallant
+ */
 public final class ValueAdjustment implements Runnable {
 
     private final Scope scope;
     private final String key;
     private final double i;
 
+    /**
+     * Constructs the adjustment.
+     *
+     * @param scope scope that adjustment is being performed in
+     * @param key variable name
+     * @param i change to apply
+     */
     public ValueAdjustment(Scope scope, String key, double i) {
         if (scope == null) {
             throw new NullPointerException("Scope is null");
@@ -22,6 +33,9 @@ public final class ValueAdjustment implements Runnable {
         this.i = i;
     }
 
+    /**
+     * Changes the value.
+     */
     public void run() {
         double value;
         if (scope.isVariable(key)) {
