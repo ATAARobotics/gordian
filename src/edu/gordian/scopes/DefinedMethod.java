@@ -1,5 +1,6 @@
 package edu.gordian.scopes;
 
+import com.sun.squawk.util.StringTokenizer;
 import edu.gordian.elements.methods.MethodBase;
 import edu.gordian.values.ReturningMethodBase;
 import edu.gordian.values.Value;
@@ -31,7 +32,18 @@ final class DefinedMethod extends Scope implements MethodBase, ReturningMethodBa
         }
 
         try {
-            run(script);
+            RunningEnvironment environment = new RunningEnvironment();
+            StringTokenizer tokenizer = preRun(script);
+            while (tokenizer.hasMoreElements()) {
+                environment.next(tokenizer.nextToken());
+                if (value != null) {
+                    // Value was returned
+                    break;
+                }
+            }
+            if (environment.scopes != 0) {
+                throw new RuntimeException("Scope was never completed. Use 'end' to complete scopes.");
+            }
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         }

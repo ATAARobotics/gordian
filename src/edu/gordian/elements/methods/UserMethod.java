@@ -3,7 +3,7 @@ package edu.gordian.elements.methods;
 import edu.gordian.Strings;
 
 /**
- * The class for user's to extend that provides Gordian methods. A user method
+ * The class for users to extend that provides Gordian methods. A user method
  * has a name and a runnable instance.
  *
  * @author Joel Gallant
