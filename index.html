@@ -66,7 +66,9 @@
 <li>Very small linear scripts</li>
 <li>Complex control flow with input and output</li>
 <li>Interpreter of input (ie. configuration files)</li>
-</ul><h2>
+</ul><p>Gordian is modelled with inspiration from Python and Lua.</p>
+
+<h2>
 <a name="platform" class="anchor" href="#platform"><span class="octicon octicon-link"></span></a>Platform</h2>
 
 <p>Gordian is designed to run on a minimum of Java ME 1.4 on the squawk VM, using the WPILibJ libraries.</p>
@@ -195,8 +197,9 @@ true || false # is true
 
 <p>Literals are direct representations of data written in code.</p>
 
-<p><strong>Numbers</strong>
-Numbers are inferred between floating point and integer. If floating point is needed (<code>x % 1 != 0</code>), the number will be represented as floating point. Otherwise it will be an integer.</p>
+<p><strong>Numbers</strong></p>
+
+<p>Numbers are inferred between floating point and integer. If floating point is needed (<code>x % 1 != 0</code>), the number will be represented as floating point. Otherwise it will be an integer.</p>
 
 <p>You shouldn't worry about differences between floating point and integer. If you need flooring or ceiling arithmetic, create the functions yourself.</p>
 
@@ -204,11 +207,13 @@ Numbers are inferred between floating point and integer. If floating point is ne
 3.0 # is functionally equivalent to 3
 </code></pre>
 
-<p><strong>Booleans</strong>
-Boolean literal values are <code>true</code> or <code>false</code>. Case is ignored (so <code>True</code> is still true).</p>
+<p><strong>Booleans</strong></p>
 
-<p><strong>Strings</strong>
-Strings are surrounded with quotation marks. Everything in between the quotation marks is regarded as part of the string.</p>
+<p>Boolean literal values are <code>true</code> or <code>false</code>. Case is ignored (so <code>True</code> is still true).</p>
+
+<p><strong>Strings</strong></p>
+
+<p>Strings are surrounded with quotation marks. Everything in between the quotation marks is regarded as part of the string.</p>
 
 <p>Quotation marks within quotation marks are part of the string, but can remove spaces from the string.</p>
 
