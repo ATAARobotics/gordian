@@ -8,7 +8,7 @@ final class For extends Scope {
 
     For(String condition, Scope scope) {
         super(scope);
-        this.condition = ((GordianNumber) toValue(condition).getValue()).intValue();
+        this.condition = ((GordianNumber) toValue(condition)).intValue();
     }
 
     public void run(String script) throws Exception {
