@@ -1,52 +1,41 @@
 package edu.gordian;
 
-import edu.gordian.scopes.Scope;
-import edu.gordian.elements.methods.UserMethod;
-import edu.gordian.values.UserReturningMethod;
+import language.scope.Scope;
+import edu.gordian.scopes.GordianRuntime;
 
-/**
- * The Gordian programming language beginning point. Runs scripts by extension
- * of {@link Scope}. For more dynamic running of programs (running multiple
- * scripts, accessing internals, etc.), use {@link Scope}.
- *
- * @author Joel Gallant
- */
 public final class Gordian {
 
-    private Gordian() {
+    private final Scope runtime;
+
+    public Gordian() {
+        runtime = new GordianRuntime();
     }
 
-    /**
-     * Runs the script.
-     *
-     * @param methods the methods that can be accessed by the program
-     * @param returning the returning methods that can be accessed by the
-     * program
-     * @param script the script to run
-     * @throws Exception when script running encounters any kind of error
-     */
-    public static void run(UserMethod[] methods, UserReturningMethod[] returning, String script) throws Exception {
-        new Scope(methods, returning).run(script);
+    public void addMethod(Method m) {
+        runtime.methods().put(m.getName(), m);
     }
 
-    /**
-     * Runs the script.
-     *
-     * @param methods the methods that can be accessed by the program
-     * @param script the script to run
-     * @throws Exception when script running encounters any kind of error
-     */
-    public static void run(UserMethod[] methods, String script) throws Exception {
-        run(methods, new UserReturningMethod[0], script);
+    public void addMethods(Method[] m) {
+        for (int x = 0; x < m.length; x++) {
+            addMethod(m[x]);
+        }
     }
 
-    /**
-     * Runs the script.
-     *
-     * @param script the script to run
-     * @throws Exception when script running encounters any kind of error
-     */
-    public static void run(String script) throws Exception {
-        new Scope().runChecked(script);
+    public void addVariable(Variable m) {
+        runtime.storage().set(m.getName(), m.getValue());
+    }
+
+    public void addVariable(Variable[] m) {
+        for (int x = 0; x < m.length; x++) {
+            addVariable(m[x]);
+        }
+    }
+
+    public Scope getRuntime() {
+        return runtime;
+    }
+
+    public void run(String s) {
+        runtime.run(s);
     }
 }
