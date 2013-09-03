@@ -38,15 +38,15 @@ Values can also be adjusted using basic operators.
 
 `+` = Make number positive (1 -> 1)
 
-To cast values to certain types, use:
+To cast values to certain types, use the methods:
 
-`int` = Casts and convert to an integer (floors values & parses)
+`int(x)` = Casts and convert to an integer (floors values & parses)
 
-`num` = Casts to a number (parses strings)
+`num(x)` = Casts to a number (parses strings)
 
-`bool` = Casts to a boolean (parses strings)
+`bool(x)` = Casts to a boolean (parses strings)
 
-`str` = Casts to a string (converts numbers and booleans)
+`str(x)` = Casts to a string (converts numbers and booleans)
 
 # Variables
 
