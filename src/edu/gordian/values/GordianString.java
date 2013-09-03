@@ -9,7 +9,7 @@ public final class GordianString implements Value {
 
     public GordianString(String val) {
         this.val = Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(val,
-                "\\\\\"", "\""), "\\\\t", "\t"), "\\\\n", "\n");
+                "\\\"", "\""), "\\t", "\t"), "\\n", "\n");
     }
 
     public boolean equals(Object obj) {
