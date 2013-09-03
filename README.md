@@ -21,7 +21,6 @@ Gordian is designed to run on a minimum of Java ME 1.4 on the squawk VM, using t
 - Gordian for FRC is available at https://github.com/Team4334/gordian
 - Gordian for Java SE (or your choice of supported platform) is available at https://github.com/Team4334/gordianSE
 - Gordian as a desktop program is available at https://github.com/Team4334/desktop-gordian
-- Gordian as a compilable program is availble at https://github.com/Team4334/gordian-compiler
 
 ## Project Goals
 Gordian is a project that aims to help innovate quickly without tinkering embedded code. Its goals are simple:
