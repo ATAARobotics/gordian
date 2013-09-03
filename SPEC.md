@@ -54,9 +54,7 @@ To declare variables, use the basic syntax:
 
     varName = value
 
-Variable names cannot contain these characters:
-
-    =, :, +, -, *, /, >, <, &, |, !, (, ), ", '
+Variable and method names cannot contain characters that are not letters.
 
 Variables have a scope, and cannot be accessed outside of their scope. When accessing a variable, just use the name of the variable as it was declared.
 

@@ -117,23 +117,19 @@ public final class GordianRuntime implements Scope {
 
     public static boolean isValidName(String s) {
         return !(Strings.isEmpty(s)
-                || Strings.contains(s, "=")
-                || Strings.contains(s, ":")
-                || Strings.contains(s, "+")
-                || Strings.contains(s, "-")
-                || Strings.contains(s, "*")
-                || Strings.contains(s, "/")
-                || Strings.contains(s, ">")
-                || Strings.contains(s, "<")
-                || Strings.contains(s, "&")
-                || Strings.contains(s, "|")
-                || Strings.contains(s, "!")
-                || Strings.contains(s, "(")
-                || Strings.contains(s, ")")
-                || Strings.contains(s, "\"")
-                || Strings.contains(s, "\'")
                 || s.equalsIgnoreCase("true")
-                || s.equalsIgnoreCase("false"));
+                || s.equalsIgnoreCase("false"))
+                && isAllLetters(s);
+    }
+
+    private static boolean isAllLetters(String s) {
+        for (int x = 0; x < s.length(); x++) {
+            if (!(Character.isLowerCase(s.charAt(x))
+                    || Character.isUpperCase(s.charAt(x)))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void run(Scope s, String i) {
