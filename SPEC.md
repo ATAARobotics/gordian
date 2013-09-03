@@ -23,7 +23,9 @@ Booleans are simple, they are the same as in java. You can use `true` or `false`
 Strings are indicated with single or double quotation marks at the very ends of the string. Escape characters are as follows:
 
 `\"` = `"`
+
 `\t` = tab character
+
 `\n` = newline character
 
 Null is accessed using the keyword `null`.
@@ -31,14 +33,19 @@ Null is accessed using the keyword `null`.
 Values can also be adjusted using basic operators.
 
 `!` = Reverse a boolean (true -> false)
+
 `-` = Make number negative (1 -> -1)
+
 `+` = Make number positive (1 -> 1)
 
 To cast values to certain types, use:
 
 `int` = Casts and convert to an integer (floors values & parses)
+
 `num` = Casts to a number (parses strings)
+
 `bool` = Casts to a boolean (parses strings)
+
 `str` = Casts to a string (converts numbers and booleans)
 
 # Variables
@@ -74,14 +81,23 @@ To declare methods in Java, use `Gordian.addMethod()`.
 Expressions use the basic syntax used in most C-based languages.
 
 `++` = Increment by 1
+
 `--` = Decrement by 1
+
 `&&` = Boolean AND
+
 `||` = Boolean OR
+
 `==` = Equals (works for all types)
+
 `!=` = Not Equals
+
 `>=` = Bigger or equal to
+
 `<=` = Smaller or equal to
+
 `>` = Bigger than
+
 `<` = Smaller than
 
 Strings can be concatenated using the `+` sign.
