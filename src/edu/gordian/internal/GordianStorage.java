@@ -49,6 +49,17 @@ public final class GordianStorage implements Storage {
         }
         return null;
     }
+    
+    public Value remove(String key) {
+        for (int x = nodes.size() - 1; x >= 0; x--) {
+            Node n = (Node) nodes.get(x);
+            if (n.key.equals(key)) {
+                nodes.remove(n);
+                return n.val;
+            }
+        }
+        return null;
+    }
 
     public List nodes() {
         return nodes;

@@ -58,6 +58,8 @@ Variables have a scope, and cannot be accessed outside of their scope. When acce
 
 To declare variables in Java, use `Gordian.addVariable()`.
 
+To delete variables from memory, use `delete(x)`. `x` has to be a string.
+
 # Methods
 
 Methods are defined with the `def` keyword.

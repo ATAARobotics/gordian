@@ -49,7 +49,7 @@ public class GordianInterpreter implements Interpreter {
         if (s.indexOf("(") > 0 && s.charAt(s.length() - 1) == ')') {
             Method m = scope.methods().get(s.substring(0, s.indexOf("(")));
             if (m != null) {
-                return m.run(scope.getInterpreter().interpretValues(Strings.split(s.substring(s.indexOf("(") + 1, s.lastIndexOf(')')), ",")));
+                return m.run(scope, scope.getInterpreter().interpretValues(Strings.split(s.substring(s.indexOf("(") + 1, s.lastIndexOf(')')), ",")));
             }
         }
         Value v = scope.storage().get(s);

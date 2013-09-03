@@ -8,8 +8,10 @@ public interface Storage {
     public Value put(String key, Value value);
 
     public Value set(String key, Value value);
-    
+
     public Value get(String key);
-    
+
+    public Value remove(String key);
+
     public List nodes();
 }
