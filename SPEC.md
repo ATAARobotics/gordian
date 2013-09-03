@@ -12,13 +12,13 @@ Gordian is a dynamically typed interpreted scripting language with variables, me
 
 # Values
 
-Gordian has four value types. Numbers, Booleans, Strings and Null.
+Gordian has four value types: Numbers, Booleans, Strings and Null.
 
 Numbers are a combination of double (64 bit) and int (32 bit). If a value is `x % 1 == 0`, it is considered an integer internally. Otherwise, it is a double.
 
-*Note: putting `.0` at the end of a number literal will **not** make it a double. This functionality is not built in to the language.* There is no need to build it in, because arithmetic will always use the most precise method.
+*Note: putting `.0` at the end of a number literal will not make it a double. This functionality is not built in to the language.* There is no need to build it in, because arithmetic will always use the most precise method.
 
-Booleans are simple, they are the same as in java. You can use `true` or `false`, with any or all letters capitalized.
+Booleans are simple, you can use `true` or `false`, with any or all letters capitalized.
 
 Strings are indicated with single or double quotation marks at the very ends of the string. Escape characters are as follows:
 
@@ -28,7 +28,7 @@ Strings are indicated with single or double quotation marks at the very ends of 
 
 `\n` = newline character
 
-Null is accessed using the keyword `null`.
+Null is accessed using the variable `null`.
 
 Booleans can also be adjusted using the basic operator.
 
