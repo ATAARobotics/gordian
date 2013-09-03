@@ -125,7 +125,12 @@ public class GordianInterpreter implements Interpreter {
                     < ((GordianNumber) scope.getInterpreter().interpretValue(s.substring(s.indexOf("<") + 1))).getDouble());
         }
 
-        if (Strings.contains(s, "(") && Strings.contains(s, ")")) {
+        if (Strings.contains(s, "(") && Strings.contains(s, ")")
+                && (s.indexOf("+") > s.indexOf("(") && s.indexOf("+") < s.indexOf(")")
+                || s.indexOf("-") > s.indexOf("(") && s.indexOf("-") < s.indexOf(")")
+                || s.indexOf("*") > s.indexOf("(") && s.indexOf("*") < s.indexOf(")")
+                || s.indexOf("/") > s.indexOf("(") && s.indexOf("/") < s.indexOf(")")
+                || s.indexOf("%") > s.indexOf("(") && s.indexOf("%") < s.indexOf(")"))) {
             int start = s.indexOf("("), end = s.lastIndexOf(')');
             int a = 0;
             for (int x = 0; x < s.length(); x++) {
