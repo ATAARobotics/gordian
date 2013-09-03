@@ -10,6 +10,7 @@ import edu.gordian.scopes.GordianCount;
 import edu.gordian.scopes.GordianDefinedMethod;
 import edu.gordian.scopes.GordianScope;
 import edu.gordian.scopes.GordianThread;
+import edu.gordian.scopes.GordianTry;
 
 public class GordianAnalyser implements Analyser {
 
@@ -36,6 +37,8 @@ public class GordianAnalyser implements Analyser {
                     s.substring(s.indexOf(";") + 1));
         } else if (s.startsWith("thread")) {
             new GordianThread(scope).runThread(s.substring(s.indexOf(";") + 1));
+        } else if (s.startsWith("try")) {
+            new GordianTry(scope).run(s.substring(s.indexOf(";") + 1));
         } else if (s.startsWith("def")) {
             new GordianDefinedMethod(scope).define(s.substring(3, s.indexOf("(")),
                     Strings.split(s.substring(s.indexOf("(") + 1, s.substring(0, s.indexOf(";")).lastIndexOf(')')), ","),

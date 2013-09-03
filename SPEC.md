@@ -151,6 +151,12 @@ Thread blocks run in a new thread
         # instructions
     fi
 
+Try blocks catch exceptions and move on (logging the exception)
+
+    try:
+        # instructions
+    fi
+
 Methods are defined using `def`
 
     def foo(x, i):
