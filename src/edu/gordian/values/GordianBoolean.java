@@ -9,6 +9,10 @@ public final class GordianBoolean implements Value {
     public GordianBoolean(boolean val) {
         this.val = val;
     }
+    
+    public static GordianBoolean toBoolean(String s) {
+        return new GordianBoolean(s.equalsIgnoreCase("true"));
+    }
 
     public boolean get() {
         return val;

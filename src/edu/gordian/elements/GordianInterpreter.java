@@ -37,8 +37,8 @@ public class GordianInterpreter implements Interpreter {
             return new GordianBoolean(false);
         }
 
-        if ((s.startsWith("\"") && s.endsWith("\"") && s.substring(1).indexOf("\"") == s.length() - 2)
-                || (s.startsWith("\'") && s.endsWith("\'") && s.substring(1).indexOf("\'") == s.length() - 2)) {
+        if ((s.startsWith("\"") && s.endsWith("\""))
+                || (s.startsWith("\'") && s.endsWith("\'"))) {
             return new GordianString(s.substring(1, s.length() - 1));
         }
 

@@ -13,10 +13,12 @@ import language.instruction.Method;
 import edu.gordian.internal.GordianMethods;
 import edu.gordian.internal.GordianStorage;
 import edu.gordian.internal.ValueReturned;
+import edu.gordian.values.GordianBoolean;
 import language.operator.Operator;
 import edu.gordian.values.GordianNull;
 import language.scope.Scope;
 import edu.gordian.values.GordianNumber;
+import edu.gordian.values.GordianString;
 import java.util.Random;
 import language.internal.Methods;
 import language.internal.Storage;
@@ -33,9 +35,42 @@ public final class GordianRuntime implements Scope {
     });
 
     {
+        storage.set("null", GordianNull.get());
         methods.put("return", new Method() {
             public Value run(Value[] args) {
                 throw new ValueReturned(args[0]);
+            }
+        });
+        methods.put("int", new Method() {
+            public Value run(Value[] args) {
+                if (args[0] instanceof GordianNumber) {
+                    return new GordianNumber(((GordianNumber) args[0]).getInt());
+                } else {
+                    return new GordianNumber(GordianNumber.toNumber(args[0].toString()).getInt());
+                }
+            }
+        });
+        methods.put("num", new Method() {
+            public Value run(Value[] args) {
+                if (args[0] instanceof GordianNumber) {
+                    return new GordianNumber(((GordianNumber) args[0]).getDouble());
+                } else {
+                    return GordianNumber.toNumber(args[0].toString());
+                }
+            }
+        });
+        methods.put("bool", new Method() {
+            public Value run(Value[] args) {
+                if (args[0] instanceof GordianBoolean) {
+                    return new GordianBoolean(((GordianBoolean) args[0]).get());
+                } else {
+                    return GordianBoolean.toBoolean(args[0].toString());
+                }
+            }
+        });
+        methods.put("str", new Method() {
+            public Value run(Value[] args) {
+                return new GordianString(args[0].toString());
             }
         });
         methods.put("print", new Method() {
@@ -68,12 +103,6 @@ public final class GordianRuntime implements Scope {
                 return new GordianNumber(RANDOM.nextInt());
             }
         });
-        methods.put("int", new Method() {
-            public Value run(Value[] args) {
-                return new GordianNumber(((GordianNumber) args[0]).getInt());
-            }
-        });
-        storage.set("null", GordianNull.get());
     }
 
     public Scope parent() {
@@ -181,7 +210,7 @@ public final class GordianRuntime implements Scope {
         boolean inQuotes = false;
         x += a.substring(x).indexOf(' ');
         for (int i = 0; i < x; i++) {
-            if (a.charAt(i) == '\"' || a.charAt(i) == '\'') {
+            if ((a.charAt(i) == '\"' || a.charAt(i) == '\'') && a.charAt(i - 1) != '\\') {
                 inQuotes = !inQuotes;
             } else if (a.charAt(i) == ';') {
                 inQuotes = false;

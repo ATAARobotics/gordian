@@ -25,7 +25,7 @@ public final class Gordian {
         runtime.storage().set(m.getName(), m.getValue());
     }
 
-    public void addVariable(Variable[] m) {
+    public void addVariables(Variable[] m) {
         for (int x = 0; x < m.length; x++) {
             addVariable(m[x]);
         }
