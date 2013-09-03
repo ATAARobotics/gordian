@@ -30,13 +30,11 @@ Strings are indicated with single or double quotation marks at the very ends of 
 
 Null is accessed using the keyword `null`.
 
-Values can also be adjusted using basic operators.
+Booleans can also be adjusted using the basic operator.
 
 `!` = Reverse a boolean (true -> false)
 
-`-` = Make number negative (1 -> -1)
-
-`+` = Make number positive (1 -> 1)
+Numbers can be reversed using `neg(x)`.
 
 To cast values to certain types, use the methods:
 
@@ -65,12 +63,15 @@ To declare variables in Java, use `Gordian.addVariable()`.
 Methods are defined with the `def` keyword.
 
     def foo(x):
-        print(x + 1);
+        print(x + 1)
+        return(13.23)
     fi
 
 End all blocks using `fi`.
 
 Arguments for methods will shadow other variables (will not delete them). They are not available outside of the method's scope.
+
+Returning values is done with the `return(x)` method.
 
 To declare methods in Java, use `Gordian.addMethod()`.
 
@@ -102,7 +103,7 @@ Strings can be concatenated using the `+` sign.
 
 # Calculations
 
-Calculations follow MDMSA (Modulus - Division - Multiplication - Subtraction - Addition). Order or operations is changeable in `GordianRuntime.operations`. Parentheses are **not supported**. (for now)
+Calculations follow PMDMSA (Parentheses - Modulus - Division - Multiplication - Subtraction - Addition). Order or operations is changeable in `GordianRuntime.operations`.
 
 Shorthand calculations are the same as Java/C++. They are just the symbol with an equals sign. (ex. `+=`)
 

@@ -103,6 +103,11 @@ public final class GordianRuntime implements Scope {
                 return new GordianNumber(RANDOM.nextInt());
             }
         });
+        methods.put("neg", new Method() {
+            public Value run(Value[] args) {
+                return new GordianNumber(-((GordianNumber) args[0]).getDouble());
+            }
+        });
     }
 
     public Scope parent() {

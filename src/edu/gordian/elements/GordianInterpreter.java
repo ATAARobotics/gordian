@@ -23,7 +23,7 @@ public class GordianInterpreter implements Interpreter {
 
     public Value interpretValue(String s) {
         if (Strings.isEmpty(s)) {
-            return null;
+            throw new NullPointerException("Value was empty");
         }
 
         GordianNumber n = GordianNumber.toNumber(s);
@@ -44,10 +44,6 @@ public class GordianInterpreter implements Interpreter {
 
         if (s.startsWith("!")) {
             return new GordianBoolean(!((GordianBoolean) scope.getInterpreter().interpretValue(s.substring(1))).get());
-        } else if (s.startsWith("-")) {
-            return new GordianNumber(-((GordianNumber) scope.getInterpreter().interpretValue(s.substring(1))).getDouble());
-        } else if (s.startsWith("+")) {
-            return new GordianNumber(((GordianNumber) scope.getInterpreter().interpretValue(s.substring(1))).getDouble());
         }
 
         if (s.indexOf("(") > 0 && s.charAt(s.length() - 1) == ')') {
@@ -126,22 +122,55 @@ public class GordianInterpreter implements Interpreter {
                     < ((GordianNumber) scope.getInterpreter().interpretValue(s.substring(s.indexOf("<") + 1))).getDouble());
         }
 
-        if (Strings.contains(s, "+")) {
-            Value d1 = scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("+")));
-            Value d2 = scope.getInterpreter().interpretValue(s.substring(s.indexOf("+") + 1));
-
-            if (!(d1 instanceof GordianNumber && d2 instanceof GordianNumber)) {
-                return new GordianString(d1.toString() + d2.toString());
+        if (Strings.contains(s, "(") && Strings.contains(s, ")")) {
+            int start = s.indexOf("("), end = s.lastIndexOf(')');
+            int a = 0;
+            for (int x = 0; x < s.length(); x++) {
+                if (s.charAt(x) == '(') {
+                    a++;
+                    if (a == 1) {
+                        start = x;
+                    }
+                } else if (s.charAt(x) == ')') {
+                    a--;
+                    if (a == 0) {
+                        end = x;
+                    }
+                }
             }
+            return scope.getInterpreter().interpretValue(s.substring(0, start)
+                    + scope.getInterpreter().interpretValue(s.substring(start + 1, end))
+                    + s.substring(end + 1));
         }
+
+        s = Strings.replaceAll(s, "--", "+");
+        s = Strings.replaceAll(s, "+-", "-");
+        s = Strings.replaceAll(s, "-+", "-");
 
         Iterator i1 = GordianRuntime.operations.iterator();
         while (i1.hasNext()) {
             Operator o = (Operator) i1.next();
             String op = o.getChar() + "";
             if (Strings.contains(s, op)) {
-                return new GordianNumber(o.result(((GordianNumber) interpretValue(s.substring(0, s.indexOf(op)))).getDouble(),
-                        ((GordianNumber) interpretValue(s.substring(s.indexOf(op) + 1))).getDouble()));
+                try {
+                    return new GordianNumber(o.result(((GordianNumber) interpretValue(s.substring(0, s.lastIndexOf(o.getChar())))).getDouble(),
+                            ((GordianNumber) interpretValue(s.substring(s.lastIndexOf(o.getChar()) + 1))).getDouble()));
+                } catch (ClassCastException ex) {
+                    // Was not a number... Try concatenation
+                }
+            }
+        }
+
+        if (Strings.contains(s, "+")) {
+            try {
+                Value d1 = scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("+")));
+                Value d2 = scope.getInterpreter().interpretValue(s.substring(s.indexOf("+") + 1));
+
+                if (!(d1 instanceof GordianNumber && d2 instanceof GordianNumber)) {
+                    return new GordianString(d1.toString() + d2.toString());
+                }
+            } catch (NullPointerException e) {
+                // value was not two values
             }
         }
 
