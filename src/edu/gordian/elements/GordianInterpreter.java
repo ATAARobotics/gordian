@@ -60,18 +60,6 @@ public class GordianInterpreter implements Interpreter {
             }
         }
 
-        if (Strings.contains(s, "+")) {
-            // Concatenations
-            try {
-                Value d1 = scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("+")));
-                Value d2 = scope.getInterpreter().interpretValue(s.substring(s.indexOf("+") + 1));
-
-                return new GordianString(d1.toString() + d2.toString());
-            } catch (Exception e) {
-                // value was not two values
-            }
-        }
-
         // Declarations
         Iterator i = GordianRuntime.operations.iterator();
         while (i.hasNext()) {
@@ -127,6 +115,18 @@ public class GordianInterpreter implements Interpreter {
         } else if (Strings.contains(s, "<")) {
             return new GordianBoolean(((GordianNumber) scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("<")))).getDouble()
                     < ((GordianNumber) scope.getInterpreter().interpretValue(s.substring(s.indexOf("<") + 1))).getDouble());
+        }
+
+        if (Strings.contains(s, "+")) {
+            // Concatenations
+            try {
+                Value d1 = scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("+")));
+                Value d2 = scope.getInterpreter().interpretValue(s.substring(s.indexOf("+") + 1));
+
+                return new GordianString(d1.toString() + d2.toString());
+            } catch (Exception e) {
+                // value was not two values
+            }
         }
 
         // Literals
