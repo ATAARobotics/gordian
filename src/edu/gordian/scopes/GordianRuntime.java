@@ -132,7 +132,7 @@ public final class GordianRuntime implements Scope {
                 && isAllLetters(s);
     }
 
-    private static boolean isAllLetters(String s) {
+    public static boolean isAllLetters(String s) {
         for (int x = 0; x < s.length(); x++) {
             if (!(Character.isLowerCase(s.charAt(x))
                     || Character.isUpperCase(s.charAt(x)))) {
