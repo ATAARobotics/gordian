@@ -61,7 +61,7 @@ public class GordianInterpreter implements Interpreter {
         }
 
         // Methods
-        if (s.indexOf("(") > 0 && s.indexOf(")") == s.length() - 1) {
+        if (s.indexOf("(") > 0 && s.lastIndexOf(')') == s.length() - 1) {
             int c = 0;
             boolean method = false;
             for (int x = s.indexOf("("); x < s.length(); x++) {
