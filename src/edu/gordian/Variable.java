@@ -2,7 +2,7 @@ package edu.gordian;
 
 import language.value.Value;
 
-public class Variable {
+public final class Variable {
 
     private final String name;
     private final Value val;

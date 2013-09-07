@@ -4,7 +4,7 @@ import language.instruction.Declaration;
 import language.value.Value;
 import language.scope.Scope;
 
-public class GordianDeclaration implements Declaration {
+public final class GordianDeclaration implements Declaration {
 
     private final Scope scope;
 

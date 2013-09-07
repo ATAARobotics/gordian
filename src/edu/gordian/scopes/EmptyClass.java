@@ -32,27 +32,27 @@ public class EmptyClass implements Instance {
         }
     }
 
-    public Scope parent() {
+    public final Scope parent() {
         return null;
     }
 
-    public Methods methods() {
+    public final Methods methods() {
         return methods;
     }
 
-    public Storage storage() {
+    public final Storage storage() {
         return storage;
     }
 
     public void run(String i) {
     }
 
-    public Analyser getAnalyser() {
+    public final Analyser getAnalyser() {
         return analyser;
 
     }
 
-    public Interpreter getInterpreter() {
+    public final Interpreter getInterpreter() {
         return interpreter;
     }
 }

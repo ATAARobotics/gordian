@@ -17,7 +17,7 @@ import language.scope.Scope;
 import language.value.Interpreter;
 import language.value.Value;
 
-public class GordianInterpreter implements Interpreter {
+public final class GordianInterpreter implements Interpreter {
 
     private final Scope scope;
 

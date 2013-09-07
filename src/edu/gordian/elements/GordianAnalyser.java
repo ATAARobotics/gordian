@@ -14,7 +14,7 @@ import edu.gordian.scopes.GordianThread;
 import edu.gordian.scopes.GordianTry;
 import edu.gordian.values.GordianClass;
 
-public class GordianAnalyser implements Analyser {
+public final class GordianAnalyser implements Analyser {
 
     private final Scope scope;
 

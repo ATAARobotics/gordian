@@ -15,7 +15,7 @@ import language.scope.Scope;
 import language.value.Interpreter;
 import language.value.Value;
 
-public class GordianClass implements ClassGenerator {
+public final class GordianClass implements ClassGenerator {
 
     private final Scope scope;
     private final String internals;
