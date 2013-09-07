@@ -168,3 +168,32 @@ Scope blocks perform no additional actions, but they encapsulate the variables a
     scope:
         # instructions
     fi
+
+Class blocks create `ClassGenerator` instances under their name, and can be instantiated.
+
+    class Foo:
+        # instructions
+    fi
+
+# Classes
+Gordian uses a scraped down version of typical object oriented languages. Classes do not have inheritence, so many object-oriented features are not available. To construct an object, use the `[` and `]` signs.
+
+    class Example:
+        x = 13
+
+        def foo(x):
+            super.x = x
+        fi
+    fi
+
+    myinstance = [Example]
+
+There cannot be arguments in construction. As you can tell, you can access variables that are shadowed using the `super` keyword. Super will work from any context in Gordian (provided you are in a scope). To access methods and variables, simply use a `.` after the instance name.
+
+    myinstance.x
+
+    myinstance.foo(12)
+
+Remember that `Example` is registered as a variable in Gordian. You should not shadow its value if you want to use the class.
+
+Nested classes clone all values and methods from their external scope. Changing any value inside of a class *only* affects it inside of that class.
