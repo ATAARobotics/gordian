@@ -2,5 +2,5 @@ package language.scope;
 
 import language.value.Value;
 
-public interface Class extends Value, Scope {
+public interface Instance extends Value, Scope {
 }

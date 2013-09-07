@@ -4,5 +4,5 @@ import language.value.Value;
 
 public interface ClassGenerator extends Value {
 
-    public Class construct();
+    public Instance construct();
 }

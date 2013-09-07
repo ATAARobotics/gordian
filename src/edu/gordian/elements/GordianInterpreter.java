@@ -12,6 +12,7 @@ import edu.gordian.values.GordianNumber;
 import edu.gordian.values.GordianString;
 import language.instruction.Method;
 import language.operator.Operator;
+import language.scope.Instance;
 import language.scope.Scope;
 import language.value.Interpreter;
 import language.value.Value;
@@ -107,7 +108,7 @@ public class GordianInterpreter implements Interpreter {
                 if (s.substring(0, s.indexOf(".")).equals("super")) {
                     call = scope.parent();
                 } else {
-                    call = ((language.scope.Class) scope.storage().get(s.substring(0, s.indexOf("."))));
+                    call = ((Instance) scope.storage().get(s.substring(0, s.indexOf("."))));
                 }
                 // Internal variable
                 return call.getInterpreter().interpretValue(s.substring(s.indexOf(".") + 1, s.indexOf("=") + 1)
@@ -195,7 +196,7 @@ public class GordianInterpreter implements Interpreter {
             if (s.substring(0, s.indexOf(".")).equals("super")) {
                 call = scope.parent();
             } else {
-                call = ((language.scope.Class) scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("."))));
+                call = ((Instance) scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("."))));
             }
             String r = s.substring(s.indexOf(".") + 1);
             if (call != null) {

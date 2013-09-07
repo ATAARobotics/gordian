@@ -9,10 +9,11 @@ import edu.gordian.internal.GordianStorage;
 import language.element.Analyser;
 import language.internal.Methods;
 import language.internal.Storage;
+import language.scope.Instance;
 import language.scope.Scope;
 import language.value.Interpreter;
 
-public class EmptyClass implements language.scope.Class {
+public class EmptyClass implements Instance {
 
     private final Methods methods = new GordianMethods();
     private final Storage storage = new GordianStorage();

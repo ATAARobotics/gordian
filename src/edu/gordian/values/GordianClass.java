@@ -10,6 +10,7 @@ import language.instruction.Method;
 import language.internal.Methods;
 import language.internal.Storage;
 import language.scope.ClassGenerator;
+import language.scope.Instance;
 import language.scope.Scope;
 import language.value.Interpreter;
 import language.value.Value;
@@ -24,11 +25,11 @@ public class GordianClass implements ClassGenerator {
         this.internals = internals;
     }
 
-    public language.scope.Class construct() {
-        return new Class(scope, internals);
+    public Instance construct() {
+        return new GordianInstance(scope, internals);
     }
 
-    private final static class Class implements language.scope.Class, Scope {
+    private final static class GordianInstance implements Instance, Scope {
 
         private final Scope scope;
         private final Methods methods;
@@ -36,7 +37,7 @@ public class GordianClass implements ClassGenerator {
         private final Analyser analyser = new GordianAnalyser(this);
         private final Interpreter interpreter = new GordianInterpreter(this);
 
-        public Class(Scope scope, String internals) {
+        public GordianInstance(Scope scope, String internals) {
             this.scope = scope;
             this.methods = new GordianMethods();
             this.storage = new GordianStorage();
