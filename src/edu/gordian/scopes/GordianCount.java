@@ -5,6 +5,13 @@ import edu.gordian.values.GordianNumber;
 
 public class GordianCount extends GordianScope {
 
+    public static void run(Scope scope, String s) {
+        new GordianCount(scope).run(s.substring(6, s.indexOf(",")),
+                s.substring(s.indexOf(",") + 1, s.substring(0, s.indexOf(":")).lastIndexOf(',')),
+                s.substring(s.substring(0, s.indexOf(":")).lastIndexOf(',') + 1, s.substring(0, s.indexOf(":")).lastIndexOf(')')),
+                s.substring(s.indexOf(";") + 1));
+    }
+
     public GordianCount(Scope scope) {
         super(scope);
     }

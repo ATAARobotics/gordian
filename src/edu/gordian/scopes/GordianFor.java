@@ -5,6 +5,11 @@ import edu.gordian.values.GordianNumber;
 
 public class GordianFor extends GordianScope {
 
+    public static void run(Scope scope, String s) {
+        new GordianFor(scope).run(s.substring(4, s.substring(0, s.indexOf(":")).lastIndexOf(')')),
+                s.substring(s.indexOf(";") + 1));
+    }
+
     public GordianFor(Scope scope) {
         super(scope);
     }

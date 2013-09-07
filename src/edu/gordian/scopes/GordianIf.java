@@ -5,6 +5,11 @@ import edu.gordian.values.GordianBoolean;
 
 public class GordianIf extends GordianScope {
 
+    public static void run(Scope scope, String s) {
+        new GordianIf(scope).run(s.substring(3, s.substring(0, s.indexOf(":")).lastIndexOf(')')),
+                s.substring(s.indexOf(";") + 1));
+    }
+
     public GordianIf(Scope scope) {
         super(scope);
     }

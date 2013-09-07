@@ -1,11 +1,18 @@
 package edu.gordian.scopes;
 
+import edu.first.util.Strings;
 import language.instruction.Method;
 import edu.gordian.internal.ValueReturned;
 import language.scope.Scope;
 import language.value.Value;
 
 public class GordianDefinedMethod extends GordianScope {
+
+    public static void run(Scope scope, String s) {
+        new GordianDefinedMethod(scope).define(s.substring(3, s.indexOf("(")),
+                Strings.split(s.substring(s.indexOf("(") + 1, s.substring(0, s.indexOf(";")).lastIndexOf(')')), ","),
+                s.substring(s.indexOf(";") + 1));
+    }
 
     public GordianDefinedMethod(Scope scope) {
         super(scope);

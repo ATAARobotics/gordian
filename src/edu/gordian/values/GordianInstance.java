@@ -1,16 +1,20 @@
-package edu.gordian.scopes;
+package edu.gordian.values;
 
 import edu.gordian.elements.GordianAnalyser;
 import edu.gordian.elements.GordianInterpreter;
-import language.element.Analyser;
 import edu.gordian.internal.GordianMethods;
 import edu.gordian.internal.GordianStorage;
+import edu.gordian.scopes.GordianRuntime;
+import language.element.Analyser;
+import language.instruction.Method;
 import language.internal.Methods;
 import language.internal.Storage;
+import language.scope.Instance;
 import language.scope.Scope;
 import language.value.Interpreter;
+import language.value.Value;
 
-public class GordianScope implements Scope {
+public class GordianInstance implements Instance {
 
     private final Scope scope;
     private final Methods methods;
@@ -18,14 +22,14 @@ public class GordianScope implements Scope {
     private final Analyser analyser = new GordianAnalyser(this);
     private final Interpreter interpreter = new GordianInterpreter(this);
 
-    public static void run(Scope scope, String s) {
-        new GordianScope(scope).run(s.substring(s.indexOf(";") + 1));
-    }
-
-    public GordianScope(Scope scope) {
+    public GordianInstance(Scope scope, String internals) {
         this.scope = scope;
-        this.methods = new GordianMethods(scope.methods());
-        this.storage = new GordianStorage(scope.storage());
+        this.methods = new GordianMethods();
+        this.storage = new GordianStorage();
+
+        this.methods.clone(scope.methods());
+        this.storage.clone(scope.storage());
+        run(internals);
     }
 
     public Scope parent() {
@@ -50,5 +54,13 @@ public class GordianScope implements Scope {
 
     public Interpreter getInterpreter() {
         return interpreter;
+    }
+
+    public Method getMethod(String name) {
+        return methods.get(name);
+    }
+
+    public Value getValue(String name) {
+        return storage.get(name);
     }
 }

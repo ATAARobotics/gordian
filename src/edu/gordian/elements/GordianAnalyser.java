@@ -25,31 +25,23 @@ public final class GordianAnalyser implements Analyser {
     public void analyseBlock(String s) {
         try {
             if (s.startsWith("if")) {
-                new GordianIf(scope).run(s.substring(3, s.substring(0, s.indexOf(":")).lastIndexOf(')')),
-                        s.substring(s.indexOf(";") + 1));
+                GordianIf.run(scope, s);
             } else if (s.startsWith("while")) {
-                new GordianWhile(scope).run(s.substring(6, s.substring(0, s.indexOf(":")).lastIndexOf(')')),
-                        s.substring(s.indexOf(";") + 1));
+                GordianWhile.run(scope, s);
             } else if (s.startsWith("for")) {
-                new GordianFor(scope).run(s.substring(4, s.substring(0, s.indexOf(":")).lastIndexOf(')')),
-                        s.substring(s.indexOf(";") + 1));
+                GordianFor.run(scope, s);
             } else if (s.startsWith("count")) {
-                new GordianCount(scope).run(s.substring(6, s.indexOf(",")),
-                        s.substring(s.indexOf(",") + 1, s.substring(0, s.indexOf(":")).lastIndexOf(',')),
-                        s.substring(s.substring(0, s.indexOf(":")).lastIndexOf(',') + 1, s.substring(0, s.indexOf(":")).lastIndexOf(')')),
-                        s.substring(s.indexOf(";") + 1));
+                GordianCount.run(scope, s);
             } else if (s.startsWith("thread")) {
-                new GordianThread(scope).runThread(s.substring(s.indexOf(";") + 1));
+                GordianThread.run(scope, s);
             } else if (s.startsWith("try")) {
-                new GordianTry(scope).run(s.substring(s.indexOf(";") + 1));
+                GordianTry.run(scope, s);
             } else if (s.startsWith("def")) {
-                new GordianDefinedMethod(scope).define(s.substring(3, s.indexOf("(")),
-                        Strings.split(s.substring(s.indexOf("(") + 1, s.substring(0, s.indexOf(";")).lastIndexOf(')')), ","),
-                        s.substring(s.indexOf(";") + 1));
+                GordianDefinedMethod.run(scope, s);
             } else if (s.startsWith("scope")) {
-                new GordianScope(scope).run(s.substring(s.indexOf(";") + 1));
+                GordianScope.run(scope, s);
             } else if (s.startsWith("class")) {
-                scope.storage().put(s.substring(5, s.indexOf(":")), new GordianClass(scope, s.substring(s.indexOf(";") + 1)));
+                GordianClass.run(scope, s);
             } else {
                 throw new NullPointerException("The value \"" + s + "\" could not be interpreted as a block.");
             }
