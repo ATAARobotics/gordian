@@ -12,6 +12,7 @@ import language.value.Value;
 import language.instruction.Method;
 import edu.gordian.internal.GordianMethods;
 import edu.gordian.internal.GordianStorage;
+import edu.gordian.internal.ScopeBreak;
 import edu.gordian.internal.ValueReturned;
 import edu.gordian.values.GordianBoolean;
 import language.operator.Operator;
@@ -38,7 +39,16 @@ public final class GordianRuntime implements Scope {
         storage.set("null", GordianNull.get());
         methods.put("return", new Method() {
             public Value run(Scope current, Value[] args) {
-                throw new ValueReturned(args[0]);
+                if (args.length > 0) {
+                    throw new ValueReturned(args[0]);
+                } else {
+                    throw new ValueReturned(null);
+                }
+            }
+        });
+        methods.put("break", new Method() {
+            public Value run(Scope current, Value[] args) {
+                throw new ScopeBreak();
             }
         });
         methods.put("delete", new Method() {
