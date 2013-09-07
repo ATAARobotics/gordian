@@ -3,11 +3,11 @@ package edu.gordian.values;
 import edu.first.util.Strings;
 import edu.gordian.Method;
 import edu.gordian.Variable;
-import edu.gordian.scopes.EmptyClass;
+import edu.gordian.scopes.EmptyInstance;
 import language.scope.Scope;
 import language.value.Value;
 
-public final class GordianString extends EmptyClass implements Value {
+public final class GordianString extends EmptyInstance implements Value {
 
     private final String val;
 

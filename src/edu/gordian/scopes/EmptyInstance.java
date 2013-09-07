@@ -13,17 +13,17 @@ import language.scope.Instance;
 import language.scope.Scope;
 import language.value.Interpreter;
 
-public class EmptyClass implements Instance {
+public class EmptyInstance implements Instance {
 
     private final Methods methods = new GordianMethods();
     private final Storage storage = new GordianStorage();
     private final Analyser analyser = new GordianAnalyser(this);
     private final Interpreter interpreter = new GordianInterpreter(this);
 
-    public EmptyClass() {
+    public EmptyInstance() {
     }
 
-    public EmptyClass(Method[] methods, Variable[] variables) {
+    public EmptyInstance(Method[] methods, Variable[] variables) {
         for (int x = 0; x < methods.length; x++) {
             this.methods.put(methods[x].getName(), methods[x]);
         }

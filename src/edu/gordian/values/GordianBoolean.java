@@ -2,11 +2,11 @@ package edu.gordian.values;
 
 import edu.gordian.Method;
 import edu.gordian.Variable;
-import edu.gordian.scopes.EmptyClass;
+import edu.gordian.scopes.EmptyInstance;
 import language.scope.Scope;
 import language.value.Value;
 
-public final class GordianBoolean extends EmptyClass implements Value {
+public final class GordianBoolean extends EmptyInstance implements Value {
 
     private final boolean val;
 

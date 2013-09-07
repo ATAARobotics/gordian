@@ -196,7 +196,7 @@ public final class GordianInterpreter implements Interpreter {
             if (s.substring(0, s.indexOf(".")).equals("super")) {
                 call = scope.parent();
             } else {
-                call = ((Instance) scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("."))));
+                call = ((Scope) scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("."))));
             }
             String r = s.substring(s.indexOf(".") + 1);
             if (call != null) {

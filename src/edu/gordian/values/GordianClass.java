@@ -1,10 +1,11 @@
 package edu.gordian.values;
 
+import edu.gordian.scopes.EmptyInstance;
 import language.scope.ClassGenerator;
 import language.scope.Instance;
 import language.scope.Scope;
 
-public final class GordianClass implements ClassGenerator {
+public final class GordianClass extends EmptyInstance implements ClassGenerator {
 
     private final Scope scope;
     private final String internals;
