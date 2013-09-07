@@ -1,6 +1,7 @@
 package edu.gordian.internal;
 
 import edu.first.util.list.ArrayList;
+import edu.first.util.list.Iterator;
 import edu.first.util.list.List;
 import language.instruction.Method;
 import edu.gordian.scopes.GordianRuntime;
@@ -15,6 +16,14 @@ public final class GordianMethods implements Methods {
 
     public GordianMethods(Methods s) {
         nodes.addAll(s.nodes());
+    }
+
+    public void clone(Methods m) {
+        Iterator i = m.nodes().iterator();
+        while (i.hasNext()) {
+            Node o = (Node) i.next();
+            nodes.add(new Node(o.key, o.val));
+        }
     }
 
     public void put(String key, Method method) {
@@ -34,16 +43,5 @@ public final class GordianMethods implements Methods {
 
     public List nodes() {
         return nodes;
-    }
-
-    private static final class Node {
-
-        private final String key;
-        private final Method val;
-
-        public Node(String key, Method val) {
-            this.key = key;
-            this.val = val;
-        }
     }
 }

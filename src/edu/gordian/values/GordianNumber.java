@@ -1,8 +1,13 @@
 package edu.gordian.values;
 
+import edu.first.util.MathUtils;
+import edu.gordian.Method;
+import edu.gordian.Variable;
+import edu.gordian.scopes.EmptyClass;
+import language.scope.Scope;
 import language.value.Value;
 
-public final class GordianNumber implements Value {
+public final class GordianNumber extends EmptyClass implements Value {
 
     private final double val;
 
@@ -17,14 +22,29 @@ public final class GordianNumber implements Value {
     }
 
     public GordianNumber(int val) {
-        this.val = val;
+        this((double) val);
     }
 
     public GordianNumber(long val) {
-        this.val = val;
+        this((double) val);
     }
 
-    public GordianNumber(double val) {
+    public GordianNumber(final double val) {
+        super(new Method[]{
+            new Method("neg") {
+                public Value run(Scope current, Value[] args) {
+                    return new GordianNumber(-val);
+                }
+            }, new Method("pow") {
+                public Value run(Scope current, Value[] args) {
+                    return new GordianNumber(MathUtils.pow(val, ((GordianNumber) args[0]).val));
+                }
+            }, new Method("sqrt") {
+                public Value run(Scope current, Value[] args) {
+                    return new GordianNumber(Math.sqrt(val));
+                }
+            }
+        }, new Variable[0]);
         this.val = val;
     }
 
@@ -63,7 +83,7 @@ public final class GordianNumber implements Value {
     }
 
     public String toString() {
-        if(isInt()) {
+        if (isInt()) {
             return String.valueOf(getInt());
         } else {
             return String.valueOf(getDouble());

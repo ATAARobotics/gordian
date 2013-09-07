@@ -1,6 +1,7 @@
 package edu.gordian.internal;
 
 import edu.first.util.list.ArrayList;
+import edu.first.util.list.Iterator;
 import edu.first.util.list.List;
 import edu.gordian.scopes.GordianRuntime;
 import language.value.Value;
@@ -15,6 +16,14 @@ public final class GordianStorage implements Storage {
 
     public GordianStorage(Storage s) {
         nodes.addAll(s.nodes());
+    }
+
+    public void clone(Storage s) {
+        Iterator i = s.nodes().iterator();
+        while (i.hasNext()) {
+            Node o = (Node) i.next();
+            nodes.add(new Node(o.key, o.val));
+        }
     }
 
     public Value put(String key, Value value) {
@@ -34,6 +43,7 @@ public final class GordianStorage implements Storage {
                 Node n = (Node) nodes.get(x);
                 if (n.key.equals(key)) {
                     n.val = value;
+                    return old;
                 }
             }
         }
@@ -49,7 +59,7 @@ public final class GordianStorage implements Storage {
         }
         return null;
     }
-    
+
     public Value remove(String key) {
         for (int x = nodes.size() - 1; x >= 0; x--) {
             Node n = (Node) nodes.get(x);
@@ -63,16 +73,5 @@ public final class GordianStorage implements Storage {
 
     public List nodes() {
         return nodes;
-    }
-
-    private static final class Node {
-
-        private final String key;
-        private Value val;
-
-        public Node(String key, Value val) {
-            this.key = key;
-            this.val = val;
-        }
     }
 }

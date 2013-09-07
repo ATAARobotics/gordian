@@ -15,7 +15,7 @@ public class GordianDefinedMethod extends GordianScope {
         parent().methods().put(name, new Method() {
             public Value run(Scope current, Value[] a) {
                 if (a.length < args.length) {
-                    throw new IllegalArgumentException(name + " does not have enough arguments (" + a.length + "/" + args.length);
+                    throw new IllegalArgumentException(name + " does not have enough arguments (" + a.length + "/" + args.length + ")");
                 }
                 for (int x = 0; x < args.length; x++) {
                     storage().put(args[x], a[x]);
@@ -25,6 +25,7 @@ public class GordianDefinedMethod extends GordianScope {
                 } catch (ValueReturned r) {
                     return r.value;
                 } catch (Exception e) {
+                    e.printStackTrace();
                     throw new RuntimeException("Defined method (" + name + ") failed - " + e.getMessage());
                 }
                 return null;
