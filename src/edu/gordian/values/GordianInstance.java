@@ -6,13 +6,11 @@ import edu.gordian.internal.GordianMethods;
 import edu.gordian.internal.GordianStorage;
 import edu.gordian.scopes.GordianRuntime;
 import language.element.Analyser;
-import language.instruction.Method;
 import language.internal.Methods;
 import language.internal.Storage;
 import language.scope.Instance;
 import language.scope.Scope;
 import language.value.Interpreter;
-import language.value.Value;
 
 public class GordianInstance implements Instance {
 
@@ -54,13 +52,5 @@ public class GordianInstance implements Instance {
 
     public Interpreter getInterpreter() {
         return interpreter;
-    }
-
-    public Method getMethod(String name) {
-        return methods.get(name);
-    }
-
-    public Value getValue(String name) {
-        return storage.get(name);
     }
 }
