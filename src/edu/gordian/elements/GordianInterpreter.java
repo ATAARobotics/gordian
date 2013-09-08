@@ -102,11 +102,11 @@ public final class GordianInterpreter implements Interpreter {
             }
         }, new ValueType() {
             public Value from(String s) throws NoValue {
-                if (Strings.contains(s, "++") && scope.storage().get(s.substring(0, s.indexOf("++"))) != null) {
-                    s = s.substring(0, s.indexOf("++")) + "+=1" + s.substring(s.indexOf("++") + 2);
+                if (s.endsWith("++") && scope.storage().get(s.substring(0, s.indexOf("++"))) != null) {
+                    s = s.substring(0, s.indexOf("++")) + "+=1";
                 }
-                if (Strings.contains(s, "--") && scope.storage().get(s.substring(0, s.indexOf("--"))) != null) {
-                    s = s.substring(0, s.indexOf("--")) + "-=1" + s.substring(s.indexOf("--") + 2);
+                if (s.endsWith("--") && scope.storage().get(s.substring(0, s.indexOf("--"))) != null) {
+                    s = s.substring(0, s.indexOf("--")) + "-=1";
                 }
                 Iterator i = GordianRuntime.operations.iterator();
                 while (i.hasNext()) {
