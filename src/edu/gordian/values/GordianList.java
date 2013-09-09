@@ -48,12 +48,12 @@ public class GordianList extends GordianScope implements Value {
                 return args[0];
             }
         });
-        methods().put("removeAt", new Method() {
+        methods().put("removeat", new Method() {
             public Value run(Scope current, Value[] args) {
                 return (Value) list.remove(((GordianNumber) args[0]).getInt());
             }
         });
-        methods().put("indexOf", new Method() {
+        methods().put("indexof", new Method() {
             public Value run(Scope current, Value[] args) {
                 return new GordianNumber(list.indexOf(args[0]));
             }
