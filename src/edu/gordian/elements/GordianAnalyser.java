@@ -1,6 +1,5 @@
 package edu.gordian.elements;
 
-import edu.first.util.Strings;
 import edu.gordian.internal.ScopeBreak;
 import edu.gordian.scopes.GordianIf;
 import edu.gordian.scopes.GordianWhile;

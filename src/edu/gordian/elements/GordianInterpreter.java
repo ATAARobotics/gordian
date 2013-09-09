@@ -102,17 +102,17 @@ public final class GordianInterpreter implements Interpreter {
             }
         }, new ValueType() {
             public Value from(String s) throws NoValue {
-                if (s.endsWith("++") && scope.storage().get(s.substring(0, s.indexOf("++"))) != null) {
+                if (s.endsWith("++") && GordianRuntime.isValidName(s.substring(0, s.indexOf("++")))) {
                     s = s.substring(0, s.indexOf("++")) + "+=1";
                 }
-                if (s.endsWith("--") && scope.storage().get(s.substring(0, s.indexOf("--"))) != null) {
+                if (s.endsWith("--") && GordianRuntime.isValidName(s.substring(0, s.indexOf("--")))) {
                     s = s.substring(0, s.indexOf("--")) + "-=1";
                 }
                 Iterator i = GordianRuntime.operations.iterator();
                 while (i.hasNext()) {
                     Operator o = (Operator) i.next();
                     String x = o.getChar() + "=";
-                    if (Strings.contains(s, x) && scope.storage().get(s.substring(0, s.indexOf(x))) != null) {
+                    if (Strings.contains(s, x) && GordianRuntime.isValidName(s.substring(0, s.indexOf(x)))) {
                         s = s.substring(0, s.indexOf(x)) + "="
                                 + s.substring(0, s.indexOf(x)) + o.getChar() + s.substring(s.indexOf(x) + 2);
                     }
@@ -128,8 +128,8 @@ public final class GordianInterpreter implements Interpreter {
                             call = ((Instance) scope.storage().get(s.substring(0, s.indexOf("."))));
                         }
                         // Internal variable
-                        return call.getInterpreter().interpretValue(s.substring(s.indexOf(".") + 1, s.indexOf("=") + 1)
-                                + scope.getInterpreter().interpretValue(s.substring(s.indexOf("=") + 1)).toString());
+                        return call.getInterpreter().interpretValue(s.substring(s.indexOf(".") + 1, s.indexOf("="))
+                                + scope.getInterpreter().interpretValue(s.substring(s.indexOf("="))).toString());
                     }
                     return new GordianDeclaration(scope).set(s.substring(0, s.indexOf("=")),
                             scope.getInterpreter().interpretValue(s.substring(s.indexOf("=") + 1)));
@@ -165,32 +165,10 @@ public final class GordianInterpreter implements Interpreter {
         }, new ValueType() {
             public Value from(String s) throws NoValue {
                 if (s.startsWith("[") && s.endsWith("]")) {
-                    Value v = scope.storage().get(s.substring(1, s.length() - 1));
+                    Value v = scope.getInterpreter().interpretValue(s.substring(1, s.length() - 1));
                     if (v != null) {
                         return ((GordianClass) v).construct();
                     }
-                }
-
-                throw new NoValue();
-            }
-        }, new ValueType() {
-            public Value from(String s) throws NoValue {
-                if (s.startsWith("{") && s.endsWith("}")) {
-                    GordianList list = new GordianList(scope);
-                    Value[] v = getArgs(betweenMatch(s, '{', '}'));
-                    for (int x = 0; x < v.length; x++) {
-                        list.add(v[x]);
-                    }
-                    return list;
-                }
-
-                throw new NoValue();
-            }
-        }, new ValueType() {
-            public Value from(String s) throws NoValue {
-                if (s.indexOf("[") > 0 && s.endsWith("]")) {
-                    return ((GordianList) scope.getInterpreter().interpretValue(s.substring(0, s.lastIndexOf('['))))
-                            .get(((GordianNumber) scope.getInterpreter().interpretValue(betweenMatchReverse(s, '[', ']'))).getInt());
                 }
 
                 throw new NoValue();
@@ -288,8 +266,30 @@ public final class GordianInterpreter implements Interpreter {
                     }
 
                     if (call != null) {
-                        return call.storage().get(r);
+                        return call.getInterpreter().interpretValue(r);
                     }
+                }
+
+                throw new NoValue();
+            }
+        }, new ValueType() {
+            public Value from(String s) throws NoValue {
+                if (s.startsWith("{") && s.endsWith("}")) {
+                    GordianList list = new GordianList(scope);
+                    Value[] v = getArgs(betweenMatch(s, '{', '}'));
+                    for (int x = 0; x < v.length; x++) {
+                        list.add(v[x]);
+                    }
+                    return list;
+                }
+
+                throw new NoValue();
+            }
+        }, new ValueType() {
+            public Value from(String s) throws NoValue {
+                if (s.indexOf("[") > 0 && s.endsWith("]") && GordianRuntime.isValidName(s.substring(0, s.indexOf("[")))) {
+                    return ((GordianList) scope.getInterpreter().interpretValue(s.substring(0, s.lastIndexOf('['))))
+                            .get(((GordianNumber) scope.getInterpreter().interpretValue(betweenMatchReverse(s, '[', ']'))).getInt());
                 }
 
                 throw new NoValue();
