@@ -394,7 +394,7 @@ public final class GordianInterpreter implements Interpreter {
     }
 
     private Value[] getArgs(String s) {
-        if (!Strings.contains(s, '\"') && !Strings.contains(s, '(') && !Strings.contains(s, '{')) {
+        if (!Strings.contains(s, '\"') && !Strings.contains(s, "\'") && !Strings.contains(s, '(') && !Strings.contains(s, '{')) {
             return scope.getInterpreter().interpretValues(Strings.split(s, ','));
         } else {
             List l = new ArrayList();
@@ -403,7 +403,7 @@ public final class GordianInterpreter implements Interpreter {
             int last = 0;
             char[] d = s.toCharArray();
             for (int x = 0; x < d.length; x++) {
-                if (d[x] == '\"') {
+                if ((d[x] == '\"' || d[x] == '\'') && (x == 0 || d[x - 1] != '\\')) {
                     inQuotes = !inQuotes;
                 } else if (d[x] == '(') {
                     p1++;
