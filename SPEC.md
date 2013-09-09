@@ -205,30 +205,31 @@ Remember that `Example` is registered as a variable in Gordian. You should not s
 Classes clone all values and methods from their external scope. Changing any value inside of a class *only* affects it inside of that class.
 
 # Libraries
+
 **Booleans**
 
-`reverse()` - Reverses the boolean (true -> false, false -> true)
+- `reverse()` - Reverses the boolean (true -> false, false -> true)
 
 **Numbers**
 
-`neg()` - Reverses the number (negative -> postive, positive -> negative)
-`pow(x)` - To the power of `x`
-`sqrt()` - The square root of the number
+- `neg()` - Reverses the number (negative -> postive, positive -> negative)
+- `pow(x)` - To the power of `x`
+- `sqrt()` - The square root of the number
 
 **Strings**
 
-`charat(x)` - Character at the `x` index
-`indexof(x)` - Index of a string
-`length()` - Length of the string
+- `charat(x)` - Character at the `x` index
+- `indexof(x)` - Index of a string
+- `length()` - Length of the string
 
 **Lists**
 
-`get(x)` - Get value at the `x` index
-`add(x)` - Add `x` to the end of the list (appends)
-`addAll(x)` - Adds all values from another list
-`set(i, x)` - Sets the value at `i` index to `x`
-`clear()` - Clears all elements from the list
-`remove(x)` - Removes the element `x` from the list
-`removeat(x)` - Removes the element at `x` index
-`size()` - Get the size of the list
-`contains(x)` - If the list contains `x`
+- `get(x)` - Get value at the `x` index
+- `add(x)` - Add `x` to the end of the list (appends)
+- `addAll(x)` - Adds all values from another list
+- `set(i, x)` - Sets the value at `i` index to `x`
+- `clear()` - Clears all elements from the list
+- `remove(x)` - Removes the element `x` from the list
+- `removeat(x)` - Removes the element at `x` index
+- `size()` - Get the size of the list
+- `contains(x)` - If the list contains `x`
