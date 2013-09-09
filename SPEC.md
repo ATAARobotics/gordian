@@ -8,11 +8,11 @@ So,
 
 is both a declaration of `x` and the value `25`.
 
-Gordian is a dynamically typed interpreted scripting language with variables, methods and scopes. It also has threading capabilities.
+Gordian is a dynamically typed interpreted scripting language with variables, methods, classes and scopes. It also has threading capabilities.
 
 # Values
 
-Gordian has four value types: Numbers, Booleans, Strings and Null.
+Gordian has seven value types: Numbers, Booleans, Strings, Lists, Classes, Instances and Null.
 
 Numbers are a combination of double (64 bit) and int (32 bit). If a value is `x % 1 == 0`, it is considered an integer internally. Otherwise, it is a double.
 
@@ -28,13 +28,19 @@ Strings are indicated with single or double quotation marks at the very ends of 
 
 `\n` = newline character
 
+Lists are declared using `{` and `}` around them, with values separated using commas.
+
+Classes are defined by their name. Classes are actually values, but can be constructed into operational instances using `[class]` notation.
+
 Null is accessed using the variable `null`.
+
+# Adjustments
 
 Booleans can also be adjusted using the basic operator.
 
 `!` = Reverse a boolean (true -> false)
 
-Numbers can be reversed using `neg(x)`.
+Numbers can be reversed using `neg(x)` or `x.neg()`. This is preferred to using `-` before numbers (parsing is not predictable).
 
 To cast values to certain types, use the methods:
 
@@ -196,4 +202,4 @@ There cannot be arguments in construction. As you can tell, you can access varia
 
 Remember that `Example` is registered as a variable in Gordian. You should not shadow its value if you want to use the class.
 
-Nested classes clone all values and methods from their external scope. Changing any value inside of a class *only* affects it inside of that class.
+Classes clone all values and methods from their external scope. Changing any value inside of a class *only* affects it inside of that class.
