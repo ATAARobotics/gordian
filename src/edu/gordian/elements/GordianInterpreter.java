@@ -102,6 +102,19 @@ public final class GordianInterpreter implements Interpreter {
             }
         }, new ValueType() {
             public Value from(String s) throws NoValue {
+                if (s.startsWith("{") && s.endsWith("}")) {
+                    GordianList list = new GordianList(scope);
+                    Value[] v = getArgs(betweenMatch(s, '{', '}'));
+                    for (int x = 0; x < v.length; x++) {
+                        list.add(v[x]);
+                    }
+                    return list;
+                }
+
+                throw new NoValue();
+            }
+        }, new ValueType() {
+            public Value from(String s) throws NoValue {
                 if (s.endsWith("++") && GordianRuntime.isValidName(s.substring(0, s.indexOf("++")))) {
                     s = s.substring(0, s.indexOf("++")) + "+=1";
                 }
@@ -268,19 +281,6 @@ public final class GordianInterpreter implements Interpreter {
                     if (call != null) {
                         return call.getInterpreter().interpretValue(r);
                     }
-                }
-
-                throw new NoValue();
-            }
-        }, new ValueType() {
-            public Value from(String s) throws NoValue {
-                if (s.startsWith("{") && s.endsWith("}")) {
-                    GordianList list = new GordianList(scope);
-                    Value[] v = getArgs(betweenMatch(s, '{', '}'));
-                    for (int x = 0; x < v.length; x++) {
-                        list.add(v[x]);
-                    }
-                    return list;
                 }
 
                 throw new NoValue();
