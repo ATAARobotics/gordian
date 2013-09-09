@@ -177,7 +177,7 @@ public final class GordianInterpreter implements Interpreter {
             }
         }, new ValueType() {
             public Value from(String s) throws NoValue {
-                if (s.startsWith("[") && s.endsWith("]")) {
+                if (s.startsWith("[") && s.endsWith("]") && GordianRuntime.isValidName(s.substring(1, s.length() - 1))) {
                     Value v = scope.getInterpreter().interpretValue(s.substring(1, s.length() - 1));
                     if (v != null) {
                         return ((GordianClass) v).construct();
