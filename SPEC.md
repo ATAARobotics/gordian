@@ -218,7 +218,7 @@ Classes do not bring external methods or variables in like other scopes. In orde
 
 Calling `p()` on an instance of `Example` will print `1`.
 
-To access native functions of a parent class, use the `parent` keyword. The functions will work in the context of your current class (ex. shadowing value `x` will change behaviour)
+To access native functions of a parent class, use the `parent` keyword. The functions will work in the context of parent (ex. shadowing value `x` will not change behaviour)
 
 # Libraries
 

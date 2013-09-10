@@ -16,16 +16,18 @@ public class GordianInstance implements Instance {
 
     private final Scope scope;
     private final Instance parent;
-    private final Methods methods;
-    private final Storage storage;
+    private final Methods methods = new GordianMethods();
+    private final Storage storage = new GordianStorage();
     private final Analyser analyser = new GordianAnalyser(this);
     private final Interpreter interpreter = new GordianInterpreter(this);
 
     public GordianInstance(Scope scope, Instance inheret, String internals) {
         this.scope = scope;
         this.parent = inheret;
-        this.methods = new GordianMethods(inheret.methods());
-        this.storage = new GordianStorage(inheret.storage());
+        this.methods.clone(inheret.methods());
+        this.storage.clone(inheret.storage());
+
+        this.storage.put("parent", inheret);
 
         run(internals);
     }
@@ -33,8 +35,6 @@ public class GordianInstance implements Instance {
     public GordianInstance(Scope scope, String internals) {
         this.scope = scope;
         this.parent = null;
-        this.methods = new GordianMethods();
-        this.storage = new GordianStorage();
 
         run(internals);
     }
