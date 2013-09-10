@@ -77,7 +77,22 @@ public final class GordianInterpreter implements Interpreter {
         public Value from(String s) throws NoValue {
             if ((s.startsWith("\"") && s.endsWith("\""))
                     || (s.startsWith("\'") && s.endsWith("\'"))) {
-                return new GordianString(s.substring(1, s.length() - 1));
+                s = s.substring(1, s.length() - 1);
+                while (Strings.contains(s, "\'")) {
+                    if (s.charAt(s.indexOf("\'") - 1) != '\\') {
+                        // Non-escaped quotation mark
+                        throw new NoValue();
+                    }
+                    s = s.substring(s.indexOf("\'") + 1);
+                }
+                while (Strings.contains(s, "\"")) {
+                    if (s.charAt(s.indexOf("\"") - 1) != '\\') {
+                        // Non-escaped quotation mark
+                        throw new NoValue();
+                    }
+                    s = s.substring(s.indexOf("\"") + 1);
+                }
+                return new GordianString(s);
             }
 
             throw new NoValue();
