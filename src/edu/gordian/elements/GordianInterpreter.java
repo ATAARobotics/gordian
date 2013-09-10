@@ -136,7 +136,7 @@ public final class GordianInterpreter implements Interpreter {
                         Scope call;
                         // Super
                         if (s.substring(0, s.indexOf(".")).equals("super")) {
-                            call = scope.parent();
+                            call = scope.container();
                         } else {
                             call = ((Instance) scope.storage().get(s.substring(0, s.indexOf("."))));
                         }
@@ -268,7 +268,16 @@ public final class GordianInterpreter implements Interpreter {
                     Scope call;
                     // Super
                     if (s.substring(0, s.lastIndexOf('.')).equals("super")) {
-                        call = scope.parent();
+                        call = scope.container();
+                    } else if (s.substring(0, s.lastIndexOf('.')).equals("parent")) {
+                        call = scope;
+                        while (!(call instanceof Instance)) {
+                            call = call.container();
+                            if (call == null) {
+                                throw new NullPointerException("Illegal parent call");
+                            }
+                        }
+                        call = ((Instance) call).parent();
                     } else {
                         call = ((Scope) scope.getInterpreter().interpretValue(s.substring(0, s.lastIndexOf('.'))));
                     }

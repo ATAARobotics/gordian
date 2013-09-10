@@ -19,7 +19,7 @@ public class GordianDefinedMethod extends GordianScope {
     }
 
     public void define(final String name, final String[] args, final String run) {
-        parent().methods().put(name, new Method() {
+        container().methods().put(name, new Method() {
             public Value run(Scope current, Value[] a) {
                 if (a.length < args.length) {
                     throw new IllegalArgumentException(name + " does not have enough arguments (" + a.length + "/" + args.length + ")");

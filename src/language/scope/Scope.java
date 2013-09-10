@@ -7,7 +7,7 @@ import language.value.Interpreter;
 
 public interface Scope {
 
-    public Scope parent();
+    public Scope container();
 
     public Methods methods();
 

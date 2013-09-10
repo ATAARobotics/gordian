@@ -32,7 +32,11 @@ public class EmptyInstance implements Instance {
         }
     }
 
-    public final Scope parent() {
+    public final Scope container() {
+        return null;
+    }
+
+    public final Instance parent() {
         return null;
     }
 

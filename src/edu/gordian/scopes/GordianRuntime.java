@@ -25,7 +25,7 @@ public final class GordianRuntime implements Scope {
         new Addition(), new Subtraction(), new Multiplication(), new Division(), new Modulus()
     });
 
-    public Scope parent() {
+    public Scope container() {
         return null;
     }
 

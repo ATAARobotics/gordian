@@ -28,7 +28,7 @@ public class GordianScope implements Scope {
         this.storage = new GordianStorage(scope.storage());
     }
 
-    public Scope parent() {
+    public Scope container() {
         return scope;
     }
 

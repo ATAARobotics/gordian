@@ -15,6 +15,7 @@ import language.value.Interpreter;
 public class GordianInstance implements Instance {
 
     private final Scope scope;
+    private final Instance parent;
     private final Methods methods;
     private final Storage storage;
     private final Analyser analyser = new GordianAnalyser(this);
@@ -22,6 +23,7 @@ public class GordianInstance implements Instance {
 
     public GordianInstance(Scope scope, Instance inheret, String internals) {
         this.scope = scope;
+        this.parent = inheret;
         this.methods = new GordianMethods(inheret.methods());
         this.storage = new GordianStorage(inheret.storage());
 
@@ -30,14 +32,19 @@ public class GordianInstance implements Instance {
 
     public GordianInstance(Scope scope, String internals) {
         this.scope = scope;
+        this.parent = null;
         this.methods = new GordianMethods();
         this.storage = new GordianStorage();
 
         run(internals);
     }
 
-    public Scope parent() {
+    public Scope container() {
         return scope;
+    }
+
+    public Instance parent() {
+        return parent;
     }
 
     public Methods methods() {
