@@ -94,6 +94,10 @@ public final class GordianInterpreter implements Interpreter {
                 s = s.substring(0, s.indexOf("--")) + "-=1";
             }
             if (Strings.contains(s, "=")
+                    && s.indexOf("==") != s.indexOf("=")
+                    && s.indexOf("!=") != s.indexOf("=") - 1
+                    && s.indexOf("<=") != s.indexOf("=") - 1
+                    && s.indexOf(">=") != s.indexOf("=") - 1
                     && !isBetween(s, '=', '(', ')')
                     && !isBetween(s, '=', '[', ']')
                     && !isBetween(s, '=', '{', '}')) {
