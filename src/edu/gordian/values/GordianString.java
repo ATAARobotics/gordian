@@ -27,8 +27,8 @@ public final class GordianString extends EmptyInstance implements Value {
                 }
             }
         }, new Variable[0]);
-        this.val = Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(val,
-                "\\\"", "\""), "\\t", "\t"), "\\n", "\n");
+        this.val = Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(val,
+                "\\\"", "\""), "\\\'", "\'"), "\\t", "\t"), "\\n", "\n");
     }
 
     public boolean equals(Object obj) {

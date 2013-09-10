@@ -24,6 +24,8 @@ Strings are indicated with single or double quotation marks at the very ends of 
 
 `\"` = `"`
 
+`\'` = `'`
+
 `\t` = tab character
 
 `\n` = newline character
