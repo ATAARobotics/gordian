@@ -8,19 +8,10 @@ import edu.gordian.elements.GordianAnalyser;
 import edu.gordian.elements.GordianInterpreter;
 import language.element.Analyser;
 import language.value.Interpreter;
-import language.value.Value;
-import language.instruction.Method;
 import edu.gordian.internal.GordianMethods;
 import edu.gordian.internal.GordianStorage;
-import edu.gordian.internal.ScopeBreak;
-import edu.gordian.internal.ValueReturned;
-import edu.gordian.values.GordianBoolean;
 import language.operator.Operator;
-import edu.gordian.values.GordianNull;
 import language.scope.Scope;
-import edu.gordian.values.GordianNumber;
-import edu.gordian.values.GordianString;
-import java.util.Random;
 import language.internal.Methods;
 import language.internal.Storage;
 
@@ -30,100 +21,9 @@ public final class GordianRuntime implements Scope {
     private final Interpreter interpreter = new GordianInterpreter(this);
     private final GordianMethods methods = new GordianMethods();
     private final GordianStorage storage = new GordianStorage();
-    private static final Random RANDOM = new Random();
     public static final List operations = Collections.asList(new Operator[]{
         new Addition(), new Subtraction(), new Multiplication(), new Division(), new Modulus()
     });
-
-    {
-        storage.set("null", GordianNull.get());
-        methods.put("return", new Method() {
-            public Value run(Scope current, Value[] args) {
-                if (args.length > 0) {
-                    throw new ValueReturned(args[0]);
-                } else {
-                    throw new ValueReturned(null);
-                }
-            }
-        });
-        methods.put("break", new Method() {
-            public Value run(Scope current, Value[] args) {
-                throw new ScopeBreak();
-            }
-        });
-        methods.put("delete", new Method() {
-            public Value run(Scope current, Value[] args) {
-                return current.storage().remove(((GordianString) args[0]).toString());
-            }
-        });
-        methods.put("int", new Method() {
-            public Value run(Scope current, Value[] args) {
-                if (args[0] instanceof GordianNumber) {
-                    return new GordianNumber(((GordianNumber) args[0]).getInt());
-                } else {
-                    return new GordianNumber(GordianNumber.toNumber(args[0].toString()).getInt());
-                }
-            }
-        });
-        methods.put("num", new Method() {
-            public Value run(Scope current, Value[] args) {
-                if (args[0] instanceof GordianNumber) {
-                    return new GordianNumber(((GordianNumber) args[0]).getDouble());
-                } else {
-                    return GordianNumber.toNumber(args[0].toString());
-                }
-            }
-        });
-        methods.put("bool", new Method() {
-            public Value run(Scope current, Value[] args) {
-                if (args[0] instanceof GordianBoolean) {
-                    return new GordianBoolean(((GordianBoolean) args[0]).get());
-                } else {
-                    return GordianBoolean.toBoolean(args[0].toString());
-                }
-            }
-        });
-        methods.put("str", new Method() {
-            public Value run(Scope current, Value[] args) {
-                return new GordianString(args[0].toString());
-            }
-        });
-        methods.put("print", new Method() {
-            public Value run(Scope current, Value[] args) {
-                if (args.length > 1) {
-                    System.out.println(Collections.asList(args));
-                } else {
-                    System.out.println(args[0]);
-                }
-                return null;
-            }
-        });
-        methods.put("sleep", new Method() {
-            public Value run(Scope current, Value[] args) {
-                try {
-                    Thread.sleep(((GordianNumber) args[0]).getLong());
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                return null;
-            }
-        });
-        methods.put("rand", new Method() {
-            public Value run(Scope current, Value[] args) {
-                return new GordianNumber(RANDOM.nextDouble());
-            }
-        });
-        methods.put("randint", new Method() {
-            public Value run(Scope current, Value[] args) {
-                return new GordianNumber(RANDOM.nextInt());
-            }
-        });
-        methods.put("neg", new Method() {
-            public Value run(Scope current, Value[] args) {
-                return new GordianNumber(-((GordianNumber) args[0]).getDouble());
-            }
-        });
-    }
 
     public Scope parent() {
         return null;

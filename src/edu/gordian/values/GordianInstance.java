@@ -20,13 +20,19 @@ public class GordianInstance implements Instance {
     private final Analyser analyser = new GordianAnalyser(this);
     private final Interpreter interpreter = new GordianInterpreter(this);
 
+    public GordianInstance(Scope scope, Instance inheret, String internals) {
+        this.scope = scope;
+        this.methods = new GordianMethods(inheret.methods());
+        this.storage = new GordianStorage(inheret.storage());
+
+        run(internals);
+    }
+
     public GordianInstance(Scope scope, String internals) {
         this.scope = scope;
         this.methods = new GordianMethods();
         this.storage = new GordianStorage();
 
-        this.methods.clone(scope.methods());
-        this.storage.clone(scope.storage());
         run(internals);
     }
 

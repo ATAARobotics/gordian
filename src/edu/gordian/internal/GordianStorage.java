@@ -4,12 +4,17 @@ import edu.first.util.list.ArrayList;
 import edu.first.util.list.Iterator;
 import edu.first.util.list.List;
 import edu.gordian.scopes.GordianRuntime;
+import edu.gordian.values.GordianNull;
 import language.value.Value;
 import language.internal.Storage;
 
 public final class GordianStorage implements Storage {
 
     private final List nodes = new ArrayList();
+
+    {
+        set("null", GordianNull.get());
+    }
 
     public GordianStorage() {
     }
