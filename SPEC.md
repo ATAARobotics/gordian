@@ -79,7 +79,7 @@ Methods are defined with the `def` keyword.
 
 End all blocks using `fi`.
 
-Arguments for methods will shadow other variables (will not delete them). They are not available outside of the method's scope.
+Arguments for methods will shadow other variables (will not delete them). 
 
 Returning values is done with the `return(x)` method.
 
