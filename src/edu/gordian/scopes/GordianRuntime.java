@@ -111,7 +111,6 @@ public final class GordianRuntime implements Scope {
             s = s + ";";
         }
         s = Strings.replaceAll(s, "\n", ";");
-        s = Strings.replaceAll(s, ":", ":;");
         if (Strings.contains(s, " ")) {
             s = removeSpaces(s, 0);
         }

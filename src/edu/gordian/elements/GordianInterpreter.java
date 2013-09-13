@@ -131,7 +131,11 @@ public final class GordianInterpreter implements Interpreter {
                     String before = a.substring(0, a.lastIndexOf('.'));
                     String after = a.substring(a.lastIndexOf('.') + 1);
 
-                    call = (Scope) scope.getInterpreter().interpretValue(before);
+                    if (before.equals("super")) {
+                        call = scope.container();
+                    } else {
+                        call = (Scope) scope.getInterpreter().interpretValue(before);
+                    }
 
                     return new GordianDeclaration(call).set((after),
                             scope.getInterpreter().interpretValue(s.substring(s.indexOf("=") + 1)));
