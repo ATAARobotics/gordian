@@ -30,6 +30,7 @@ public final class GordianInterpreter implements Interpreter {
         new StringLiteral(),
         new Declaration(),
         new Parentheses(),
+        new Concatenation(),
         new Reversed(),
         new Function(),
         new ListLiteral(),
@@ -41,7 +42,6 @@ public final class GordianInterpreter implements Interpreter {
         new NotEquals(),
         new ComparisonWithEquals(),
         new ComparisonWithoutEquals(),
-        new Concatenation(),
         new ObjectAccess(),
         new ListAccess(),
         new Variable()
@@ -354,7 +354,9 @@ public final class GordianInterpreter implements Interpreter {
                     Value d1 = scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("+")));
                     Value d2 = scope.getInterpreter().interpretValue(s.substring(s.indexOf("+") + 1));
 
-                    return new GordianString(d1.toString() + d2.toString());
+                    if (!(d1 instanceof GordianNumber) || !(d2 instanceof GordianNumber)) {
+                        return new GordianString(d1.toString() + d2.toString());
+                    }
                 } catch (Exception e) {
                     // value was not two values
                 }
