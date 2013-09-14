@@ -349,16 +349,21 @@ public final class GordianInterpreter implements Interpreter {
 
         public Value from(String s) throws NoValue {
             if (Strings.contains(s, "+")) {
-                // Concatenations
-                try {
-                    Value d1 = scope.getInterpreter().interpretValue(s.substring(0, s.indexOf("+")));
-                    Value d2 = scope.getInterpreter().interpretValue(s.substring(s.indexOf("+") + 1));
+                int index;
+                int d = 0;
+                while (Strings.contains(s.substring(d), "+")) {
+                    index = s.substring(d).indexOf("+") + d;
+                    d = index + 1;
+                    try {
+                        Value d1 = scope.getInterpreter().interpretValue(s.substring(0, index));
+                        Value d2 = scope.getInterpreter().interpretValue(s.substring(index + 1));
 
-                    if (!(d1 instanceof GordianNumber) || !(d2 instanceof GordianNumber)) {
-                        return new GordianString(d1.toString() + d2.toString());
+                        if (!(d1 instanceof GordianNumber) || !(d2 instanceof GordianNumber)) {
+                            return new GordianString(d1.toString() + d2.toString());
+                        }
+                    } catch (Exception e) {
+                        // value was not two values
                     }
-                } catch (Exception e) {
-                    // value was not two values
                 }
             }
 
