@@ -11,8 +11,7 @@ public class GordianList extends GordianScope implements Value {
 
     private final List list = new ArrayList();
 
-    public GordianList(Scope s) {
-        super(s);
+    {
         methods().put("get", new Method() {
             public Value run(Scope current, Value[] args) {
                 return (Value) list.get(((GordianNumber) args[0]).getInt());
@@ -70,8 +69,11 @@ public class GordianList extends GordianScope implements Value {
         });
     }
 
+    public GordianList(Scope s) {
+        super(s);
+    }
+
     public GordianList() {
-        this(null);
     }
 
     public Value add(Value v) {

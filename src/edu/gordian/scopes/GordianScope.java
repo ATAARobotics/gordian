@@ -27,6 +27,12 @@ public class GordianScope implements Scope {
         this.methods = new GordianMethods(scope.methods());
         this.storage = new GordianStorage(scope.storage());
     }
+    
+    public GordianScope() {
+        this.scope = null;
+        this.methods = new GordianMethods();
+        this.storage = new GordianStorage();
+    }
 
     public Scope container() {
         return scope;
