@@ -70,6 +70,10 @@ public class GordianList extends GordianScope implements Value {
         });
     }
 
+    public GordianList() {
+        this(null);
+    }
+
     public Value add(Value v) {
         list.add(v);
         return v;
