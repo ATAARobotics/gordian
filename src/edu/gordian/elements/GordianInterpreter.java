@@ -7,12 +7,12 @@ import edu.first.util.list.List;
 import edu.gordian.instructions.GordianDeclaration;
 import edu.gordian.scopes.GordianRuntime;
 import edu.gordian.values.GordianBoolean;
-import edu.gordian.values.GordianClass;
 import edu.gordian.values.GordianList;
 import edu.gordian.values.GordianNumber;
 import edu.gordian.values.GordianString;
 import language.instruction.Method;
 import language.operator.Operator;
+import language.scope.ClassGenerator;
 import language.scope.Scope;
 import language.value.Interpreter;
 import language.value.Value;
@@ -259,7 +259,7 @@ public final class GordianInterpreter implements Interpreter {
                 } catch (NullPointerException e) {
                 }
                 if (v != null) {
-                    return ((GordianClass) v).construct();
+                    return ((ClassGenerator) v).construct();
                 }
             }
 
