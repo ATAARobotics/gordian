@@ -30,6 +30,8 @@ Strings are indicated with single or double quotation marks at the very ends of 
 
 `\n` = newline character
 
+**Caution**: `;` and `#` characters are not respected as part of a string, even in parentheses or escaped. *Use other characters instead*, they are **not** supported.
+
 Lists are declared using `{` and `}` around them, with values separated using commas.
 
 Classes are defined by their name. Classes are actually values, but can be constructed into operational instances using `[class]` notation.
