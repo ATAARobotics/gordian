@@ -10,6 +10,10 @@ is both a declaration of `x` and the value `25`.
 
 Gordian is a dynamically typed interpreted scripting language with variables, methods, classes and scopes. It also has threading capabilities.
 
+### Known Bugs
+
+There are potential dangers when using keywords anywhere in a Gordian program. This especially applies to things like block headers (if, thread, etc.) Gordian has no real way to prevent this kind of parsing mistake. It's always a good idea to use words and symbols that are not used by Gordian. Yes, this also applies in strings.
+
 # Values
 
 Gordian has seven value types: Numbers, Booleans, Strings, Lists, Classes, Instances and Null.
@@ -134,6 +138,10 @@ Example:
 If blocks follow the basic syntax:
 
     if(condition):
+        # instructions
+    else if(condition)
+        # instructions
+    else
         # instructions
     fi
 
