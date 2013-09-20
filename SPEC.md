@@ -14,6 +14,8 @@ Gordian is a dynamically typed interpreted scripting language with variables, me
 
 There are potential dangers when using keywords anywhere in a Gordian program. This especially applies to things like block headers (if, thread, etc.) Gordian has no real way to prevent this kind of parsing mistake. It's always a good idea to use words and symbols that are not used by Gordian. Yes, this also applies in strings.
 
+`;` and `#` characters are not respected as part of a string, even in parentheses or escaped. *Use other characters instead*, they are **not** supported.
+
 # Values
 
 Gordian has seven value types: Numbers, Booleans, Strings, Lists, Classes, Instances and Null.
@@ -33,8 +35,6 @@ Strings are indicated with single or double quotation marks at the very ends of 
 `\t` = tab character
 
 `\n` = newline character
-
-**Caution**: `;` and `#` characters are not respected as part of a string, even in parentheses or escaped. *Use other characters instead*, they are **not** supported.
 
 Lists are declared using `{` and `}` around them, with values separated using commas.
 
