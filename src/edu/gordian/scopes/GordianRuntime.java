@@ -132,13 +132,13 @@ public final class GordianRuntime implements Scope {
             String add = String.valueOf(c[x]);
             if (c[x] == '\'' && (x == 0 || (c[x - 1] != '\\' && c[x - 1] != '!'))) {
                 i1 = !i1;
-                if (debug1 == -1) {
+                if (i1) {
                     debug1 = x;
                 }
                 add = "!\'";
             } else if (c[x] == '\"' && (x == 0 || (c[x - 1] != '\\' && c[x - 1] != '!'))) {
                 i2 = !i2;
-                if (debug1 == -1) {
+                if (i2) {
                     debug1 = x;
                 }
                 add = "!\'";
