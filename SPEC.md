@@ -12,9 +12,7 @@ Gordian is a dynamically typed interpreted scripting language with variables, me
 
 ### Known Bugs
 
-There are potential dangers when using keywords anywhere in a Gordian program. This especially applies to things like block headers (if, thread, etc.) Gordian has no real way to prevent this kind of parsing mistake. It's always a good idea to use words and symbols that are not used by Gordian. Yes, this also applies in strings.
-
-`;` and `#` characters are not respected as part of a string, even in parentheses or escaped. *Use other characters instead*, they are **not** supported.
+There are potential dangers when using keywords anywhere in a Gordian program. This especially applies to things like block headers (if, thread, etc.) Gordian has no real way to prevent this kind of parsing mistake. It's always a good idea to use words and symbols that are not used by Gordian. This rarely if ever applies to strings (strings are sterilized), it mostly applies to variable names (classes, functions and scopes too).
 
 # Values
 

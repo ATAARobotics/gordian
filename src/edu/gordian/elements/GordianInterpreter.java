@@ -75,25 +75,10 @@ public final class GordianInterpreter implements Interpreter {
     private class StringLiteral implements ValueType {
 
         public Value from(String s) throws NoValue {
-            if ((s.startsWith("\"") && s.endsWith("\""))
-                    || (s.startsWith("\'") && s.endsWith("\'"))) {
-                s = s.substring(1, s.length() - 1);
-                String x = s;
-                while (Strings.contains(x, "\'")) {
-                    if (x.charAt(x.indexOf("\'") - 1) != '\\') {
-                        // Non-escaped quotation mark
-                        throw new NoValue();
-                    }
-                    x = x.substring(x.indexOf("\'") + 1);
-                }
-                while (Strings.contains(x, "\"")) {
-                    if (x.charAt(x.indexOf("\"") - 1) != '\\') {
-                        // Non-escaped quotation mark
-                        throw new NoValue();
-                    }
-                    x = x.substring(x.indexOf("\"") + 1);
-                }
-                return new GordianString(s);
+            if ((s.startsWith("!\"") && s.endsWith("!\""))
+                    || (s.startsWith("!\'") && s.endsWith("!\'"))) {
+                s = s.substring(2, s.length() - 2);
+                return GordianString.evaluate(s);
             }
 
             throw new NoValue();
@@ -519,7 +504,7 @@ public final class GordianInterpreter implements Interpreter {
             int last = 0;
             char[] d = s.toCharArray();
             for (int x = 0; x < d.length; x++) {
-                if ((d[x] == '\"' || d[x] == '\'') && (x == 0 || d[x - 1] != '\\')) {
+                if (d[x] == '\"' || d[x] == '\'') {
                     inQuotes = !inQuotes;
                 } else if (d[x] == '(') {
                     p1++;

@@ -107,6 +107,7 @@ public final class GordianRuntime implements Scope {
     }
 
     private static String pre(String s) {
+        s = convertStrings(s);
         if (!s.endsWith(";")) {
             s = s + ";";
         }
@@ -121,13 +122,46 @@ public final class GordianRuntime implements Scope {
         return s;
     }
 
+    private static String convertStrings(String s) {
+        char[] c = s.toCharArray();
+        StringBuffer b = new StringBuffer();
+
+        int debug1 = -1;
+        boolean i1 = false, i2 = false;
+        for (int x = 0; x < c.length; x++) {
+            String add = String.valueOf(c[x]);
+            if (c[x] == '\'' && (x == 0 || (c[x - 1] != '\\' && c[x - 1] != '!'))) {
+                i1 = !i1;
+                if (debug1 == -1) {
+                    debug1 = x;
+                }
+                add = "!\'";
+            } else if (c[x] == '\"' && (x == 0 || (c[x - 1] != '\\' && c[x - 1] != '!'))) {
+                i2 = !i2;
+                if (debug1 == -1) {
+                    debug1 = x;
+                }
+                add = "!\'";
+            } else if (i1 || i2) {
+                add = "%" + (int) c[x];
+            }
+            b.append(add);
+        }
+
+        if (i1 || i2) {
+            throw new IllegalStateException("Quotes were not closed! - " + s.substring(debug1));
+        }
+
+        return b.toString();
+    }
+
     private static String removeSpaces(final String s, int x) {
         String a = Strings.replaceAll(s, "\t", " ");
 
         boolean inQuotes = false;
         x += a.substring(x).indexOf(' ');
         for (int i = 0; i < x; i++) {
-            if ((a.charAt(i) == '\"' || a.charAt(i) == '\'') && a.charAt(i - 1) != '\\') {
+            if (a.charAt(i) == '\"' || a.charAt(i) == '\'') {
                 inQuotes = !inQuotes;
             } else if (a.charAt(i) == ';') {
                 inQuotes = false;

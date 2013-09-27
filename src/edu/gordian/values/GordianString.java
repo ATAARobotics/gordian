@@ -11,6 +11,16 @@ public final class GordianString extends EmptyInstance implements Value {
 
     private final String val;
 
+    public static GordianString evaluate(String literal) {
+        String[] s = Strings.split(literal, "%");
+        StringBuffer b = new StringBuffer();
+        for (int x = 1; x < s.length; x++) {
+            b.append((char) Integer.parseInt(s[x]));
+        }
+        return new GordianString(Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(b.toString(),
+                "\\\"", "\""), "\\\'", "\'"), "\\t", "\t"), "\\n", "\n"));
+    }
+
     public GordianString(final String val) {
         super(new Method[]{
             new Method("charat") {
@@ -27,8 +37,7 @@ public final class GordianString extends EmptyInstance implements Value {
                 }
             }
         }, new Variable[0]);
-        this.val = Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(Strings.replaceAll(val,
-                "\\\"", "\""), "\\\'", "\'"), "\\t", "\t"), "\\n", "\n");
+        this.val = val;
     }
 
     public boolean equals(Object obj) {
