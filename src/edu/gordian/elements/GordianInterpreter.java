@@ -75,8 +75,10 @@ public final class GordianInterpreter implements Interpreter {
     private class StringLiteral implements ValueType {
 
         public Value from(String s) throws NoValue {
-            if ((s.startsWith("!\"") && s.endsWith("!\""))
-                    || (s.startsWith("!\'") && s.endsWith("!\'"))) {
+            if (((s.startsWith("\"!") && s.endsWith("!\""))
+                    || (s.startsWith("\'!") && s.endsWith("!\'")))
+                    && (between(s, '\"').equals(s.substring(1, s.length() - 1))
+                    || between(s, '\'').equals(s.substring(1, s.length() - 1)))) {
                 s = s.substring(2, s.length() - 2);
                 return GordianString.evaluate(s);
             }
@@ -449,6 +451,19 @@ public final class GordianInterpreter implements Interpreter {
         return false;
     }
 
+    private String between(String s, char f) {
+        boolean scope = false;
+        for (int x = 0; x < s.length(); x++) {
+            if (s.charAt(x) == f) {
+                scope = !scope;
+            }
+            if (scope == false && Strings.contains(s, f) && s.indexOf(f) < x) {
+                return s.substring(s.indexOf(f) + 1, x);
+            }
+        }
+        return "";
+    }
+    
     private String betweenMatch(String s, char f, char l) {
         int scope = 0;
         for (int x = 0; x < s.length(); x++) {

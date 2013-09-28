@@ -12,7 +12,7 @@ public final class GordianString extends EmptyInstance implements Value {
     private final String val;
 
     public static GordianString evaluate(String literal) {
-        String[] s = Strings.split(literal, "%");
+        String[] s = Strings.split(literal, "@");
         StringBuffer b = new StringBuffer();
         for (int x = 1; x < s.length; x++) {
             b.append((char) Integer.parseInt(s[x]));
