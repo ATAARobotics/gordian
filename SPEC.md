@@ -1,6 +1,6 @@
 # The Gordian Specification
 
-Gordian is what could be refered to as a *value-oriented* language. Like an object oriented laguage, Gordian treats everything like a value. It will evaluate every instruction as if it was a value. The only element that is not a value is blocks (if, while, etc.) - which are composed of values.
+Gordian is very close to an object oriented language. It will evaluate every instruction as if it was a value. The only element that is not a value is blocks (if, while, etc.).
 
 So,
 
@@ -12,17 +12,17 @@ Gordian is a dynamically typed interpreted scripting language with variables, me
 
 ### Known Bugs
 
-There are potential dangers when using keywords anywhere in a Gordian program. This especially applies to things like block headers (if, thread, etc.) Gordian has no real way to prevent this kind of parsing mistake. It's always a good idea to use words and symbols that are not used by Gordian. This rarely if ever applies to strings (strings are sterilized), it mostly applies to variable names (classes, functions and scopes too).
+There are potential dangers when using keywords as variable names, method names and class names. Most of the time, you should be safe - but be weary about using language keywords where they might be misinterpreted.
 
 # Values
 
-Gordian has seven value types: Numbers, Booleans, Strings, Lists, Classes, Instances and Null.
+Gordian has seven object types: Numbers, Booleans, Strings, Lists, Classes, Instances and Null.
 
 Numbers are a combination of double (64 bit) and int (32 bit). If a value is `x % 1 == 0`, it is considered an integer internally. Otherwise, it is a double.
 
 *Note: putting `.0` at the end of a number literal will not make it a double. This functionality is not built in to the language.* There is no need to build it in, because arithmetic will always use the most precise method.
 
-Booleans are simple, you can use `true` or `false`, with any or all letters capitalized.
+Booleans are simple, you can use `true`, `True`, `false` or `False`.
 
 Strings are indicated with single or double quotation marks at the very ends of the string. Escape characters are as follows:
 
@@ -34,11 +34,11 @@ Strings are indicated with single or double quotation marks at the very ends of 
 
 `\n` = newline character
 
-Lists are declared using `{` and `}` around them, with values separated using commas.
+Lists are declared using `[` and `]` around them, with values separated using commas.
 
-Classes are defined by their name. Classes are actually values, but can be constructed into operational instances using `[class]` notation.
+Classes are defined by their name. Classes are actually objects, but can be constructed into operational instances using `new class(args)` notation.
 
-Null is accessed using the variable `null`.
+Null is accessed using `null`.
 
 # Adjustments
 
@@ -46,7 +46,7 @@ Booleans can also be adjusted using the basic operator.
 
 `!` = Reverse a boolean (true -> false)
 
-Numbers can be reversed using `neg(x)` or `x.neg()`. This is preferred to using `-` before numbers (parsing is not predictable).
+Numbers can be reversed using `-`, `neg(x)` or `x.neg()`.
 
 To cast values to certain types, use the methods:
 
@@ -56,7 +56,7 @@ To cast values to certain types, use the methods:
 
 `bool(x)` = Casts to a boolean (parses strings)
 
-`str(x)` = Casts to a string (converts numbers and booleans)
+`str(x)` = Casts to a string (parses all primitives)
 
 # Variables
 
@@ -64,30 +64,28 @@ To declare variables, use the basic syntax:
 
     varName = value
 
-Variable and method names cannot contain characters that are not letters.
+Variable and method names must contain one letter, and cannot contain special characters (non-number or non-letter).
 
 Variables have a scope, and cannot be accessed outside of their scope. When accessing a variable, just use the name of the variable as it was declared.
 
-To declare variables in Java, use `Gordian.addVariable()`.
+To declare variables in Java, use `GordianScope.variables().put("name", object)`.
 
-To delete variables from memory, use `delete(x)`. `x` has to be a string.
+To delete variables from memory, use `del x`.
 
 # Methods
 
 Methods are defined with the `def` keyword.
 
-    def foo(x):
+    def foo(x) {
         print(x + 1)
-        return(13.23)
-    fi
-
-End all blocks using `fi`.
+        return 13.23
+    }
 
 Arguments for methods will shadow other variables (will not delete them). 
 
-Returning values is done with the `return(x)` method.
+Returning values is done with the `return` keyword.
 
-To declare methods in Java, use `Gordian.addMethod()`.
+To declare methods in Java, use `GordianScope.methods().put("name", method)`.
 
 # Expressions
 
@@ -103,7 +101,7 @@ Expressions use the basic syntax used in most C-based languages.
 
 `==` = Equals (works for all types)
 
-`!=` = Not Equals
+`!=` = Not Equals (works for all types)
 
 `>=` = Bigger or equal to
 
@@ -113,11 +111,9 @@ Expressions use the basic syntax used in most C-based languages.
 
 `<` = Smaller than
 
-Strings can be concatenated using the `+` sign.
-
 # Calculations
 
-Calculations follow PMDMSA (Parentheses - Modulus - Division - Multiplication - Subtraction - Addition). Order or operations is changeable in `GordianRuntime.operations`.
+Calculations follow PMDMSA (Parentheses - Modulus - Division - Multiplication - Subtraction - Addition). Order or operations is changeable in `GordianScope.operations`.
 
 Shorthand calculations are the same as Java/C++. They are just the symbol with an equals sign. (ex. `+=`)
 
@@ -127,84 +123,89 @@ Blocks are pieces of the program that have a private scope. This means that vari
 
 Example:
 
-    def foo():
+    def foo() {
         x = 13
-    fi
+    }
     
-    # CANNOT ACCESS `x`
-
 If blocks follow the basic syntax:
 
-    if(condition):
+    if(condition) {
         # instructions
-    else if(condition)
+    } else if(condition) {
         # instructions
-    else
+    } else {
         # instructions
-    fi
+    }
 
 While blocks are similar
 
-    while(condition):
+    while(condition) {
         # instructions
-    fi
+    }
 
 For blocks run a certain amount of times
 
-    for(3):
+    for(3) {
         # instructions
-    fi
+    }
 
 Count blocks perform a traditional for loop. The first argument is the variable name, the second is the start of the count and the third is the last (inclusive) count.
 
-    count(x, 0, 10):
+    count(x, 0, 10) {
         # instructions
-    fi
+    }
 
 Thread blocks run in a new thread
 
-    thread:
+    thread {
         # instructions
-    fi
+    }
 
 Try blocks catch exceptions and move on (logging the exception)
 
-    try:
+    try {
         # instructions
-    fi
+    }
+
+    # can also catch
+
+    try {
+        # instructions
+    } catch {
+        # exception handling
+    }
 
 Methods are defined using `def`
 
-    def foo(x, i):
+    def foo(x, i) {
         # instructions
-    fi
-
-Scope blocks perform no additional actions, but they encapsulate the variables and methods stored within them.
-
-    scope:
-        # instructions
-    fi
+    }
 
 Class blocks create `ClassGenerator` instances under their name, and can be instantiated.
 
-    class Foo:
+    class Foo {
         # instructions
-    fi
+    }
+
+    # inherits Foo
+    class Bar(Foo) {
+        # instructions
+    }
 
 # Classes
-Gordian uses a scraped down version of typical object oriented languages. Classes do not have inheritence, so many object-oriented features are not available. To construct an object, use the `[` and `]` signs.
+Gordian uses special classes with some slightly unusual behaviour.
 
-    class Example:
+    class Example {
         x = 13
 
-        def foo(x):
-            super.x = x
-        fi
-    fi
+        def construct(x) {
+            container.x = x
+        }
+    }
 
-    myinstance = [Example]
+    myinstance = new Example(14)
 
-There cannot be arguments in construction. As you can tell, you can access variables that are shadowed using the `super` keyword. Super will work from any context in Gordian (provided you are in a scope). To access methods and variables, simply use a `.` after the instance name.
+To access methods and variables, simply use a `.` after the instance name.
 
     myinstance.x
 
@@ -212,23 +213,33 @@ There cannot be arguments in construction. As you can tell, you can access varia
 
 Remember that `Example` is registered as a variable in Gordian. You should not shadow its value if you want to use the class.
 
-Classes do not bring external methods or variables in like other scopes. In order to do so, use inheritance:
+Use inheritance like this:
 
-    class Parent:
+    class Parent {
         x = 1
-    fi
+    }
 
-    class Example(Parent):
-        def p():
+    class Example(Parent) {
+        def p() {
             print(x)
-        fi
-    fi
+        }
+    }
 
 Calling `p()` on an instance of `Example` will print `1`.
 
-To access native functions of a parent class, use the `parent` keyword. The functions will work in the context of parent (ex. shadowing value `x` will not change behaviour)
-
 # Libraries
+
+**General**
+- `container` - the scope that contains the current one, only exists when inside of a different scope
+- `exit(x)` - exits the program with error code `x`
+- `time()` - equivalent of Java's `System.currentTimeMillis()`
+- `break()` - breaks from current scope (rest of instructions aren't run)
+- `eval(x)` - runs a completely new script with no context
+- `concat(i, x)` - concatenates two values
+- `print(x)` - prints to console
+- `sleep(x)` - sleeps for the specified number of milliseconds
+- `rand()` - random double
+- `randInt()` - random integer
 
 **Booleans**
 
@@ -248,12 +259,20 @@ To access native functions of a parent class, use the `parent` keyword. The func
 
 **Lists**
 
-- `get(x)` - Get value at the `x` index
 - `add(x)` - Add `x` to the end of the list (appends)
+- `add(i, x)` - Add `x` to the `i` index
 - `addAll(x)` - Adds all values from another list
-- `set(i, x)` - Sets the value at `i` index to `x`
+- `addAll(i, x)` - Adds all values from another list to `i` index
 - `clear()` - Clears all elements from the list
-- `remove(x)` - Removes the element `x` from the list
-- `removeat(x)` - Removes the element at `x` index
-- `size()` - Get the size of the list
 - `contains(x)` - If the list contains `x`
+- `containsAll(x)` - If the list contains all values in list `x`
+- `get(x)` - Get value at the `x` index
+- `indexOf(x)` - Get the index of object `x`
+- `isEmpty()` - If list is completely empty
+- `lastIndexOf(x)` - Get the last index of object `x`
+- `remove(x)` - Removes the element at index `x` from the list
+- `removeAll(x)` - Removes all elements in list `x` from the list
+- `retainAll(x)` - Retains all elements in list `x` in the list
+- `set(i, x)` - Sets the value at `i` index to `x`
+- `size()` - Get the size of the list
+- `sublist(s, e)` - A new list with elements from `s` to `e`

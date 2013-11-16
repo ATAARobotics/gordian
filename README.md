@@ -13,10 +13,10 @@ Gordian is well suited for:
 - Complex control flow with input and output
 - Interpreter of input (ie. configuration files)
 
-Gordian is modelled with inspiration from Python and Lua.
+Gordian is modelled with inspiration from Java, Python and Lua.
 
 ## Platform
-Gordian is designed to run on a minimum of Java ME 1.4 on the squawk VM, using the WPILibJ libraries.
+Gordian is designed to run on Java ME 1.4 on the squawk VM, using the WPILibJ libraries.
 
 - Gordian for FRC is available at https://github.com/Team4334/gordian
 - Gordian for Java SE (or your choice of supported platform) is available at https://github.com/Team4334/gordianSE
@@ -29,7 +29,7 @@ Gordian is a project that aims to help innovate quickly without tinkering embedd
 - Avoid any feature creep and stay stable
 
 ## Calling from Java
-Use `Gordian.run` to run your script in Java. For more access to variables and elements, use `Gordian.getRuntime()`. Many options are there for accessing the runtime environment. 
+Use `GordianScope` object to run your script in Java.
 
 # Language specification
 Gordian follows a semi-strict, dynamic syntax that allows the user many options for scripts. Its syntax is designed to avoid as many possible parsing bugs and unpredictable behaviour.
