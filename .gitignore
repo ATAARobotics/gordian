@@ -10,5 +10,6 @@
 nbproject/
 build/
 dist/
+resources/
 build.properties
 build.xml
