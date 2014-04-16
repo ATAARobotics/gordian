@@ -271,14 +271,14 @@ public class GordianScope implements Scope {
         s = Strings.replaceAll(s, '\n', ';');
         s = Strings.replaceAll(s, '{', "{;");
         s = Strings.replaceAll(s, '}', ";}");
-
-        if (!Strings.contains(s, ";")) {
+        if (!s.endsWith(";")) {
             s = s + ';';
         }
 
         while (Strings.contains(s, "#")) {
-            String toRemove = s.substring(s.indexOf('#'), (s.substring(s.indexOf('#'))).indexOf(';') + s.indexOf('#'));
-            s = Strings.replace(s, toRemove, "");
+            int start = s.indexOf('#');
+            int end = (s.substring(s.indexOf('#'))).indexOf(';') + s.indexOf('#');
+            s = s.substring(0, start) + s.substring(end);
         }
 
         s = convertStrings(s);
@@ -296,10 +296,10 @@ public class GordianScope implements Scope {
             if (!found) {
                 s = s.substring(0, y) + s.substring(y + 1);
             }
-            y += s.substring(y + 1).indexOf(" ") + 1;
-            if (s.substring(y).indexOf(" ") == -1) {
+            if (s.substring(y + 1).indexOf(" ") == -1) {
                 break;
             }
+            y += s.substring(y + 1).indexOf(" ") + 1;
         }
 
         while (Strings.contains(s, ";;")) {
@@ -400,11 +400,15 @@ public class GordianScope implements Scope {
     private final GordianMethods methods;
     private final GordianVariables variables;
     private final Scope container;
+    private static boolean quitting = false;
 
     public GordianScope() {
         this.container = null;
         this.methods = new GordianMethods();
         this.variables = new GordianVariables();
+
+        // always a new scope or thread
+        quitting = false;
     }
 
     public GordianScope(GordianScope container) {
@@ -432,7 +436,14 @@ public class GordianScope implements Scope {
         return variables;
     }
 
+    public static void quit() {
+        quitting = true;
+    }
+
     public void run(String s) {
+        if (quitting) {
+            throw new RuntimeException("Gordian script was quit");
+        }
         if (!isProper(s)) {
             s = clean(s);
         }
